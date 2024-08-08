@@ -1,0 +1,27 @@
+uuid: 61522612-22c5-4d7b-8a4c-4e24a411da02
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.text.field_full_text
+    - field.field.node.text.field_text_parts
+    - node.type.text
+  module:
+    - text
+    - user
+id: node.text.default
+targetEntityType: node
+bundle: text
+mode: default
+content:
+  field_full_text:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_text_parts: true
+  langcode: true
+  links: true

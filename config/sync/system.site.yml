@@ -1,14 +1,15 @@
 _core:
-  default_config_hash: VDJxTZtQR21qB4lvOq8zszJZLvLKrSPQpdn2E3T71Ww
-langcode: da
-uuid: 926d0d8c-4ece-4711-98b3-eda6dbc677c9
-name: 'AI Launchpad'
-mail: info@itkdev.dk
+  default_config_hash: HlN7eAN2N4JIHsYv56V4E7sqC9bS609KwvGFjyD_mgk
+langcode: en
+uuid: 1ef393ee-f23f-4df7-9e77-dc45afb41d4a
+name: 'Drush Site-Install'
+mail: admin@example.com
 slogan: ''
 page:
   403: ''
   404: ''
-  front: /node
+  front: /user/login
 admin_compact_mode: false
 weight_select_max: 100
 default_langcode: da
+mail_notification: null

@@ -1,5 +1,5 @@
-uuid: 4043a591-7c43-40e1-af13-78c9a503857e
-langcode: da
+uuid: 892a04eb-ced3-46f6-8727-081f4b794eff
+langcode: en
 status: true
 dependencies:
   module:
@@ -8,9 +8,9 @@ dependencies:
     module:
       - node
 _core:
-  default_config_hash: lno8QThS348UX-kaUsagJtCnuPHKLXYnTQiF_9HSDWA
+  default_config_hash: Cr0CsPUSuio4ClP7bOTqHBefJOLtN5KPyKyYj9E4qvQ
 id: pathauto_update_alias_node
-label: 'Opdatér alternativ URL'
+label: 'Update URL alias'
 type: node
 plugin: pathauto_update_alias
 configuration: {  }

@@ -1,0 +1,11 @@
+uuid: c131f1d9-c3fb-4ee4-a801-47de6232a0f4
+langcode: en
+status: true
+dependencies: {  }
+name: Text
+type: text
+description: null
+help: null
+new_revision: false
+preview_mode: 0
+display_submitted: false

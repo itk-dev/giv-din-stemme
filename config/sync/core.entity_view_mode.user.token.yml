@@ -1,11 +1,11 @@
-uuid: 20149ae9-fd96-4e02-8592-5365c374328d
-langcode: da
+uuid: 07d6b9c5-bbd7-4749-ae49-bbf0fa4dc352
+langcode: en
 status: true
 dependencies:
   module:
     - user
 id: user.token
 label: Token
-description: ''
+description: null
 targetEntityType: user
 cache: true

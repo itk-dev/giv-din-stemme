@@ -1,5 +1,5 @@
-uuid: e9384742-6161-4ab3-acac-b29893303a00
-langcode: da
+uuid: d58edecb-1bf3-4773-9b14-151503fe2a3a
+langcode: en
 status: true
 dependencies:
   module:
@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: KgGJDZFpMaz_8bTv6fN1bXS3Qi5LWmRJI9R53kEGsNQ
 id: node.teaser
-label: Smagsprøve
+label: Teaser
 description: ''
 targetEntityType: node
 cache: true

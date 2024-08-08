@@ -1,11 +1,11 @@
-uuid: c11e572f-c763-44e3-b8ad-24486e6a6748
-langcode: da
+uuid: bed8cc56-e58f-4290-aace-263b2dff105e
+langcode: en
 status: true
 dependencies:
   module:
     - path_alias
 id: path_alias.token
 label: Token
-description: ''
+description: null
 targetEntityType: path_alias
 cache: true

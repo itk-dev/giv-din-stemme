@@ -1,5 +1,5 @@
-uuid: db598960-354c-4d18-b4ea-15e89fd45295
-langcode: da
+uuid: 002db4b6-e17c-4ccc-9b50-b56110245b3f
+langcode: en
 status: true
 dependencies:
   module:
@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: 2B9uF8NL5gutNKSdPRAhhAsDWFZZG1PJOBmx0aBGd_0
 id: node_publish_action
-label: 'Udgiv indhold'
+label: 'Publish content'
 type: node
 plugin: 'entity:publish_action:node'
 configuration: {  }

@@ -1,0 +1,25 @@
+uuid: 61a95132-1a5f-4f7b-b1a2-c480e720cf98
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.text.field_full_text
+    - field.field.node.text.field_text_parts
+    - node.type.text
+  module:
+    - user
+id: node.text.teaser
+targetEntityType: node
+bundle: text
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_full_text: true
+  field_text_parts: true
+  langcode: true

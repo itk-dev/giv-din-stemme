@@ -1,0 +1,24 @@
+uuid: 3497abe8-e128-415c-bf90-0dd0946c77b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_text_parts
+    - filter.format.plain_text
+    - node.type.text
+  module:
+    - text
+id: node.text.field_text_parts
+field_name: field_text_parts
+entity_type: node
+bundle: text
+label: Tekstbidder
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - plain_text
+field_type: text_long
