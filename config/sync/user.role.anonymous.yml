@@ -1,5 +1,5 @@
 uuid: bf7f8be6-5368-4bb0-85d8-c7bced6a30bf
-langcode: en
+langcode: da
 status: true
 dependencies:
   module:
@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
 id: anonymous
-label: 'Anonymous user'
+label: 'Anonym bruger'
 weight: 0
 is_admin: false
 permissions:

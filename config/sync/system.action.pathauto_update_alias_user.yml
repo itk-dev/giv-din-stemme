@@ -1,5 +1,5 @@
 uuid: 2ec727ad-a03f-4179-ba83-063ca7991ad6
-langcode: en
+langcode: da
 status: true
 dependencies:
   module:
@@ -10,7 +10,7 @@ dependencies:
 _core:
   default_config_hash: 6eiNWATGTd3lUEKuxNPNyDRDVMsUlM0HS90_R6JJLUI
 id: pathauto_update_alias_user
-label: 'Update URL alias'
+label: 'Opdatér alternativ URL'
 type: user
 plugin: pathauto_update_alias
 configuration: {  }

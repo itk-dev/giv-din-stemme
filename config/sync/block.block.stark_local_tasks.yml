@@ -1,5 +1,5 @@
 uuid: 724bee21-42e2-428f-aed9-86806a5fa081
-langcode: en
+langcode: da
 status: true
 dependencies:
   theme:
@@ -14,7 +14,7 @@ provider: null
 plugin: local_tasks_block
 settings:
   id: local_tasks_block
-  label: Tabs
+  label: Faner
   label_display: '0'
   provider: core
   primary: true

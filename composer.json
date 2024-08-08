@@ -22,7 +22,8 @@
         "drupal/paragraphs": "^1.18",
         "drupal/pathauto": "^1.13",
         "drupal/twig_tweak": "^3.4",
-        "drush/drush": "^13.0"
+        "drush/drush": "^13.0",
+        "cweagans/composer-patches": "^1.7"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -36,7 +37,8 @@
             "drupal/core-project-message": true,
             "phpstan/extension-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "cweagans/composer-patches": true
         },
         "sort-packages": true
     },
@@ -95,6 +97,12 @@
                 "  * Remove the plugin that prints this message:",
                 "      composer remove drupal/core-project-message"
             ]
+        },
+        "enable-patching": true,
+        "patches": {
+            "drupal/core": {
+              "Disable forced configuration langcode (https://www.drupal.org/project/drupal/issues/3150540)": "https://www.drupal.org/files/issues/2024-07-03/drupal-3150540-42.patch"
+            }
         }
     }
 }

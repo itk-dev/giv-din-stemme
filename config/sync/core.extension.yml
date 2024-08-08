@@ -13,6 +13,7 @@ module:
   filter: 0
   giv_din_stemme: 0
   language: 0
+  locale: 0
   mysql: 0
   node: 0
   page_cache: 0
