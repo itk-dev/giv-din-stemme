@@ -1,0 +1,20 @@
+uuid: f5ce2648-f4dd-46ab-beec-22c182720c89
+langcode: da
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - giv_din_stemme_theme
+id: giv_din_stemme_theme_brodkrummer
+theme: giv_din_stemme_theme
+region: breadcrumb
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Brødkrummer
+  label_display: '0'
+  provider: system
+visibility: {  }
