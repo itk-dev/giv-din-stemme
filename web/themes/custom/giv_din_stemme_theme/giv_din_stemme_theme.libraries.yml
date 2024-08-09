@@ -1,5 +1,4 @@
 styles:
-  version: VERSION
   css:
     theme:
       build/giv_din_stemme_theme.css: { minified: true }

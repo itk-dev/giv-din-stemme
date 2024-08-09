@@ -6,12 +6,11 @@
       {% for item in breadcrumb %}
         <li>
           {% if item.url %}
-            <a href="{{ item.url }}">{{ item.text }}<i class="fa-solid fa-angle-right"></i></a>
-          {% else %}
-            {{ item.text }}
+              <a class="mr-3" href="{{ item.url }}">{{ item.text }}</a>
           {% endif %}
         </li>
       {% endfor %}
+          <li><span class="mr-3" >/</span>{{ drupal_title() }}</li>
       </ol>
     </nav>
   </div>

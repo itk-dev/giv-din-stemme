@@ -34,7 +34,7 @@
     <css-placeholder token="{{ placeholder_token }}">
     <js-placeholder token="{{ placeholder_token }}">
   </head>
-  <body{{ attributes.addClass('bg-primary text-primary') }}>
+  <body{{ attributes.addClass('bg-white text-primary') }}>
     {#
       Keyboard navigation/accessibility link to main content section in
       page.html.twig.
@@ -47,6 +47,7 @@
       {{ page }}
       {{ page_bottom }}
     </div>
+    <img class="-z-50 fixed object-cover object-center min-h-80 w-full bottom-0" src="/{{ directory }}/background.svg"/>
     <js-bottom-placeholder token="{{ placeholder_token }}">
   </body>
 </html>

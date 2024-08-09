@@ -11,6 +11,7 @@ regions:
   header_secondary_brand: Header secondary brand
   global_navigation_menu: Global navigation menu
   global_navigation_menu_secondary_brand: Global navigation menu secondary brand
+  breadcrumb: Breadcrumb
   content: Content
   footer_header: Footer header
   footer_col_1: Footer col 1

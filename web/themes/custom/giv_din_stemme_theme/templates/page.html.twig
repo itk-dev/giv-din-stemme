@@ -46,18 +46,11 @@
  */
 #}
 {{ include(directory ~ '/templates/components/header.html.twig') }}
-
-<div class="">
-
+<div class="bg-white max-w-2xl mx-auto">
   <main role="main" class="">
     <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
-
     {{ page.content }}
-
   </main>
-
-  {{ include(directory ~ '/templates/components/footer.html.twig') }}
-
+  <!--{{ include(directory ~ '/templates/components/footer.html.twig') }} -->
 </div>{# /.layout-container #}
-
 {{ include(directory ~ '/templates/components/global-navigation.html.twig') }}
