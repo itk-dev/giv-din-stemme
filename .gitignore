@@ -188,3 +188,8 @@ private-files/
 
 # Ignore VS-code
 .vscode
+
+# ITK --------------------------------------------------------------------------
+
+# Docker
+.env.docker.local
