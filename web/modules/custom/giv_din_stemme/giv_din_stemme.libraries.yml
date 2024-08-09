@@ -1,0 +1,4 @@
+giv_din_stemme:
+  version: 1.x
+  js:
+    js/giv_din_stemme.js: {}

@@ -1,0 +1,11 @@
+services:
+  giv_din_stemme.audio_helper:
+    class: 'Drupal\giv_din_stemme\Helper\AudioHelper'
+
+  giv_din_stemme.controller:
+    class: 'Drupal\giv_din_stemme\Helper\GivDinStemmeController'
+    arguments:
+      - '@giv_din_stemme.audio_helper'
+      - '@database'
+      - '@file_system'
+      - '@settings'

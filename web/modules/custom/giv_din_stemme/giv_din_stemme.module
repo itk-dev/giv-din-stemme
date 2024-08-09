@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Hooks for giv din stemme module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function giv_din_stemme_theme(array $existing, string $type, string $theme, string $path): array {
+  return [
+    'giv_din_stemme' => [
+      'variables' => [
+        'test_variable' => 'TEST VARIABLE',
+//        'logout_url' => NULL,
+//        'name' => NULL,
+      ],
+      'template' => 'giv_din_stemme',
+    ],
+  ];
+}

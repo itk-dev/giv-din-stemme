@@ -1,0 +1,30 @@
+giv_din_stemme.metadata.show:
+  path: '/giv_din_stemme/metadata'
+  methods:
+    - 'GET'
+    - 'POST'
+  defaults:
+    _form: '\Drupal\giv_din_stemme\Form\GivDinStemmeMetaDataForm'
+  requirements:
+    _permission: 'access content'
+
+giv_din_stemme.show:
+  path: '/giv_din_stemme'
+  methods:
+    - 'GET'
+  defaults:
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::show'
+  requirements:
+    _permission: 'access content'
+
+giv_din_stemme.audio_process:
+  path: '/giv_din_stemme'
+  methods:
+    - 'POST'
+  defaults:
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::process'
+  requirements:
+    _permission: 'access content'
+
+
+

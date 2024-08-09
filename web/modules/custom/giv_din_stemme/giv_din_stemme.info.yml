@@ -1,0 +1,4 @@
+name: "Giv din stemme"
+description: 'Giv din stemme module'
+type: module
+core_version_requirement: ^10 || ^11
