@@ -4,8 +4,16 @@ module.exports = {
   safelist: [
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        orange: {
+          600: '#EF4123'
+        },
+      },
+    }
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/forms'),
+  ],
 }
 

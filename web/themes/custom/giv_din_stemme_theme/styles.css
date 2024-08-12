@@ -11,7 +11,7 @@
     @apply bg-stone-100 dark:bg-stone-900;
   }
   .bg-brand {
-    @apply bg-teal-600 dark:bg-teal-700;
+    @apply bg-orange-600 dark:bg-orange-700;
   }
 
   /* Define common text colors */
@@ -22,7 +22,7 @@
     @apply text-stone-600 dark:text-stone-300;
   }
   .text-brand {
-    @apply text-teal-700 dark:text-teal-600;
+    @apply text-orange-700 dark:text-orange-600;
   }
 
   /* Define common border colors */
@@ -33,12 +33,12 @@
     @apply border-stone-200 dark:border-stone-500;
   }
   .border-brand {
-    @apply border-teal-700 dark:border-teal-600;
+    @apply border-orange-700 dark:border-orange-600;
   }
 
   /* Define common buttons */
   .btn-primary {
-    @apply border border-brand bg-brand text-white rounded px-3 py-2 min-h-9 hover:bg-teal-700 hover:dark:bg-teal-600;
+    @apply border border-brand bg-brand text-white rounded px-3 py-2 min-h-9 hover:bg-orange-700 hover:dark:bg-orange-600;
   }
   .btn-default {
     @apply border border-secondary bg-secondary text-secondary rounded px-3 py-2 min-h-9 hover:bg-stone-200 hover:dark:bg-stone-800;
