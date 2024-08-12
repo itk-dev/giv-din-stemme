@@ -1,10 +1,55 @@
-giv_din_stemme.metadata.show:
-  path: '/giv_din_stemme/metadata'
+giv_din_stemme.landing:
+  path: '/landing-page'
+  methods:
+    - 'GET'
+  defaults:
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::landing'
+  requirements:
+    _permission: 'access content'
+
+giv_din_stemme.consent:
+  path: '/consent'
+  methods:
+    - 'GET'
+  defaults:
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::consent'
+  requirements:
+    _permission: 'access content'
+
+giv_din_stemme.profile:
+  path: '/profile'
   methods:
     - 'GET'
     - 'POST'
   defaults:
-    _form: '\Drupal\giv_din_stemme\Form\GivDinStemmeMetaDataForm'
+    _form: '\Drupal\giv_din_stemme\Form\GivDinStemmeProfileForm'
+  requirements:
+    _permission: 'access content'
+
+giv_din_stemme.permissions:
+  path: '/permissions'
+  methods:
+    - 'GET'
+  defaults:
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::permissions'
+  requirements:
+    _permission: 'access content'
+
+giv_din_stemme.test:
+  path: '/test'
+  methods:
+    - 'GET'
+  defaults:
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::test'
+  requirements:
+    _permission: 'access content'
+
+giv_din_stemme.donate:
+  path: '/donate'
+  methods:
+    - 'GET'
+  defaults:
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::donate'
   requirements:
     _permission: 'access content'
 

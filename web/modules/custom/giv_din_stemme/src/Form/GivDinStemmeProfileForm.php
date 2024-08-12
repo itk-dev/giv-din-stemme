@@ -6,15 +6,15 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Giv din stemme meta data form.
+ * Giv din stemme profile form.
  */
-class GivDinStemmeMetaDataForm extends FormBase {
+class GivDinStemmeProfileForm extends FormBase {
 
   /**
    * {@inheritDoc}
    */
   public function getFormId() {
-    return 'giv_din_stemme_meta_data_form';
+    return 'giv_din_stemme_profile_form';
   }
 
   /**
@@ -96,7 +96,7 @@ class GivDinStemmeMetaDataForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // @todo add the supplied data to the user.
     // Redirect/switch to form for donating voice.
-    $form_state->setRedirect('giv_din_stemme.show');
+    $form_state->setRedirect('giv_din_stemme.permissions');
   }
 
 }
