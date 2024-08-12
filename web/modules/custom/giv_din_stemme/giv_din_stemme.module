@@ -18,5 +18,17 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       ],
       'template' => 'giv_din_stemme',
     ],
+    'landing_page' => [
+      'variables' => [
+        'name' => 'LANDING PAGE',
+      ],
+      'template' => 'landing_page',
+    ],
+    'consent_page' => [
+      'variables' => [
+        'name' => 'CONSENT PAGE',
+      ],
+      'template' => 'consent_page',
+    ],
   ];
 }

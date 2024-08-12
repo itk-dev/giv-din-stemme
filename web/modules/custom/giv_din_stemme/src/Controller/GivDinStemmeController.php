@@ -84,6 +84,33 @@ class GivDinStemmeController extends ControllerBase {
   }
 
   /**
+   * Landing page.
+   */
+  public function landing(Request $request): array {
+
+    return [
+      '#theme' => 'landing_page',
+      '#name' => $this->t('Landing Page'),
+//      '#login_url' => 'login url',
+//      '#logout_url' => 'logout url',
+//      '#attached' => [
+//        'library' => ['giv_din_stemme/giv_din_stemme'],
+//      ],
+    ];
+  }
+
+  /**
+   * Consent page.
+   */
+  public function consent(Request $request): array {
+
+    return [
+      '#theme' => 'consent_page',
+      '#name' => $this->t('Landing Page'),
+    ];
+  }
+
+  /**
    * Show.
    */
   public function show(Request $request): array {
