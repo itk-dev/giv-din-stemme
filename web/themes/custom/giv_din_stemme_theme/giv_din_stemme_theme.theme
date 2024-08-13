@@ -1,0 +1,7 @@
+<?php
+
+function giv_din_stemme_theme_theme_suggestions_input_alter(array &$suggestions, array $variables) {
+  if (isset($variables['element']['#attributes']['fa-icon'])) {
+    $suggestions[] = 'input__submit__icon';
+  }
+}

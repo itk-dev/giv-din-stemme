@@ -110,6 +110,45 @@ class GivDinStemmeController extends ControllerBase {
     ];
   }
 
+  public function permissions(Request $request): array {
+
+    return [
+      '#theme' => 'landing_page',
+      '#name' => $this->t('Landing Page'),
+      //      '#login_url' => 'login url',
+      //      '#logout_url' => 'logout url',
+      //      '#attached' => [
+      //        'library' => ['giv_din_stemme/giv_din_stemme'],
+      //      ],
+    ];
+  }
+
+  public function test(Request $request): array {
+
+    return [
+      '#theme' => 'landing_page',
+      '#name' => $this->t('Landing Page'),
+      //      '#login_url' => 'login url',
+      //      '#logout_url' => 'logout url',
+      //      '#attached' => [
+      //        'library' => ['giv_din_stemme/giv_din_stemme'],
+      //      ],
+    ];
+  }
+
+  public function donate(Request $request): array {
+
+    return [
+      '#theme' => 'landing_page',
+      '#name' => $this->t('Landing Page'),
+      //      '#login_url' => 'login url',
+      //      '#logout_url' => 'logout url',
+      //      '#attached' => [
+      //        'library' => ['giv_din_stemme/giv_din_stemme'],
+      //      ],
+    ];
+  }
+
   /**
    * Show.
    */
