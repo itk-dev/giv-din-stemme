@@ -30,5 +30,15 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       ],
       'template' => 'consent_page',
     ],
+    'giv_din_stemme_profile_form' => [
+      'render element' => 'form',
+    ],
   ];
+}
+
+
+function giv_din_stemme_theme_suggestions_form_alter(array &$suggestions, array $variables) {
+  if (isset($variables['element']['#form_id'])) {
+    $suggestions[] = 'form__' . $variables['element']['#form_id'];
+  };
 }

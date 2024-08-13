@@ -1,0 +1,13 @@
+{% extends "@giv_din_stemme/gds-page-wrapper.html.twig" %}
+
+{% block gds_pager %}
+  {% set active_page = 2 %}
+{% endblock %}
+
+{% block gds_content %}
+  {{ form.actions }}
+  {# Renders the rest of the form #}
+  {{ form }}
+{% endblock %}
+
+

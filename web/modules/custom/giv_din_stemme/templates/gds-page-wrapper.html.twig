@@ -1,3 +1,8 @@
+{% block gds_pager %}
+  {% set active_page = active_page|default('0') %}
+{% endblock %}
+
+{% include "@giv_din_stemme/user-setup-pager.html.twig" %}
 
 <section class="content drop-shadow-md">
   <main class="main bg-white px-5">

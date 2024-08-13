@@ -1,4 +1,9 @@
 {% extends "@giv_din_stemme/gds-page-wrapper.html.twig" %}
+{% block gds_pager %}
+  {% set active_page = 1 %}
+  {{ dump(active_page) }}
+{% endblock %}
+
 {% block gds_content %}
   <div class="py-5">
     <div class="consent-intro text-lg">
