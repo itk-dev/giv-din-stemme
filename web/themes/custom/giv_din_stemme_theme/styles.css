@@ -5,43 +5,43 @@
 @layer components {
   /* Define common background colors */
   .bg-primary {
-    @apply bg-stone-50 dark:bg-stone-950;
+    @apply bg-stone-50;
   }
   .bg-secondary {
-    @apply bg-stone-100 dark:bg-stone-900;
+    @apply bg-stone-100;
   }
   .bg-brand {
-    @apply bg-orange-600 dark:bg-orange-700;
+    @apply bg-orange-600;
   }
 
   /* Define common text colors */
   .text-primary {
-    @apply text-stone-950 dark:text-stone-50;
+    @apply text-stone-950;
   }
   .text-secondary {
-    @apply text-stone-600 dark:text-stone-300;
+    @apply text-stone-600;
   }
   .text-brand {
-    @apply text-orange-700 dark:text-orange-600;
+    @apply text-orange-700;
   }
 
   /* Define common border colors */
   .border-primary {
-    @apply border-stone-400 dark:border-stone-600;
+    @apply border-stone-400;
   }
   .border-secondary {
-    @apply border-stone-200 dark:border-stone-500;
+    @apply border-stone-200;
   }
   .border-brand {
-    @apply border-orange-700 dark:border-orange-600;
+    @apply border-orange-700;
   }
 
   /* Define common buttons */
   .btn-primary {
-    @apply border border-brand bg-brand text-white rounded-lg px-3 py-2 min-h-9 hover:bg-orange-700 hover:dark:bg-orange-600;
+    @apply border border-brand bg-brand text-white rounded-lg px-3 py-2 min-h-9 hover:bg-orange-700;
   }
   .btn-default {
-    @apply border border-secondary bg-black text-white rounded-lg px-3 py-2 min-h-9 hover:bg-stone-700 hover:dark:bg-stone-700;
+    @apply border border-secondary bg-black text-white rounded-lg px-3 py-2 min-h-9 hover:bg-stone-700;
   }
   .btn-icon {
     @apply btn-default px-2 py-1;
