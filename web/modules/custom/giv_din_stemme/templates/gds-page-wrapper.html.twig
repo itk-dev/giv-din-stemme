@@ -1,0 +1,14 @@
+{% block gds_pager %}
+  {% include "@giv_din_stemme/user-setup-pager.html.twig" %}
+{% endblock %}
+
+<h1 class="px-5">{{ drupal_title() }}</h1>
+<section class="content drop-shadow-md">
+  <main class="main bg-white px-5">
+    {% block gds_content %}
+    {% endblock %}
+  </main>
+  <footer class="footer bg-gray-100 px-5">
+    {% block gds_footer %}{% endblock %}
+  </footer>
+</section>

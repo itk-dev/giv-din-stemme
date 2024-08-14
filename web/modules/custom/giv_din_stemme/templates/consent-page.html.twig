@@ -1,0 +1,39 @@
+{% extends "@giv_din_stemme/gds-page-wrapper.html.twig" %}
+
+{% block gds_pager %}
+  {% include "@giv_din_stemme/user-setup-pager.html.twig" with {'active_page': 1} %}
+{% endblock %}
+
+{% block gds_content %}
+  <div class="py-5">
+    <div class="consent-intro text-lg">
+      <p>
+        {{ 'To receive your donation, you must allow us to keep and process the sound file with your voice. This happens by you giving consent with MitID below.'|t }}
+      </p>
+    </div>
+    <div class="mb-5 pb-5 border-b-2"></div>
+    <div class="consent-text max-h-52 overflow-y-scroll">
+      <p>
+        {% include "@giv_din_stemme/texts/consent-text.html" %}
+      </p>
+    </div>
+  </div>
+{% endblock %}
+{% block gds_footer %}
+  <div class="py-5">
+    <form action="/profile">
+      <div class="grid grid-cols-2">
+        <div class="sm:col-span-1">
+          <input class="mr-3" type="checkbox" id="consent_checkbox" name="consent" value="consent_given" required>
+          <label for="consent_checkbox">{{ 'Yes, I consent'|t }}</label>
+        </div>
+        <div class="sm:col-span-1 justify-self-end">
+          <button type="submit" class="btn-default">
+            <span class="mr-3">{{ 'Consent with MitID'|t }}</span>
+            <i class="fa-solid fa-circle-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}

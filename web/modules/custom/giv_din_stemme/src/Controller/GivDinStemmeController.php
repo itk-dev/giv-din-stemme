@@ -103,10 +103,28 @@ class GivDinStemmeController extends ControllerBase {
    * Consent page.
    */
   public function consent(Request $request): array {
-
     return [
       '#theme' => 'consent_page',
-      '#name' => $this->t('Landing Page'),
+    ];
+  }
+
+  public function permissions(Request $request): array {
+    return [
+      '#theme' => 'permissions_page',
+    ];
+  }
+
+  public function test(Request $request): array {
+
+    return [
+      '#theme' => 'test_page',
+    ];
+  }
+
+  public function donate(Request $request): array {
+
+    return [
+      '#theme' => 'donate_page',
     ];
   }
 

@@ -4,6 +4,7 @@ namespace Drupal\giv_din_stemme\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Markup;
 
 /**
  * Giv din stemme profile form.
@@ -21,25 +22,53 @@ class GivDinStemmeProfileForm extends FormBase {
    * {@inheritDoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['name'] = [
+    $form['grid-wrapper'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => 'grid grid-cols-2 gap-x-6',
+      ],
+    ];
+
+    $form['grid-wrapper']['top'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => 'col-span-2',
+      ],
+    ];
+
+    $form['grid-wrapper']['top']['name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Name'),
       '#required' => TRUE,
     ];
 
-    $form['zip_code_born'] = [
+    $form['grid-wrapper']['col_left'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => 'col-span-1',
+      ],
+    ];
+
+    $form['grid-wrapper']['col_right'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => 'col-span-1',
+      ],
+    ];
+
+    $form['grid-wrapper']['col_left']['zip_code_born'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Zip code born'),
       '#required' => TRUE,
     ];
 
-    $form['zip_code_school'] = [
+    $form['grid-wrapper']['col_left']['zip_code_school'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Zip code school'),
       '#required' => TRUE,
     ];
 
-    $form['dialect'] = [
+    $form['grid-wrapper']['col_left']['dialect'] = [
       '#type' => 'select',
       '#title' => $this->t('Dialect'),
       '#options' => [
@@ -54,7 +83,7 @@ class GivDinStemmeProfileForm extends FormBase {
       '#required' => TRUE,
     ];
 
-    $form['gender'] = [
+    $form['grid-wrapper']['col_right']['gender'] = [
       '#type' => 'select',
       '#title' => $this->t('Gender'),
       '#options' => [
@@ -65,17 +94,33 @@ class GivDinStemmeProfileForm extends FormBase {
       '#required' => TRUE,
     ];
 
-    $form['age'] = [
+    $form['grid-wrapper']['col_right']['age'] = [
       '#type' => 'number',
       '#title' => $this->t('Age'),
+      '#attributes' => [
+        'min' => 18,
+        'max' => 120,
+      ],
       '#required' => TRUE,
     ];
 
-    $form['actions']['#type'] = 'actions';
-    $form['actions']['submit'] = [
+    $form['grid-wrapper']['footer'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'footer',
+      '#attributes' => [
+        'class' => 'footer grid bg-gray-100 -mx-5 px-3 py-5 col-span-2 justify-end',
+      ],
+    ];
+
+    $form['grid-wrapper']['footer']['actions']['#type'] = 'actions';
+    $form['grid-wrapper']['footer']['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Continue'),
+      '#value' =>$this->t('Continue'),
       '#button_type' => 'primary',
+      '#attributes' => [
+        'fa-icon' => 'fa-solid fa-circle-arrow-right',
+        'class' => ['btn-default'],
+      ],
     ];
 
     return $form;

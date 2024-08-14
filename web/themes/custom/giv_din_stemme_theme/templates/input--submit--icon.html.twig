@@ -14,8 +14,11 @@
 #}
 {%
   set classes = [
-    'btn-primary px-5 cursor-pointer'
+    'btn-default'
   ]
 %}
 
-<input{{ attributes.addClass(classes) }} />{{ children }}
+<button{{ attributes.addClass(classes) }}>
+  <span class="mr-3">{{ attributes.value }}</span>
+  <i class="{{ attributes.offsetGet('fa-icon').__toString() }}"></i>
+</button>
