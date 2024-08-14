@@ -1,7 +1,7 @@
 {% extends "@giv_din_stemme/gds-page-wrapper.html.twig" %}
 
 {% block gds_pager %}
-  {% set active_page = 2 %}
+  {% include "@giv_din_stemme/user-setup-pager.html.twig" with {'active_page': 2} %}
 {% endblock %}
 
 {% block gds_content %}

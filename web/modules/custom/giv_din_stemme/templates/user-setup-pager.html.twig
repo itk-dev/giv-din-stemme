@@ -1,1 +1,36 @@
-{{ dump() }}
+{% set pager = {
+  '1': {
+    'title': 'Consent'|t,
+    'classes': 'flex-initial pager-item'
+  },
+  '2': {
+    'title': 'Profile'|t,
+    'classes': 'flex-initial pager-item'
+  },
+  '3': {
+    'title': 'Permissions'|t,
+    'classes': 'flex-initial pager-item'
+  },
+  '4': {
+    'title': 'Test'|t,
+    'classes': 'flex-initial pager-item'
+  },
+  '5': {
+    'title': 'Donate'|t,
+    'classes': 'flex-initial pager-item'
+  }
+}
+%}
+
+<div class="mb-10 mx-5 flex space-x-8 text-xl">
+  {% for key, element in pager %}
+    {% set classes = key is same as active_page ? element.classes ~ ' ' ~ 'active' : element.classes %}
+    <div class="{{ classes }}">
+      <span class="pr-2">{{ key }}.</span>
+      <span>{{ element.title }}</span>
+      {% if key < active_page %}
+        <span><i class="text-green-600 fa-solid fa-circle-check"></i></span>
+      {% endif %}
+    </div>
+  {% endfor %}
+</div>

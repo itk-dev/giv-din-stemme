@@ -25,7 +25,7 @@ class GivDinStemmeProfileForm extends FormBase {
     $form['grid-wrapper'] = [
       '#type' => 'container',
       '#attributes' => [
-        'class' => 'grid grid-cols-2 gap-x-6 px-3',
+        'class' => 'grid grid-cols-2 gap-x-6',
       ],
     ];
 
@@ -108,7 +108,7 @@ class GivDinStemmeProfileForm extends FormBase {
       '#type' => 'html_tag',
       '#tag' => 'footer',
       '#attributes' => [
-        'class' => 'footer grid bg-gray-100 -mx-3 px-3 py-5 col-span-2 justify-end',
+        'class' => 'footer grid bg-gray-100 -mx-5 px-3 py-5 col-span-2 justify-end',
       ],
     ];
 

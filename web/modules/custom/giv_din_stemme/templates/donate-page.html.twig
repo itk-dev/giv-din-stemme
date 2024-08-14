@@ -1,0 +1,18 @@
+{% extends "@giv_din_stemme/gds-page-wrapper.html.twig" %}
+
+{% block gds_pager %}
+  {% include "@giv_din_stemme/user-setup-pager.html.twig" with {'active_page': 5} %}
+{% endblock %}
+
+{% block gds_content %}
+  <div class="py-5">
+    Lorem
+  </div>
+{% endblock %}
+{% block gds_footer %}
+  <div class="py-5">
+    <a href="#" class="btn-default button button--primary">
+      <span class="mr-3">{{ 'Continue'|t }}</span>
+    </a>
+  </div>
+{% endblock %}

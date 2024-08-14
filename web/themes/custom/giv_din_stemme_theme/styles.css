@@ -105,6 +105,10 @@
     @apply text-secondary text-sm;
   }
 
+  .pager-item.active {
+      @apply text-brand border-brand border-b;
+  }
+
 }
 
 /* Fixed position for chat window*/
