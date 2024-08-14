@@ -191,5 +191,8 @@ private-files/
 
 # ITK --------------------------------------------------------------------------
 
+# Node modules
+node_modules
+
 # Docker
 .env.docker.local
