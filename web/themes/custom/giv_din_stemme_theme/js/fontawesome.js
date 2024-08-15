@@ -21,13 +21,15 @@ const {
   faCircle,
   faAngleRight,
   faCircleArrowRight,
-  faCircleCheck
+  faMicrophone
 } = require("@fortawesome/free-solid-svg-icons");
 
-// Import icons from the free brands package
-// const {
-//   faXTwitter,
-// } = require('@fortawesome/free-brands-svg-icons');
+// Import icons from the free regular package
+ const {
+   faCircleCheck,
+   faClock,
+   faUser
+ } = require('@fortawesome/free-regular-svg-icons');
 
 // Add the icons to the library for replacing <i class="fa-solid fa-sort"></i> with the intended svg.
 library.add(
@@ -47,7 +49,10 @@ library.add(
   faCircle,
   faAngleRight,
   faCircleArrowRight,
-  faCircleCheck
+  faCircleCheck,
+  faMicrophone,
+  faClock,
+  faUser
   // Brand
   // faXTwitter
 );

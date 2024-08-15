@@ -1,22 +1,31 @@
-{% extends "@giv_din_stemme/gds-page-wrapper.html.twig" %}
+<h1 class="px-5 mt-10 text-5xl">{{ drupal_title() }}</h1>
+<section class="content">
+  <main class="main px-5">
+    <div class="py-5 grid grid-cols-2 gap-x-6 text-lg text-gray-500 font-light">
+      <div class="col-span-1">
+        <div>{{ 'Voice recording is necessary to train our danish language model.' }}
+        </div>
+        <div class="mt-5">
+          <a href="#" class="text-black">{{ 'Read our terms'|t }}</a>
+        </div>
+      </div>
+      <div class="col-span-1">
+        <p>
+          <span class="text-black font-medium">
+            <i class="mr-3 fa-regular fa-user"></i>X
+          </span> {{ 'people have donated'|t }}
+          <span class="text-black font-medium">
+            <i class="mr-3 fa-regular fa-clock"></i>X
+          </span> {{ 'minutes'|t }}
+        </p>
+        <div class="my-10">
+          <a href="{{ url('giv_din_stemme.consent') }}" class="btn-primary button">
+            <i class="mr-3 fa-solid fa-microphone"></i>
+            <span>{{ 'Start donation'|t }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+</section>
 
-{% block gds_content %}
-  <div class="py-5">
-    <div>
-      <p>
-        Optagelse af stemmer er en nødvendighed for at kunne træne vores danske sprogmodel
-      </p>
-      <p>
-        <b>101</b> personer har tilsammen donereret <b>713</b> minutter
-      </p>
-    </div>
-    <div>
-      <p>
-        Læs vores betingelser
-      </p>
-      <form action="/consent">
-        <button type="submit">Doner</button>
-      </form>
-    </div>
-  </div>
-{% endblock %}

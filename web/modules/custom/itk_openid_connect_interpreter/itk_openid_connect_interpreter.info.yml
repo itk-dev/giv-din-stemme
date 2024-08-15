@@ -1,0 +1,4 @@
+name: "ITK openid connect interpreter"
+description: 'Uses openid connect hooks to alter openid connect processes and match specific ITK use cases.'
+type: module
+core_version_requirement: ^11
