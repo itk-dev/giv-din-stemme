@@ -1,0 +1,52 @@
+{% extends "@giv_din_stemme/gds-page-wrapper.html.twig" %}
+
+{% block gds_content %}
+  <div class="py-5">
+    <div class="consent-intro text-lg">
+      <p>
+        {{ "Activate the microphone and read the displayed text. Press 'Next Section' to continue"|t }}
+      </p>
+    </div>
+    <div class="mb-5 pb-5 border-b-2"></div>
+    <div class="consent-text max-h-52 overflow-y-scroll">
+      <p>
+        {{ textToRead }}
+      </p>
+    </div>
+  </div>
+{% endblock %}
+{% block gds_footer %}
+  <div class="py-5">
+    <form action="{{ nextUrl }}">
+      {% if hasNext %}
+        <input type="hidden" name="text" value="{{ textId }}">
+        <input type="hidden" name="reading" value="{{ nextReading }}">
+        <input type="hidden" name="total" value="{{ totalTexts }}">
+      {% endif %}
+      <div class="grid grid-cols-2">
+        <div class="sm:col-span-1">
+{#          <input class="mr-3" type="checkbox" id="consent_checkbox" name="consent" value="consent_given" required>#}
+{#          <label for="consent_checkbox">{{ 'Yes, I consent'|t }}</label>#}
+        </div>
+        <div class="sm:col-span-1 justify-self-end">
+          <button type="submit" class="btn-default">
+            <span class="mr-3">{{ 'Continue'|t }}</span>
+            <i class="fa-solid fa-circle-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+
+{#<h1 class="px-5">{{ drupal_title() }}</h1>#}
+{#<section class="content drop-shadow-md">#}
+{#  <main class="main bg-white px-5">#}
+{#    {% block gds_content %}#}
+{#    {% endblock %}#}
+{#  </main>#}
+{#  <footer class="footer bg-gray-100 px-5">#}
+{#    {% block gds_footer %}{% endblock %}#}
+{#  </footer>#}
+{#</section>#}

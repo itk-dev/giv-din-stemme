@@ -5,11 +5,13 @@ namespace Drupal\giv_din_stemme\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Helper\AudioHelper;
+use Drupal\node\Entity\Node;
 use Random\RandomException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +24,12 @@ use Symfony\Component\HttpFoundation\Response;
 class GivDinStemmeController extends ControllerBase {
 
   private const GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY = '/audio';
+
+  private const NEEDED_PARAMS = [
+    'text',
+    'reading',
+    'total',
+  ];
 
   /**
    * The audio helper.
@@ -126,6 +134,78 @@ class GivDinStemmeController extends ControllerBase {
     return [
       '#theme' => 'donate_page',
     ];
+  }
+
+  public function read(Request $request) {
+
+    $queryParams = $request->query->all();
+
+    if(!$this->verifyQueryParams($queryParams))  {
+      // Add params to a random text and redirect.
+      $text = $this->getRandomText();
+      $reading = 0;
+    } else {
+      $text = Node::load($queryParams['text']);
+      $reading = $queryParams['reading'];
+    }
+
+    $textToRead = $text->get('field_text_parts')->get($reading)->getValue()['value'];
+
+    $count = $text->get('field_text_parts')->count();
+    $nextReading = $reading + 1;
+    $isDone = $nextReading === $count;
+
+    return [
+      '#theme' => 'read_page',
+      '#textToRead' => $textToRead,
+      '#textId' => $text->id(),
+      '#nextReading' => $nextReading,
+      '#totalTexts' => $count,
+      '#nextUrl' => $isDone ? '/thank-you' : '/read',
+      '#hasNext' => !$isDone,
+    ];
+  }
+
+  public function verifyQueryParams(array $queryParams): bool {
+
+    // Checks that needed params are set and is numeric.
+    foreach (self::NEEDED_PARAMS as $neededParam) {
+      if (!isset($queryParams[$neededParam])) {
+        return FALSE;
+      } elseif (!is_numeric($queryParams[$neededParam])) {
+        return FALSE;
+      }
+    }
+
+    // Check params are valid.
+    if (!$text = Node::load((int) $queryParams['text'])) {
+      return FALSE;
+    }
+
+    $count = $text->get('field_text_parts')->count();
+    if ($count !== (int) $queryParams['total']) {
+      return FALSE;
+    }
+
+    $reading = (int) $queryParams['reading'];
+    if ($reading < 0 || $reading - 1 > $count) {
+      return FALSE;
+    }
+
+    return TRUE;
+  }
+
+  private function getRandomText(): Node {
+
+    $nids = \Drupal::entityQuery('node')->condition('type','text')->accessCheck(FALSE)->execute();
+    $nodes =  Node::loadMultiple($nids);
+
+    $count  = count($nodes);
+    $keys = array_keys($nodes);
+
+    $randomKey = $keys[rand(0, $count - 1)];
+
+    return $nodes[$randomKey];
   }
 
   /**

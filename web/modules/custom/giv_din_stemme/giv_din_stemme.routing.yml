@@ -59,6 +59,16 @@ giv_din_stemme.donate:
   requirements:
     _permission: 'access content'
 
+giv_din_stemme.read:
+  path: '/read'
+  methods:
+    - 'GET'
+  defaults:
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::read'
+    _title: 'Indtal'
+  requirements:
+    _permission: 'access content'
+
 giv_din_stemme.show:
   path: '/giv_din_stemme'
   methods:
