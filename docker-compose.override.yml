@@ -90,6 +90,7 @@ services:
             - dk_ssn
             - name
             - zip
+            - uuid
 
       USERS_CONFIGURATION_INLINE: |
         - SubjectId: 1
@@ -105,4 +106,7 @@ services:
             ValueType: string
           - Type: zip
             Value: '1111'
+            ValueType: string
+          - Type: uuid
+            Value: 'xyz123xyz123xyz123'
             ValueType: string

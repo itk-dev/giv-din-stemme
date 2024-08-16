@@ -1,0 +1,4 @@
+services:
+  Drupal\itk_openid_connect_interpreter\Helper\Helper:
+    arguments:
+      - '@current_route_match'
