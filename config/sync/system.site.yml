@@ -2,7 +2,7 @@ _core:
   default_config_hash: HlN7eAN2N4JIHsYv56V4E7sqC9bS609KwvGFjyD_mgk
 langcode: da
 uuid: 1ef393ee-f23f-4df7-9e77-dc45afb41d4a
-name: 'Doner din stemme'
+name: 'Giv din stemme'
 mail: admin@example.com
 slogan: ''
 page:
