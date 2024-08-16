@@ -26,6 +26,12 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       'variables' => [],
       'template' => 'consent-page',
     ],
+    'oidc_login_page' => [
+      'variables' => [
+        'url' => NULL
+      ],
+      'template' => 'oidc-login-page',
+    ],
     'giv_din_stemme_profile_form' => [
       'render element' => 'form',
     ],

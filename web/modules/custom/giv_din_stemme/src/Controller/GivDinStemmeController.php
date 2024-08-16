@@ -12,6 +12,7 @@ use Drupal\Core\Site\Settings;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Helper\AudioHelper;
 use Drupal\node\Entity\Node;
+use Drupal\openid_connect\OpenIDConnectSessionInterface;
 use Random\RandomException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -61,6 +62,20 @@ class GivDinStemmeController extends ControllerBase {
   protected Settings $settings;
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The OpenID Connect session service.
+   *
+   * @var \Drupal\openid_connect\OpenIDConnectSessionInterface
+   */
+  protected $session;
+
+  /**
    * UserBookingsController constructor.
    *
    * @param \Drupal\giv_din_stemme\Helper\AudioHelper $audioHelper
@@ -71,12 +86,23 @@ class GivDinStemmeController extends ControllerBase {
    *   The file system.
    * @param \Drupal\Core\Site\Settings $settings
    *   Settings.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   Entity type manager.
    */
-  public function __construct(AudioHelper $audioHelper, Connection $connection, FileSystemInterface $fileSystem, Settings $settings) {
+  public function __construct(
+    AudioHelper $audioHelper,
+    Connection $connection,
+    FileSystemInterface $fileSystem,
+    Settings $settings,
+    EntityTypeManagerInterface $entity_type_manager,
+    OpenIDConnectSessionInterface $session
+  ) {
     $this->audioHelper = $audioHelper;
     $this->connection = $connection;
     $this->fileSystem = $fileSystem;
     $this->settings = $settings;
+    $this->entityTypeManager = $entity_type_manager;
+    $this->session = $session;
   }
 
   /**
@@ -88,6 +114,8 @@ class GivDinStemmeController extends ControllerBase {
       $container->get('database'),
       $container->get('file_system'),
       $container->get('settings'),
+      $container->get('entity_type.manager'),
+      $container->get('openid_connect.session')
     );
   }
 
@@ -113,6 +141,21 @@ class GivDinStemmeController extends ControllerBase {
   public function consent(Request $request): array {
     return [
       '#theme' => 'consent_page',
+    ];
+  }
+
+  public function login(Request $request): array {
+    $client_name = 'connection';
+    $this->session->saveOp('login');
+    $client = $this->entityTypeManager->getStorage('openid_connect_client')->loadByProperties(['id' => $client_name])[$client_name];
+    $plugin = $client->getPlugin();
+    $scopes = 'openid profile';
+    $response = $plugin->authorize($scopes);
+
+    $url = $response->getTargetUrl();
+    return [
+      '#theme' => 'oidc_login_page',
+      '#url' => $response->getTargetUrl() ?? NULL
     ];
   }
 

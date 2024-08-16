@@ -2,3 +2,6 @@ name: "Giv din stemme"
 description: 'Giv din stemme module'
 type: module
 core_version_requirement: ^11
+dependencies:
+  - openid_connect:openid_connect
+  - itk_openid_connect_interpreter:itk_openid_connect_interpreter
