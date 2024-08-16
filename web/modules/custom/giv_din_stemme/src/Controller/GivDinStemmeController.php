@@ -145,7 +145,6 @@ class GivDinStemmeController extends ControllerBase {
     $response = $plugin->authorize($scopes);
 
     $url = $response->getTargetUrl();
-    $a = 1;
     return [
       '#theme' => 'oidc_login_page',
       '#url' => $response->getTargetUrl() ?? NULL
