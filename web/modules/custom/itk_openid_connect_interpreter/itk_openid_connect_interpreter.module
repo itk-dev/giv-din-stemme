@@ -1,9 +1,10 @@
 <?php
 
+use Drupal\itk_openid_connect_interpreter\Helper\Helper;
+
 /**
  * Implements hook_openid_connect_userinfo_alter()
  */
 function itk_openid_connect_interpreter_openid_connect_userinfo_alter(array &$userinfo, array $context) {
-  // Add some custom information.
-  $userinfo['email'] = 'yde001+1@gmail.com';
+  \Drupal::service(Helper::class)->openidConnectUserinfoAlter($userinfo, $context);
 }

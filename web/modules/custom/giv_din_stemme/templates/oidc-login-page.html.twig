@@ -1,0 +1,19 @@
+{% extends "@giv_din_stemme/gds-page-wrapper.html.twig" %}
+
+{% block gds_pager %}
+  {% include "@giv_din_stemme/user-setup-pager.html.twig" with {'active_page': 1} %}
+{% endblock %}
+
+{% block gds_content %}
+  <div class="py-5">
+    <div>
+      {{ url }}
+      <iframe src="{{ url }}" style="height:800px;width:100%;">
+      </iframe>
+    </div>
+    <a href="{{ url('giv_din_stemme.profile') }}" class="btn-default button button--primary">
+      <span class="mr-3">{{ 'Continue (REMOVE THIS LATER)'|t }}</span>
+      <i class="fa-solid fa-circle-arrow-right"></i>
+    </a>
+  </div>
+{% endblock %}

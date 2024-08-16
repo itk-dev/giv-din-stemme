@@ -18,6 +18,16 @@ giv_din_stemme.consent:
   requirements:
     _permission: 'access content'
 
+giv_din_stemme.login:
+  path: '/oidc-login'
+  methods:
+    - 'GET'
+  defaults:
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::login'
+    _title: 'Samtykke'
+  requirements:
+    _permission: 'access content'
+
 giv_din_stemme.profile:
   path: '/profile'
   methods:
