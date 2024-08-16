@@ -1,0 +1,14 @@
+uuid: af7fe1af-9503-4808-a36f-84b8c0c30371
+langcode: da
+status: true
+dependencies:
+  config:
+    - user.role.editor
+  module:
+    - user
+id: user_add_role_action.editor
+label: 'Add the redaktør role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: editor

@@ -1,0 +1,18 @@
+uuid: adcd930b-a5c1-477a-b50f-eebedf510e05
+langcode: da
+status: true
+dependencies: {  }
+id: connection
+label: Connection
+plugin: generic
+settings:
+  client_id: client-id
+  client_secret: '[client-secret]'
+  iss_allowed_domains: ''
+  issuer_url: ''
+  authorization_endpoint: 'http://idp-citizen.givdinstemme.local.itkdev.dk/connect/authorize'
+  token_endpoint: 'http://idp-citizen.givdinstemme.local.itkdev.dk/connect/token'
+  userinfo_endpoint: 'http://idp-citizen.givdinstemme.local.itkdev.dk/connect/userinfo'
+  end_session_endpoint: 'http://idp-citizen.givdinstemme.local.itkdev.dk/connect/endsession'
+  scopes:
+    - openid

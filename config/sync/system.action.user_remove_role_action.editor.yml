@@ -1,0 +1,14 @@
+uuid: f1415893-0512-4c1c-a6a2-cd565373862b
+langcode: da
+status: true
+dependencies:
+  config:
+    - user.role.editor
+  module:
+    - user
+id: user_remove_role_action.editor
+label: 'Remove the redaktør role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: editor
