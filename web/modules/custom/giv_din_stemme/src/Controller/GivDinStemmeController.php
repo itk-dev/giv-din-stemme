@@ -137,7 +137,7 @@ class GivDinStemmeController extends ControllerBase {
   }
 
   public function login(Request $request): array {
-    $client_name = 'dev_docker';
+    $client_name = 'connection';
     $this->session->saveOp('login');
     $client = $this->entityTypeManager->getStorage('openid_connect_client')->loadByProperties(['id' => $client_name])[$client_name];
     $plugin = $client->getPlugin();
