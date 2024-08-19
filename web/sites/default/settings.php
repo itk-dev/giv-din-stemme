@@ -245,6 +245,16 @@ $databases = [];
  * @endcode
  */
 
+$databases['default']['default'] = [
+  'database' => getenv('DATABASE_DATABASE') ?: 'db',
+  'username' => getenv('DATABASE_USERNAME') ?: 'db',
+  'password' => getenv('DATABASE_PASSWORD') ?: 'db',
+  'host' => getenv('DATABASE_HOST') ?: 'mariadb',
+  'port' => getenv('DATABASE_PORT') ?: '',
+  'driver' => getenv('DATABASE_DRIVER') ?: 'mysql',
+  'prefix' => '',
+];
+
 /**
  * Location of the site configuration files.
  *
@@ -256,7 +266,7 @@ $databases = [];
  * directory in the public files path. The setting below allows you to set
  * its location.
  */
-# $settings['config_sync_directory'] = '/directory/outside/webroot';
+$settings['config_sync_directory'] = '../config/sync';
 
 /**
  * Settings:
@@ -376,7 +386,7 @@ $settings['update_free_access'] = FALSE;
  * Be aware, however, that it is likely that this would allow IP
  * address spoofing unless more advanced precautions are taken.
  */
-# $settings['reverse_proxy'] = TRUE;
+$settings['reverse_proxy'] = TRUE;
 
 /**
  * Reverse proxy addresses.
@@ -386,6 +396,7 @@ $settings['update_free_access'] = FALSE;
  * $settings['reverse_proxy'] is TRUE.
  */
 # $settings['reverse_proxy_addresses'] = ['a.b.c.d', 'e.f.g.h/24', ...];
+$settings['reverse_proxy_addresses'] = [$_SERVER['REMOTE_ADDR']];
 
 /**
  * Reverse proxy trusted headers.
@@ -867,10 +878,7 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
  *
  * Keep this code block at the end of this file to take full effect.
  */
-#
-# if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
-#   include $app_root . '/' . $site_path . '/settings.local.php';
-# }
+
 if (file_exists($app_root . "/" . $site_path . "/settings.local.php")) {
   include $app_root . "/" . $site_path . "/settings.local.php";
 }
