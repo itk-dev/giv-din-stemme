@@ -28,9 +28,9 @@ Run the following commands to set up the site. This will run a normal Drupal sit
 configuration that comes with this project.
 
 ```shell
-itkdev-docker-compose up -d
+itkdev-docker-compose up --detach
 itkdev-docker-compose composer install
-itkdev-docker-compose drush site-install minimal --existing-config -y
+itkdev-docker-compose drush site-install --existing-config --yes
 ```
 
 When the installation is completed, that admin user is created and the password for logging in the outputted. If you
@@ -38,7 +38,7 @@ forget the password, use drush uli command to get a one-time-login link (not the
 trafik).
 
 ```shell
-itkdev-docker-compose drush uli --uri="http://givdinstemme.local.itkdev.dk/"
+itkdev-docker-compose drush --uri="https://givdinstemme.local.itkdev.dk/" user:login
 ```
 
 ### Access the site
@@ -53,7 +53,7 @@ Alternatively you can find the port number that is mapped nginx container that s
 by using this command:
 
 ```shell
-docker compose port nginx 8080
+open "http://$(docker compose port nginx 8080)"
 ```
 
 ### Drupal config
