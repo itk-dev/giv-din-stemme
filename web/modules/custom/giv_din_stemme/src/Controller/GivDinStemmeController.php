@@ -8,20 +8,23 @@ use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Routing\TrustedRedirectResponse;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Helper\AudioHelper;
 use Drupal\openid_connect\OpenIDConnectSessionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * UserBooking controller.
  */
 class GivDinStemmeController extends ControllerBase {
-
   private const GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY = '/audio';
 
   /**
@@ -65,7 +68,21 @@ class GivDinStemmeController extends ControllerBase {
    *
    * @var \Drupal\openid_connect\OpenIDConnectSessionInterface
    */
-  protected $session;
+  protected OpenIDConnectSessionInterface $session;
+
+  /**
+   * The account interface
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected AccountInterface $current_user;
+
+  /**
+   * The request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected RequestStack $requestStack;
 
   /**
    * UserBookingsController constructor.
@@ -80,6 +97,12 @@ class GivDinStemmeController extends ControllerBase {
    *   Settings.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Entity type manager.
+   * @param \Drupal\openid_connect\OpenIDConnectSessionInterface $session
+   *   The OpenID Connect session service.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The account interface
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+   *   The request stack.
    */
   public function __construct(
     AudioHelper $audioHelper,
@@ -87,7 +110,9 @@ class GivDinStemmeController extends ControllerBase {
     FileSystemInterface $fileSystem,
     Settings $settings,
     EntityTypeManagerInterface $entity_type_manager,
-    OpenIDConnectSessionInterface $session
+    OpenIDConnectSessionInterface $session,
+    AccountInterface $current_user,
+    RequestStack $requestStack
   ) {
     $this->audioHelper = $audioHelper;
     $this->connection = $connection;
@@ -95,6 +120,8 @@ class GivDinStemmeController extends ControllerBase {
     $this->settings = $settings;
     $this->entityTypeManager = $entity_type_manager;
     $this->session = $session;
+    $this->currentUser = $current_user;
+    $this->requestStack = $requestStack;
   }
 
   /**
@@ -107,7 +134,9 @@ class GivDinStemmeController extends ControllerBase {
       $container->get('file_system'),
       $container->get('settings'),
       $container->get('entity_type.manager'),
-      $container->get('openid_connect.session')
+      $container->get('openid_connect.session'),
+      $container->get('current_user'),
+      $container->get('request_stack'),
     );
   }
 
@@ -115,15 +144,9 @@ class GivDinStemmeController extends ControllerBase {
    * Landing page.
    */
   public function landing(Request $request): array {
-
     return [
       '#theme' => 'landing_page',
       '#name' => $this->t('Landing Page'),
-//      '#login_url' => 'login url',
-//      '#logout_url' => 'logout url',
-//      '#attached' => [
-//        'library' => ['giv_din_stemme/giv_din_stemme'],
-//      ],
     ];
   }
 
@@ -136,7 +159,7 @@ class GivDinStemmeController extends ControllerBase {
     ];
   }
 
-  public function login(Request $request): array {
+  public function login(Request $request): TrustedRedirectResponse|RedirectResponse {
     $client_name = 'connection';
     $this->session->saveOp('login');
     $client = $this->entityTypeManager->getStorage('openid_connect_client')->loadByProperties(['id' => $client_name])[$client_name];
@@ -145,9 +168,17 @@ class GivDinStemmeController extends ControllerBase {
     $response = $plugin->authorize($scopes);
 
     $url = $response->getTargetUrl();
+    if (isset($_REQUEST['consent']) && $_REQUEST['consent'] == 'consent_given' && isset($url)) {
+      return new TrustedRedirectResponse($url);
+    }
+    else {
+      return $this->redirect('giv_din_stemme.landing');
+    }
+  }
+
+  public function givDinStemmeProfile(Request $request): array {
     return [
-      '#theme' => 'oidc_login_page',
-      '#url' => $response->getTargetUrl() ?? NULL
+      '#theme' => 'giv_din_stemme_profile_form',
     ];
   }
 

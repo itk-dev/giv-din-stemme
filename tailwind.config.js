@@ -9,7 +9,8 @@ module.exports = {
     "col-span-2",
     "gap-x-6",
     "justify-end",
-    "-mx-5"
+    "-mx-5",
+    "basis-1/3"
   ],
   theme: {
     extend: {

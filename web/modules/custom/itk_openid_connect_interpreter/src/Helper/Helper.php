@@ -2,19 +2,15 @@
 
 namespace Drupal\itk_openid_connect_interpreter\Helper;
 
-use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Component\Utility\Crypt;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * A helper.
  */
 class Helper {
-  /**
-   * Constructor.
-   */
-  public function __construct(
-    private readonly RouteMatchInterface $routeMatch,
-  ) {
-  }
+  use StringTranslationTrait;
 
   /**
    * Implements hook_page_attachments().
@@ -23,6 +19,14 @@ class Helper {
    * https://www.drupal.org/docs/contributed-themes/gin-admin-theme/custom-theming#s-module-recommended-way).
    */
   public function openidConnectUserinfoAlter(array &$userinfo, array $context) {
-    $userinfo['email'] = 'yde001+1@gmail.com';
+    $userinfo['email'] = Crypt::hashBase64('yde001+1@gmail.com') . '@itkdev.dk';
+    $userinfo['name'] =  Crypt::hashBase64('name');
+  }
+
+  public function alterUserName(string &$name, AccountInterface $user) {
+    // Alter citizens name.
+    if (count($user->getRoles()) === 1 && $user->id() > 1) {
+      $name = $this->t('Profile');
+    }
   }
 }
