@@ -82,3 +82,27 @@ itkdev-docker-compose drush config:import
 ## Production setup
 
 @todo Write this section.
+
+## OpenID Connect
+
+We use [OpenId Connect Server Mock](https://github.com/Soluto/oidc-server-mock) during development to test OpenID
+Connect authentication.
+
+Run
+
+```shell
+itkdev-docker-compose --profile oidc up --detach
+```
+
+to start the full docker compose show.
+
+The OIDC mock uses a selfsigned `pfx` certificate for
+[HTTPS](https://github.com/Soluto/oidc-server-mock?tab=readme-ov-file#https). The certificate is generated from our
+selfsigned development Traefik certificates:
+
+```shell name=generate-mock-pfx-certificate
+cert_path="$(dirname $(dirname $(which itkdev-docker-compose)))/traefik/ssl"
+openssl pkcs12 -export -out .docker/oidc-server-mock/cert/docker.pfx -inkey $cert_path/docker.key -in $cert_path/docker.crt -passout pass:mock
+
+openssl pkcs12 -in .docker/oidc-server-mock/cert/docker.pfx -passin pass:mock -passout pass: -info
+```
