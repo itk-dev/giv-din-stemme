@@ -46,9 +46,6 @@ class GivDinStemmeController extends ControllerBase {
    *   The account interface
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
-   *
-   *@todo use property promotion.
-   *
    */
   public function __construct(
     protected AudioHelper $audioHelper,
