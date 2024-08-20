@@ -13,18 +13,27 @@ class Helper {
   use StringTranslationTrait;
 
   /**
-   * Implements hook_page_attachments().
+   * Implements hook_openid_connect_userinfo_alter().
    *
-   * Injects custom CSS into CKEditor5 the Gin way (cf.
-   * https://www.drupal.org/docs/contributed-themes/gin-admin-theme/custom-theming#s-module-recommended-way).
+   * @todo Make it generic and reusable across multiple sites?
    */
   public function openidConnectUserinfoAlter(array &$userinfo, array $context) {
-    $userinfo['email'] = Crypt::hashBase64('yde001+1@gmail.com') . '@itkdev.dk';
-    $userinfo['name'] =  Crypt::hashBase64('name');
+    // @todo
+    $encryptedUuid = Crypt::hashBase64('abc');
+    $userinfo['email'] = $encryptedUuid . '@itkdev.dk';
+    $userinfo['name'] =  $encryptedUuid;
   }
 
+  /**
+   * Change display of username.
+   *
+   * @param string $name
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *
+   * @return void
+   */
   public function alterUserName(string &$name, AccountInterface $user) {
-    // Alter citizens name.
+    // Alter name if only authenticated and not super admin.
     if (count($user->getRoles()) === 1 && $user->id() > 1) {
       $name = $this->t('Profile');
     }
