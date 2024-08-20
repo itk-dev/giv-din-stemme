@@ -2,8 +2,8 @@ uuid: adcd930b-a5c1-477a-b50f-eebedf510e05
 langcode: da
 status: true
 dependencies: {  }
-id: connection
-label: Connection
+id: generic
+label: Citizen
 plugin: generic
 settings:
   client_id: client-id
