@@ -30,13 +30,7 @@ use Symfony\Component\HttpFoundation\Response;
 class GivDinStemmeController extends ControllerBase {
 
   private const GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY = '/audio';
-
-  private const NEEDED_PARAMS = [
-    'text',
-    'reading',
-    'total',
-  ];
-
+  
   /**
    * The audio helper.
    *
