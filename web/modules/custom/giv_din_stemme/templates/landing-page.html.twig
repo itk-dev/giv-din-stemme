@@ -1,5 +1,5 @@
 {%
-set redirect = user.isAuthenticated() ? 'giv_din_stemme.profile' : 'giv_din_stemme.consent'
+  set redirect_url = url(user.isAuthenticated() ? 'giv_din_stemme.profile' : 'giv_din_stemme.consent')
 %}
 
 <h1 class="px-5 mt-10 text-5xl">{{ drupal_title() }}</h1>
@@ -7,7 +7,7 @@ set redirect = user.isAuthenticated() ? 'giv_din_stemme.profile' : 'giv_din_stem
   <main class="main px-5">
     <div class="py-5 grid grid-cols-2 gap-x-6 text-lg text-gray-500 font-light">
       <div class="col-span-1">
-        <div>{{ 'Voice recording is necessary to train our danish language model.' }}
+        <div>{{ 'Voice recording is necessary to train our danish language model.'|t }}
         </div>
         <div class="mt-5">
           <span modal-id="terms-modal" class="cursor-pointer btnOpenModal text-black">{{ 'Read our terms'|t }}</span>
@@ -21,7 +21,7 @@ set redirect = user.isAuthenticated() ? 'giv_din_stemme.profile' : 'giv_din_stem
           <span class="text-black font-medium"><i class="mr-3 fa-regular fa-clock"></i>X</span> {{ 'Minutes'|t }}
         </p>
         <div class="my-10">
-          <a href="{{ url(redirect) }}" class="btn-primary button">
+          <a href="{{ redirect_url }}" class="btn-primary button">
             <i class="mr-3 fa-solid fa-microphone"></i>
             <span>{{ 'Start donation'|t }}</span>
           </a>

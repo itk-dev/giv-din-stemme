@@ -5,8 +5,7 @@
 {% endblock %}
 
 {% block gds_content %}
-  {% set userForm = drupal_entity_form('user', user.id()) %}
-  {{ userForm }}
+  {{ drupal_entity_form('user', user.id()) }}
 {% endblock %}
 
 

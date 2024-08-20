@@ -10,8 +10,8 @@
   <div>
     <div class="container mx-auto px-3 text-secondary my-3">
       {% if user.isAuthenticated() %}
-        <a href="/user" class="mx-5"><i class="mr-3 fa-regular fa-user"></i> {{ 'Profile'|t }}</a>
-        <a href="/user/logout" class="mx-5">{{ 'Log out'|t }} <i class="ml-3 fa-solid fa-arrow-right-from-bracket"></i></a>
+        <a href="{{ url('user.page') }}" class="mx-5"><i class="mr-3 fa-regular fa-user"></i> {{ 'Profile'|t }}</a>
+        <a href="{{ url('user.logout') }}" class="mx-5">{{ 'Log out'|t }} <i class="ml-3 fa-solid fa-arrow-right-from-bracket"></i></a>
       {% endif %}
     </div>
   </div>

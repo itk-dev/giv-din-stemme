@@ -28,66 +28,7 @@ class GivDinStemmeController extends ControllerBase {
   private const GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY = '/audio';
 
   /**
-   * The audio helper.
-   *
-   * @var \Drupal\giv_din_stemme\Helper\AudioHelper
-   */
-  protected AudioHelper $audioHelper;
-
-
-  /**
-   * The database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected Connection $connection;
-
-  /**
-   * The audio helper.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected FileSystemInterface $fileSystem;
-
-  /**
-   * The settings.
-   *
-   * @var \Drupal\Core\Site\Settings
-   */
-  protected Settings $settings;
-
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * The OpenID Connect session service.
-   *
-   * @var \Drupal\openid_connect\OpenIDConnectSessionInterface
-   */
-  protected OpenIDConnectSessionInterface $session;
-
-  /**
-   * The account interface
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected AccountInterface $current_user;
-
-  /**
-   * The request stack.
-   *
-   * @var \Symfony\Component\HttpFoundation\RequestStack
-   */
-  protected RequestStack $requestStack;
-
-  /**
    * Givdinstemme constructor.
-   *
-   * @todo use property promotion.
    *
    * @param \Drupal\giv_din_stemme\Helper\AudioHelper $audioHelper
    *   The audio helper.
@@ -97,33 +38,28 @@ class GivDinStemmeController extends ControllerBase {
    *   The file system.
    * @param \Drupal\Core\Site\Settings $settings
    *   Settings.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   Entity type manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+      *   Entity type manager.
    * @param \Drupal\openid_connect\OpenIDConnectSessionInterface $session
    *   The OpenID Connect session service.
-   * @param \Drupal\Core\Session\AccountInterface $current_user
+   * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   The account interface
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
+   *
+   *@todo use property promotion.
+   *
    */
   public function __construct(
-    AudioHelper $audioHelper,
-    Connection $connection,
-    FileSystemInterface $fileSystem,
-    Settings $settings,
-    EntityTypeManagerInterface $entity_type_manager,
-    OpenIDConnectSessionInterface $session,
-    AccountInterface $current_user,
-    RequestStack $requestStack
+    protected AudioHelper $audioHelper,
+    protected Connection $connection,
+    protected FileSystemInterface $fileSystem,
+    protected Settings $settings,
+    protected $entityTypeManager,
+    protected OpenIDConnectSessionInterface $session,
+    protected $currentUser,
+    protected RequestStack $requestStack
   ) {
-    $this->audioHelper = $audioHelper;
-    $this->connection = $connection;
-    $this->fileSystem = $fileSystem;
-    $this->settings = $settings;
-    $this->entityTypeManager = $entity_type_manager;
-    $this->session = $session;
-    $this->currentUser = $current_user;
-    $this->requestStack = $requestStack;
   }
 
   /**
@@ -181,7 +117,7 @@ class GivDinStemmeController extends ControllerBase {
     $url = $response->getTargetUrl();
 
     // Go to login or front page if no consent.
-    if (isset($_REQUEST['consent']) && $_REQUEST['consent'] == 'consent_given' && isset($url)) {
+    if ('consent_given' === $request->get('consent') && isset($url)) {
       return new TrustedRedirectResponse($url);
     }
     else {

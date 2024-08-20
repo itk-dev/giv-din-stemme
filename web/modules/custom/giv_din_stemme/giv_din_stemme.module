@@ -8,6 +8,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Implements hook_theme().
@@ -62,7 +63,7 @@ function giv_din_stemme_form_user_form_alter(&$form, FormStateInterface $form_st
 
   // Style submit button.
   $form['actions']['submit']['#attributes']['fa-icon'] = 'fa-solid fa-circle-arrow-right';
-  $form['actions']['submit']['#value'] = t('Continue');
+  $form['actions']['submit']['#value'] = new TranslatableMarkup('Continue');
 
   // Disable access to form elements.
   $form['actions']['delete']['#access'] = FALSE;

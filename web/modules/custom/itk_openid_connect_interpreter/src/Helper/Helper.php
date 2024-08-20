@@ -19,9 +19,9 @@ class Helper {
    */
   public function openidConnectUserinfoAlter(array &$userinfo, array $context) {
     // @todo
-    $encryptedUuid = Crypt::hashBase64('abc');
-    $userinfo['email'] = $encryptedUuid . '@itkdev.dk';
-    $userinfo['name'] =  $encryptedUuid;
+    $encryptedUuid = Crypt::hashBase64($userinfo['uuid']);
+    $userinfo['email'] = $encryptedUuid . '@example.com';
+    $userinfo['name'] = $encryptedUuid;
   }
 
   /**
