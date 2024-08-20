@@ -4,39 +4,26 @@
   <div class="py-5">
     <div class="consent-intro text-lg">
       <p>
-        {{ "Activate the microphone and read the displayed text. Press 'Next Section' to continue"|t }}
+        {{ "Thank you for the recording"|t }}
       </p>
     </div>
     <div class="mb-5 pb-5 border-b-2"></div>
     <div class="consent-text max-h-52 overflow-y-scroll">
       <p>
-        {{ textToRead }}
+        Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum. Lorem ipsum.
       </p>
-    </div>
-  </div>
-  <div class="py-5">
-    <canvas class="visualizer" height="60px"></canvas>
-    <div id="buttons">
-      <button class="record">Record</button>
-      <button class="stop">Stop</button>
     </div>
   </div>
 {% endblock %}
 {% block gds_footer %}
   <div class="py-5">
-    <form action="{{ nextUrl }}" method="post">
+    <form action="/read">
       <div class="grid grid-cols-2">
         <div class="sm:col-span-1">
         </div>
         <div class="sm:col-span-1 justify-self-end">
           <button type="submit" class="btn-default">
-            <span class="mr-3">
-              {% if hasNext %}
-                {{ 'Continue'|t }}
-              {% else %}
-                {{ 'End'|t }}
-              {% endif %}
-            </span>
+            <span class="mr-3">{{ 'Dontate more'|t }}</span>
             <i class="fa-solid fa-circle-arrow-right"></i>
           </button>
         </div>
@@ -44,3 +31,15 @@
     </form>
   </div>
 {% endblock %}
+
+
+{#<h1 class="px-5">{{ drupal_title() }}</h1>#}
+{#<section class="content drop-shadow-md">#}
+{#  <main class="main bg-white px-5">#}
+{#    {% block gds_content %}#}
+{#    {% endblock %}#}
+{#  </main>#}
+{#  <footer class="footer bg-gray-100 px-5">#}
+{#    {% block gds_footer %}{% endblock %}#}
+{#  </footer>#}
+{#</section>#}

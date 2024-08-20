@@ -69,13 +69,40 @@ giv_din_stemme.donate:
   requirements:
     _permission: 'access content'
 
-giv_din_stemme.read:
-  path: '/read'
+giv_din_stemme.start_donating:
+  path: '/start-donating'
   methods:
     - 'GET'
+    - 'POST'
+  defaults:
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::startDonating'
+    _title: 'Start optagelser'
+  requirements:
+    _permission: 'access content'
+  options:
+    no_cache: TRUE
+
+giv_din_stemme.read:
+  path: '/read/{collection_id}/{delta}'
+  methods:
+    - 'GET'
+    - 'POST'
   defaults:
     _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::read'
     _title: 'Indtal'
+  requirements:
+    _permission: 'access content'
+  options:
+    no_cache: TRUE
+
+giv_din_stemme.thank_you:
+  path: '/thank-you'
+  methods:
+    - 'GET'
+    - 'POST'
+  defaults:
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::thankYou'
+    _title: 'Din donation'
   requirements:
     _permission: 'access content'
 
@@ -90,12 +117,12 @@ giv_din_stemme.show:
     _permission: 'access content'
 
 giv_din_stemme.audio_process:
-  path: '/giv_din_stemme'
+  path: '/process'
   methods:
     - 'POST'
   defaults:
     _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::process'
-    _title: 'Indtal'
+    _title: 'Behandl'
   requirements:
     _permission: 'access content'
 

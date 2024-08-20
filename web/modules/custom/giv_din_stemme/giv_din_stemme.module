@@ -58,6 +58,10 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       ],
       'template' => 'read-page',
     ],
+    'thank_you_page' => [
+      'variables' => [],
+      'template' => 'thank-you-page',
+    ],
   ];
 }
 

@@ -2,14 +2,19 @@
 
 namespace Drupal\giv_din_stemme\Controller;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\DefaultContent\InvalidEntityException;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Site\Settings;
+use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\file\Entity\File;
+use Drupal\giv_din_stemme\Entity\GivDinStemme;
 use Drupal\giv_din_stemme\Helper\AudioHelper;
 use Drupal\node\Entity\Node;
 use Drupal\openid_connect\OpenIDConnectSessionInterface;
@@ -179,63 +184,88 @@ class GivDinStemmeController extends ControllerBase {
     ];
   }
 
-  public function read(Request $request) {
+  /**
+   * @throws EntityStorageException
+   * @throws MissingDataException
+   */
+  public function startDonating(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse
+  {
+    $text = $this->getRandomText();
 
-    $queryParams = $request->query->all();
+    // TODO: use injection
+    $uuidService = \Drupal::service('uuid');
+    $collectionId = $uuidService->generate();
+    $delta = 0;
 
-    if(!$this->verifyQueryParams($queryParams))  {
-      // Add params to a random text and redirect.
-      $text = $this->getRandomText();
-      $reading = 0;
-    } else {
-      $text = Node::load($queryParams['text']);
-      $reading = $queryParams['reading'];
+    $parts = $text->get('field_text_parts');
+
+    $numberOfParts = count($parts);
+
+    // TODO: How do we handle this?
+    if ($numberOfParts < 1) {
+      throw new \Exception('A text should contain at least one part');
     }
 
-    $textToRead = $text->get('field_text_parts')->get($reading)->getValue()['value'];
+    // Create a GivDinStemme entity per text part.
+    foreach($parts as $part) {
+      $entity = GivDinStemme::create();
 
-    $count = $text->get('field_text_parts')->count();
-    $nextReading = $reading + 1;
-    $isDone = $nextReading === $count;
+      $entity->set('collection_id', $collectionId);
+      $entity->set('collection_delta', $delta++);
+      // TODO: Use unique id from user possibly also hashed
+      $entity->set('user_hash', md5($this->currentUser()->getAccountName()));
 
-    return [
-      '#theme' => 'read_page',
-      '#textToRead' => $textToRead,
-      '#textId' => $text->id(),
-      '#nextReading' => $nextReading,
-      '#totalTexts' => $count,
-      '#nextUrl' => $isDone ? '/thank-you' : '/read',
-      '#hasNext' => !$isDone,
-    ];
+      // Save these on entity as metadata.
+      $partTextToRead = $part->getValue()['value'];
+      $textId = $text->id();
+      // TODO: Use unique id from user possibly also hashed
+      $accountName = $this->currentUser()->getAccountName();
+
+      $entity->set('metadata', json_encode([
+        'text' => $partTextToRead,
+        'text_id' => $textId,
+        'account_name' => $accountName,
+        'number_of_parts' => $numberOfParts,
+      ]));
+
+      $entity->save();
+    }
+
+    return $this->redirect('giv_din_stemme.read', [
+      'collection_id' => $collectionId,
+      'delta' => 0,
+    ]);
+
   }
 
-  public function verifyQueryParams(array $queryParams): bool {
+  /**
+   * @throws \Exception
+   */
+  public function read(Request $request, string $collection_id, string $delta): array|Response
+  {
+    if ('POST' === $request->getMethod()) {
+      return $this->handlePost($request, $collection_id, $delta);
+    } else {
+      return $this->handleGet($request, $collection_id, $delta);
+    }
+  }
 
-    // Checks that needed params are set and is numeric.
-    foreach (self::NEEDED_PARAMS as $neededParam) {
-      if (!isset($queryParams[$neededParam])) {
-        return FALSE;
-      } elseif (!is_numeric($queryParams[$neededParam])) {
-        return FALSE;
-      }
+  /**
+   * @throws InvalidPluginDefinitionException
+   * @throws PluginNotFoundException
+   * @throws \Exception
+   */
+  private function getGivDinStemmeByCollectionUuidAndDelta(string $uuid, string $delta): ?GivDinStemme {
+    $result = $this->entityTypeManager->getStorage('gds')->loadByProperties([
+      'collection_id' => $uuid,
+      'collection_delta' => $delta,
+    ]);
+
+    if (1 !== count($result)) {
+      throw new \Exception('Unique GivDinStemme not found');
     }
 
-    // Check params are valid.
-    if (!$text = Node::load((int) $queryParams['text'])) {
-      return FALSE;
-    }
-
-    $count = $text->get('field_text_parts')->count();
-    if ($count !== (int) $queryParams['total']) {
-      return FALSE;
-    }
-
-    $reading = (int) $queryParams['reading'];
-    if ($reading < 0 || $reading - 1 > $count) {
-      return FALSE;
-    }
-
-    return TRUE;
+    return reset($result);
   }
 
   private function getRandomText(): Node {
@@ -249,6 +279,12 @@ class GivDinStemmeController extends ControllerBase {
     $randomKey = $keys[rand(0, $count - 1)];
 
     return $nodes[$randomKey];
+  }
+
+  public function thankYou(Request $request): array {
+    return [
+      '#theme' => 'thank_you_page',
+    ];
   }
 
   /**
@@ -275,6 +311,9 @@ class GivDinStemmeController extends ControllerBase {
     $directory = $privateFileDirectory . self::GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY;
     $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
 
+    $collectionId = $request->get('collection_id');
+    $delta = $request->get('delta');
+
     foreach ($request->files->all() as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
       try {
         // Copy audio file to private files.
@@ -289,16 +328,10 @@ class GivDinStemmeController extends ControllerBase {
         ]);
         $file->save();
 
-        // Create submission with references to file and webform submission.
-        $this->connection->upsert('giv_din_stemme_submission')
-          ->key('job_id')
-          ->fields([
-            'id' => 1,
-            'webform_submission_id' => 1,
-            'webform_id' => 1,
-            'recording_file_id' => $file->id(),
-          ])
-          ->execute();
+        // Load GivDinStemme and attach file.
+        $givDinStemme = $this->getGivDinStemmeByCollectionUuidAndDelta($collectionId, $delta);
+        $givDinStemme->set('file', $file);
+        $givDinStemme->save();
       }
       catch (FileException | EntityStorageException | RandomException | \Exception $e) {
         // @todo LOG THIS SOMEWHERE?
@@ -306,7 +339,68 @@ class GivDinStemmeController extends ControllerBase {
     }
 
     return new JsonResponse([], Response::HTTP_CREATED);
+  }
 
+  private function handleGet(Request $request, string $collection_id, string $delta): array
+  {
+    $collectionId = $request->get('collection_id');
+    $delta = $request->get('delta');
+
+    $givDinStemme = $this->getGivDinStemmeByCollectionUuidAndDelta($collectionId, $delta);
+
+    if (!$givDinStemme) {
+      throw new \Exception('Invalid collection id and delta provided');
+    }
+
+    $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
+    $textToRead = $metadata['text'];
+    $count = $metadata['number_of_parts'];
+    $nextReading = $delta + 1;
+    $isDone = $nextReading === $count;
+
+    return [
+      '#theme' => 'read_page',
+      '#textToRead' => $textToRead,
+      '#totalTexts' => $count,
+      '#nextUrl' => $isDone ? '/thank-you' : '/read/'. $collectionId . '/' . $nextReading ,
+      '#hasNext' => !$isDone,
+      '#attached' => [
+        'library' => ['giv_din_stemme/giv_din_stemme'],
+      ],
+    ];
+  }
+
+  private function handlePost(Request $request, string $collection_id, string $delta): JsonResponse
+  {
+    $privateFileDirectory = $this->settings->get('file_private_path');
+    $directory = $privateFileDirectory . self::GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY;
+    $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+
+    foreach ($request->files->all() as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
+      try {
+        // Copy audio file to private files.
+        // @todo Figure out why $file->getClientOriginalName() is strange.
+        $destination = $directory . '/' . $file->getFilename() . '_' . bin2hex(random_bytes(10)) . '.' . $file->guessExtension();
+        $this->fileSystem->copy($file->getPathname(), $destination, FileSystemInterface::EXISTS_ERROR);
+        $file = File::create([
+          'filename' => basename($destination),
+          'uri' => 'private://audio/' . basename($destination),
+          // Make file permanent.
+          'status' => 1,
+        ]);
+        $file->save();
+
+        // Load GivDinStemme and attach file.
+        $givDinStemme = $this->getGivDinStemmeByCollectionUuidAndDelta($collection_id, $delta);
+        $givDinStemme->set('file', $file);
+        $givDinStemme->save();
+      }
+      catch (FileException | EntityStorageException | RandomException | \Exception $e) {
+        // @todo LOG THIS SOMEWHERE?
+      }
+    }
+
+    return new JsonResponse([], Response::HTTP_CREATED);
   }
 
 }
