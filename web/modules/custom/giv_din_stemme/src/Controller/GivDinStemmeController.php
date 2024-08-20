@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * UserBooking controller.
+ * Givdinstemme controller.
  */
 class GivDinStemmeController extends ControllerBase {
   private const GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY = '/audio';
@@ -85,7 +85,9 @@ class GivDinStemmeController extends ControllerBase {
   protected RequestStack $requestStack;
 
   /**
-   * UserBookingsController constructor.
+   * Givdinstemme constructor.
+   *
+   * @todo use property promotion.
    *
    * @param \Drupal\giv_din_stemme\Helper\AudioHelper $audioHelper
    *   The audio helper.
@@ -159,15 +161,26 @@ class GivDinStemmeController extends ControllerBase {
     ];
   }
 
+  /**
+   * Login through OIDC if consent is given.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *
+   * @return \Drupal\Core\Routing\TrustedRedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
   public function login(Request $request): TrustedRedirectResponse|RedirectResponse {
+    // Get login URL.
     $client_name = 'connection';
     $this->session->saveOp('login');
     $client = $this->entityTypeManager->getStorage('openid_connect_client')->loadByProperties(['id' => $client_name])[$client_name];
     $plugin = $client->getPlugin();
     $scopes = 'openid profile';
     $response = $plugin->authorize($scopes);
-
     $url = $response->getTargetUrl();
+
+    // Go to login or front page if no consent.
     if (isset($_REQUEST['consent']) && $_REQUEST['consent'] == 'consent_given' && isset($url)) {
       return new TrustedRedirectResponse($url);
     }
@@ -176,27 +189,37 @@ class GivDinStemmeController extends ControllerBase {
     }
   }
 
+  /**
+   * Profile page.
+   */
   public function givDinStemmeProfile(Request $request): array {
     return [
       '#theme' => 'giv_din_stemme_profile_form',
     ];
   }
 
+  /**
+   * Permissions page.
+   */
   public function permissions(Request $request): array {
     return [
       '#theme' => 'permissions_page',
     ];
   }
 
+  /**
+   * Test page.
+   */
   public function test(Request $request): array {
-
     return [
       '#theme' => 'test_page',
     ];
   }
 
+  /**
+   * Donate page.
+   */
   public function donate(Request $request): array {
-
     return [
       '#theme' => 'donate_page',
     ];
