@@ -10,7 +10,7 @@ module.exports = {
     "gap-x-6",
     "justify-end",
     "-mx-5",
-    "basis-1/3",
+    "basis-1/3"
   ],
   theme: {
     extend: {

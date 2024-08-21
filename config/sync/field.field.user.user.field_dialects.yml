@@ -1,0 +1,21 @@
+uuid: 90a79f6a-e4bf-4b3b-ba44-ad001ad02608
+langcode: da
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_dialects
+  module:
+    - options
+    - user
+id: user.user.field_dialects
+field_name: field_dialects
+entity_type: user
+bundle: user
+label: Dialekter
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
