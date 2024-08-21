@@ -18,8 +18,7 @@ class Helper {
    * @todo Make it generic and reusable across multiple sites?
    */
   public function openidConnectUserinfoAlter(array &$userinfo, array $context) {
-    // @todo
-    $encryptedUuid = Crypt::hashBase64($userinfo['uuid']);
+    $encryptedUuid = Crypt::hashBase64($userinfo['signinname'] ?? '');
     $userinfo['email'] = $encryptedUuid . '@example.com';
     $userinfo['name'] = $encryptedUuid;
   }
