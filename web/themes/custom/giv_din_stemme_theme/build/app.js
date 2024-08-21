@@ -12951,7 +12951,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var prismjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! prismjs */ "./node_modules/prismjs/prism.js");
 /* harmony import */ var prismjs__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(prismjs__WEBPACK_IMPORTED_MODULE_0__);
 __webpack_require__(/*! ./web/themes/custom/giv_din_stemme_theme/js/fontawesome.js */ "./web/themes/custom/giv_din_stemme_theme/js/fontawesome.js");
-__webpack_require__(/*! ./web/themes/custom/giv_din_stemme_theme/js/global-navigation.js */ "./web/themes/custom/giv_din_stemme_theme/js/global-navigation.js");
+//require('./web/themes/custom/giv_din_stemme_theme/js/global-navigation.js')
+__webpack_require__(/*! ./web/themes/custom/giv_din_stemme_theme/js/modal.js */ "./web/themes/custom/giv_din_stemme_theme/js/modal.js");
 __webpack_require__(/*! ./node_modules/prismjs/themes/prism.css */ "./node_modules/prismjs/themes/prism.css");
 
 (prismjs__WEBPACK_IMPORTED_MODULE_0___default().manual) = true;
@@ -12990,7 +12991,8 @@ var _require2 = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./
   faCircle = _require2.faCircle,
   faAngleRight = _require2.faAngleRight,
   faCircleArrowRight = _require2.faCircleArrowRight,
-  faMicrophone = _require2.faMicrophone;
+  faMicrophone = _require2.faMicrophone,
+  faArrowRightFromBracket = _require2.faArrowRightFromBracket;
 
 // Import icons from the free regular package
 var _require3 = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "./node_modules/@fortawesome/free-regular-svg-icons/index.js"),
@@ -13001,7 +13003,7 @@ var _require3 = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "
 // Add the icons to the library for replacing <i class="fa-solid fa-sort"></i> with the intended svg.
 library.add(
 // Solid
-faBars, faRobot, faXmark, faImage, faLanguage, faVideoCamera, faMicrophoneLines, faWindowMinimize, faWindowMaximize, faWindowClose, faRotateLeft, faMessage, faCircle, faAngleRight, faCircleArrowRight, faCircleCheck, faMicrophone, faClock, faUser
+faBars, faRobot, faXmark, faImage, faLanguage, faVideoCamera, faMicrophoneLines, faWindowMinimize, faWindowMaximize, faWindowClose, faRotateLeft, faMessage, faCircle, faAngleRight, faCircleArrowRight, faCircleCheck, faMicrophone, faClock, faUser, faArrowRightFromBracket
 // Brand
 // faXTwitter
 );
@@ -13011,20 +13013,32 @@ dom.i2svg();
 
 /***/ }),
 
-/***/ "./web/themes/custom/giv_din_stemme_theme/js/global-navigation.js":
-/*!************************************************************************!*\
-  !*** ./web/themes/custom/giv_din_stemme_theme/js/global-navigation.js ***!
-  \************************************************************************/
+/***/ "./web/themes/custom/giv_din_stemme_theme/js/modal.js":
+/*!************************************************************!*\
+  !*** ./web/themes/custom/giv_din_stemme_theme/js/modal.js ***!
+  \************************************************************/
 /***/ (() => {
 
-function openGlobalNavigation() {
-  document.getElementById("globalNavigation").classList.remove("hidden");
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(r, a) { if (r) { if ("string" == typeof r) return _arrayLikeToArray(r, a); var t = {}.toString.call(r).slice(8, -1); return "Object" === t && r.constructor && (t = r.constructor.name), "Map" === t || "Set" === t ? Array.from(r) : "Arguments" === t || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(t) ? _arrayLikeToArray(r, a) : void 0; } }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
+function _arrayLikeToArray(r, a) { (null == a || a > r.length) && (a = r.length); for (var e = 0, n = Array(a); e < a; e++) n[e] = r[e]; return n; }
+_toConsumableArray(document.getElementsByClassName("btnOpenModal")).forEach(function (item) {
+  item.addEventListener("click", openModal);
+});
+_toConsumableArray(document.getElementsByClassName("btnCloseModal")).forEach(function (item) {
+  item.addEventListener("click", closeModal);
+});
+function openModal() {
+  var id = this.getAttribute('modal-id');
+  document.getElementById(id).classList.remove("hidden");
 }
-function closeGlobalNavigation() {
-  document.getElementById("globalNavigation").classList.add("hidden");
+function closeModal() {
+  var id = this.getAttribute('modal-id');
+  document.getElementById(id).classList.add("hidden");
 }
-document.getElementById("btnOpenGlobalNavigation").addEventListener("click", openGlobalNavigation);
-document.getElementById("btnCloseGlobalNavigation").addEventListener("click", closeGlobalNavigation);
 
 /***/ }),
 

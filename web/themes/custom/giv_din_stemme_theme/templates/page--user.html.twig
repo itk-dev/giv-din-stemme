@@ -47,10 +47,14 @@
 #}
 {{ include(directory ~ '/templates/components/header.html.twig') }}
 <div class="max-w-3xl mx-auto">
-  <main role="main" class="mb-5">
-    <a id="main-content" tabindex="-1"></a>
-    {{ page.content }}
-  </main>
-  <!--{{ include(directory ~ '/templates/components/footer.html.twig') }} -->
+  <section class="content drop-shadow-md">
+    <main role="main" class="mb-5">
+      <a id="main-content" tabindex="-1"></a>
+        <div class="p-5">
+          {{ page.content }}
+        </div>
+    </main>
+  </section>
+  {# {{ include(directory ~ '/templates/components/footer.html.twig') }} #}
 </div>{# /.layout-container #}
 {{ include(directory ~ '/templates/components/global-navigation.html.twig') }}

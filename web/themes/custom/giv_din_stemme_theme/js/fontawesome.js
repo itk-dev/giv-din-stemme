@@ -21,7 +21,8 @@ const {
   faCircle,
   faAngleRight,
   faCircleArrowRight,
-  faMicrophone
+  faMicrophone,
+  faArrowRightFromBracket
 } = require("@fortawesome/free-solid-svg-icons");
 
 // Import icons from the free regular package
@@ -52,7 +53,8 @@ library.add(
   faCircleCheck,
   faMicrophone,
   faClock,
-  faUser
+  faUser,
+  faArrowRightFromBracket
   // Brand
   // faXTwitter
 );

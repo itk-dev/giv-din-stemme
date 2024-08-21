@@ -5,8 +5,12 @@
 {% endblock %}
 
 {% block gds_content %}
+  aaa
+  {{ attach_library('giv_din_stemme/check_microphone') }}
+  {{ attach_library('giv_din_stemme/test_microphone') }}
   <div class="py-5">
-    Lorem
+    <h3><b>NOTE:</b> This is not accurate on stackoverflow, since microphone use is not permitted. It's a simulation instead.</h3>
+    <div id="volume-test-toggle">Toggle</div>
   </div>
 {% endblock %}
 {% block gds_footer %}

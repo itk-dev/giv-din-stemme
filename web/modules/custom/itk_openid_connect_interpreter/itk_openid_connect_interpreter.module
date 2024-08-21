@@ -1,10 +1,18 @@
 <?php
 
+use Drupal\Core\Session\AccountInterface;
 use Drupal\itk_openid_connect_interpreter\Helper\Helper;
 
 /**
  * Implements hook_openid_connect_userinfo_alter()
  */
-function itk_openid_connect_interpreter_openid_connect_userinfo_alter(array &$userinfo, array $context) {
+function itk_openid_connect_interpreter_openid_connect_userinfo_alter(array &$userinfo, array $context): void {
   \Drupal::service(Helper::class)->openidConnectUserinfoAlter($userinfo, $context);
+}
+
+/**
+ * Implements hook_user_format_name_alter().
+ */
+function itk_openid_connect_interpreter_user_format_name_alter(&$name, AccountInterface $account): void {
+  \Drupal::service(Helper::class)->alterUsername($name, $account);
 }

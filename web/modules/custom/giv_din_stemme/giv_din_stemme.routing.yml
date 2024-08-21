@@ -34,7 +34,7 @@ giv_din_stemme.profile:
     - 'GET'
     - 'POST'
   defaults:
-    _form: '\Drupal\giv_din_stemme\Form\GivDinStemmeProfileForm'
+    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::givDinStemmeProfile'
     _title: 'Profil'
   requirements:
     _permission: 'access content'

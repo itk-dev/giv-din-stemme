@@ -2,27 +2,40 @@
 
 namespace Drupal\itk_openid_connect_interpreter\Helper;
 
-use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Component\Utility\Crypt;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * A helper.
  */
 class Helper {
+  use StringTranslationTrait;
+
   /**
-   * Constructor.
+   * Implements hook_openid_connect_userinfo_alter().
+   *
+   * @todo Make it generic and reusable across multiple sites?
    */
-  public function __construct(
-    private readonly RouteMatchInterface $routeMatch,
-  ) {
+  public function openidConnectUserinfoAlter(array &$userinfo, array $context) {
+    // @todo
+    $encryptedUuid = Crypt::hashBase64($userinfo['uuid']);
+    $userinfo['email'] = $encryptedUuid . '@example.com';
+    $userinfo['name'] = $encryptedUuid;
   }
 
   /**
-   * Implements hook_page_attachments().
+   * Change display of username.
    *
-   * Injects custom CSS into CKEditor5 the Gin way (cf.
-   * https://www.drupal.org/docs/contributed-themes/gin-admin-theme/custom-theming#s-module-recommended-way).
+   * @param string $name
+   * @param \Drupal\Core\Session\AccountInterface $user
+   *
+   * @return void
    */
-  public function openidConnectUserinfoAlter(array &$userinfo, array $context) {
-    $userinfo['email'] = 'yde001+1@gmail.com';
+  public function alterUserName(string &$name, AccountInterface $user) {
+    // Alter name if only authenticated and not super admin.
+    if (count($user->getRoles()) === 1 && $user->id() > 1) {
+      $name = $this->t('Profile');
+    }
   }
 }
