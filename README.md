@@ -75,10 +75,6 @@ Import config from config files:
 itkdev-docker-compose drush config:import
 ```
 
-### Coding standards
-
-@todo Add description about running and applying coding standards
-
 ## Production setup
 
 @todo Write this section.
@@ -128,4 +124,11 @@ $config['openid_connect.client.connection']['settings']['authorization_endpoint'
 $config['openid_connect.client.connection']['settings']['token_endpoint'] = '…';
 $config['openid_connect.client.connection']['settings']['userinfo_endpoint'] = '…';
 $config['openid_connect.client.connection']['settings']['end_session_endpoint'] = '…';
+```
+
+### Coding standards
+
+``` shell name=coding-standards-markdown
+docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md) --fix
+docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md)
 ```
