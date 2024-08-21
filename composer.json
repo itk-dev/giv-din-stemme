@@ -22,6 +22,7 @@
         "drush/drush": "^13.0"
     },
     "require-dev": {
+        "drupal/core-dev": "^11.0",
         "ergebnis/composer-normalize": "^2.43"
     },
     "conflict": {
@@ -118,5 +119,27 @@
                 "Disable forced configuration langcode (https://www.drupal.org/project/drupal/issues/3150540)": "https://www.drupal.org/files/issues/2024-07-03/drupal-3150540-42.patch"
             }
         }
+    },
+    "scripts": {
+        "coding-standards-apply": [
+            "@coding-standards-apply/phpcs",
+            "@coding-standards-apply/twig-cs-fixer"
+        ],
+        "coding-standards-apply/phpcs": [
+            "phpcbf --standard=phpcs.xml.dist"
+        ],
+        "coding-standards-apply/twig-cs-fixer": [
+            "twig-cs-fixer lint web/themes/custom/hoeringsportal/templates --fix"
+        ],
+        "coding-standards-check": [
+            "@coding-standards-check/phpcs",
+            "@coding-standards-check/twig-cs-fixer"
+        ],
+        "coding-standards-check/phpcs": [
+            "phpcs --standard=phpcs.xml.dist"
+        ],
+        "coding-standards-check/twig-cs-fixer": [
+            "twig-cs-fixer lint web/themes/custom/hoeringsportal/templates"
+        ]
     }
 }
