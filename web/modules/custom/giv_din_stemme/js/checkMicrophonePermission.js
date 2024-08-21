@@ -22,6 +22,7 @@ function getLocalStream() {
       microphoneAllowedDisplay.classList.add('table');
 
       microphoneDisallowedDisplay.classList.add('hidden');
+      helpText.classList.add('hidden');
     })
     .catch((err) => {
       helpText.classList.add('animate-wiggle')

@@ -12992,6 +12992,7 @@ var _require2 = __webpack_require__(/*! @fortawesome/free-solid-svg-icons */ "./
   faAngleRight = _require2.faAngleRight,
   faCircleArrowRight = _require2.faCircleArrowRight,
   faMicrophone = _require2.faMicrophone,
+  faMicrophoneSlash = _require2.faMicrophoneSlash,
   faArrowRightFromBracket = _require2.faArrowRightFromBracket;
 
 // Import icons from the free regular package
@@ -13003,7 +13004,7 @@ var _require3 = __webpack_require__(/*! @fortawesome/free-regular-svg-icons */ "
 // Add the icons to the library for replacing <i class="fa-solid fa-sort"></i> with the intended svg.
 library.add(
 // Solid
-faBars, faRobot, faXmark, faImage, faLanguage, faVideoCamera, faMicrophoneLines, faWindowMinimize, faWindowMaximize, faWindowClose, faRotateLeft, faMessage, faCircle, faAngleRight, faCircleArrowRight, faCircleCheck, faMicrophone, faClock, faUser, faArrowRightFromBracket
+faBars, faRobot, faXmark, faImage, faLanguage, faVideoCamera, faMicrophoneLines, faWindowMinimize, faWindowMaximize, faWindowClose, faRotateLeft, faMessage, faCircle, faAngleRight, faCircleArrowRight, faCircleCheck, faMicrophone, faMicrophoneSlash, faClock, faUser, faArrowRightFromBracket
 // Brand
 // faXTwitter
 );

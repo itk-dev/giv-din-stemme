@@ -22,6 +22,7 @@ const {
   faAngleRight,
   faCircleArrowRight,
   faMicrophone,
+  faMicrophoneSlash,
   faArrowRightFromBracket
 } = require("@fortawesome/free-solid-svg-icons");
 
@@ -52,6 +53,7 @@ library.add(
   faCircleArrowRight,
   faCircleCheck,
   faMicrophone,
+  faMicrophoneSlash,
   faClock,
   faUser,
   faArrowRightFromBracket

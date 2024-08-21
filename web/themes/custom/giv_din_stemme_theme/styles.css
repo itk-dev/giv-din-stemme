@@ -43,36 +43,17 @@
   .btn-default {
     @apply border border-secondary bg-black text-white rounded-lg px-3 py-2 min-h-9 hover:bg-stone-700;
   }
+  .btn-disabled {
+    @apply border border-secondary bg-gray-300 text-gray-500 rounded-lg px-3 py-2 min-h-9 hover:bg-stone-700;
+  }
+
   .btn-icon {
     @apply btn-default px-2 py-1;
   }
 
-  /* Icons sizes */
+    /* Icons sizes */
   .icon {
     @apply w-5;
-  }
-
-  /* Chat messages */
-  .chat-message-container-you {
-    @apply flex gap-1 flex-col items-end;
-  }
-  .chat-message-container-bot {
-    @apply flex gap-1 flex-col items-start;
-  }
-  .chat-message-container-info {
-    @apply flex gap-1 items-start;
-  }
-  .chat-message-variant-you {
-    @apply min-h-9 content-center flex-auto rounded px-3 py-2 text-white bg-sky-700 text-right max-w-xl;
-  }
-  .chat-message-variant-bot {
-    @apply min-h-9 content-center flex-auto rounded px-3 py-2 text-black bg-purple-200 max-w-xl;
-  }
-  .chat-message-variant-info {
-    @apply min-h-9 content-center text-secondary;
-  }
-  .chat-message-info-type {
-    @apply font-semibold capitalize;
   }
 
   /* Common typography */
@@ -112,10 +93,9 @@
   .pager-item.active > div {
       @apply border-brand border-b;
   }
-
 }
 
 #volume-test-toggle {
     background-color: red;
-    box-shadow: 0 0 var(--volume, 0) var(--volume, 0) red;
+    box-shadow: 0 0 var(--volume, 5px) var(--volume, 5px) #EF4123;
 }
