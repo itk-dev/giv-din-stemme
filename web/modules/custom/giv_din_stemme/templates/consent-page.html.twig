@@ -22,12 +22,12 @@
 {% block gds_footer %}
   <div class="py-5">
     <form action="/oidc-login">
-      <div class="grid grid-cols-2">
-        <div class="sm:col-span-1">
-          <input class="mr-3" type="checkbox" id="consent_checkbox" name="consent" value="consent_given" required>
+      <div class="flex flex-col gap-3 md:flex-row md:place-content-between md:align-items-center">
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="consent_checkbox" name="consent" value="consent_given" required>
           <label for="consent_checkbox">{{ 'Yes, I consent'|t }}</label>
         </div>
-        <div class="sm:col-span-1 justify-self-end">
+        <div>
           <button type="submit" class="btn-default">
             <span class="mr-3">{{ 'Consent with MitID'|t }}</span>
             <i class="fa-solid fa-circle-arrow-right"></i>

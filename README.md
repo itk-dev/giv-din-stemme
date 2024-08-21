@@ -18,16 +18,29 @@ docker network create --driver=bridge --attachable --internal=false frontend
 
 ### Building assets for the frontend
 
-Run `itkdev-docker-compose run node yarn watch` to continuesly build assets uppon file changes.
+Run the following to install dependencies with yarn.
 
-Run `itkdev-docker-compose run node yarn build` to build assets once.
+```shell name="assets-install"
+itkdev-docker-compose run node yarn install
+```
+
+Run the following to continuesly build assets uppon file changes.
+
+```shell name="assets-watch"
+itkdev-docker-compose run node yarn watch
+```
+
+Run the following to build assets once.
+```shell name="assets-build"
+itkdev-docker-compose run node yarn build
+```
 
 ### Site installation
 
 Run the following commands to set up the site. This will run a normal Drupal site installation with the existing
 configuration that comes with this project.
 
-```shell
+```shell name="site-up"
 itkdev-docker-compose up --detach
 itkdev-docker-compose composer install
 itkdev-docker-compose drush site-install --existing-config --yes
@@ -37,7 +50,7 @@ When the installation is completed, that admin user is created and the password 
 forget the password, use drush uli command to get a one-time-login link (not the uri here only works if you are using
 trafik).
 
-```shell
+```shell name="site-login"
 itkdev-docker-compose drush --uri="https://givdinstemme.local.itkdev.dk/" user:login
 ```
 
@@ -45,7 +58,7 @@ itkdev-docker-compose drush --uri="https://givdinstemme.local.itkdev.dk/" user:l
 
 If you are using out `itkdev-docker-compose` simple use the command below to åbne the site in you default browser.
 
-```shell
+```shell name="site-open"
 itkdev-docker-compose open
 ```
 
