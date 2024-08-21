@@ -21,7 +21,13 @@ const {
   faCircle,
   faAngleRight,
   faCircleArrowRight,
+<<<<<<< Updated upstream
   faMicrophone
+=======
+  faMicrophone,
+  faMicrophoneSlash,
+  faArrowRightFromBracket
+>>>>>>> Stashed changes
 } = require("@fortawesome/free-solid-svg-icons");
 
 // Import icons from the free regular package
@@ -51,6 +57,7 @@ library.add(
   faCircleArrowRight,
   faCircleCheck,
   faMicrophone,
+  faMicrophoneSlash,
   faClock,
   faUser
   // Brand
