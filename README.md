@@ -139,6 +139,12 @@ docker compose run --rm phpfpm composer coding-standards-apply/phpcs
 docker compose run --rm phpfpm composer coding-standards-check/phpcs
 ```
 
+``` shell name=coding-standards-twig
+docker compose run --rm phpfpm composer install
+docker compose run --rm phpfpm composer coding-standards-apply/twig-cs-fixer
+docker compose run --rm phpfpm composer coding-standards-check/twig-cs-fixer
+```
+
 ``` shell name=coding-standards-markdown
 docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md) --fix
 docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md)
