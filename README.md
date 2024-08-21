@@ -128,6 +128,11 @@ $config['openid_connect.client.connection']['settings']['end_session_endpoint'] 
 
 ### Coding standards
 
+``` shell name=coding-standards-composer
+docker compose run --rm phpfpm composer install
+docker compose run --rm phpfpm composer normalize
+```
+
 ``` shell name=coding-standards-markdown
 docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md) --fix
 docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md)
