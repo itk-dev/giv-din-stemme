@@ -1,0 +1,69 @@
+uuid: d7c18258-023b-490f-bb7b-ce7dfecdfcbb
+langcode: da
+status: true
+dependencies:
+  config:
+    - field.field.user.user.field_birth_year
+    - field.field.user.user.field_dialects
+    - field.field.user.user.field_e_mail
+    - field.field.user.user.field_gender
+    - field.field.user.user.field_postal_code
+  module:
+    - path
+    - user
+id: user.user.default
+targetEntityType: user
+bundle: user
+mode: default
+content:
+  account:
+    weight: -10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_birth_year:
+    type: options_select
+    weight: 34
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_dialects:
+    type: options_select
+    weight: 33
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_e_mail:
+    type: email_default
+    weight: 35
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+  field_gender:
+    type: options_select
+    weight: 32
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_postal_code:
+    type: number
+    weight: 31
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  language:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

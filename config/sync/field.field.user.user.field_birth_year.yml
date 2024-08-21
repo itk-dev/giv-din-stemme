@@ -1,0 +1,21 @@
+uuid: 228ba2e2-9327-40f9-b282-85d2645b68ef
+langcode: da
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_birth_year
+  module:
+    - options
+    - user
+id: user.user.field_birth_year
+field_name: field_birth_year
+entity_type: user
+bundle: user
+label: Fødselsår
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
