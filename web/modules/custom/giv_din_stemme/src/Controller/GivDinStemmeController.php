@@ -105,7 +105,7 @@ class GivDinStemmeController extends ControllerBase {
    */
   public function login(Request $request): TrustedRedirectResponse|RedirectResponse {
     // Get login URL.
-    $client_name = 'connection';
+    $client_name = 'generic';
     $this->session->saveOp('login');
     $client = $this->entityTypeManager->getStorage('openid_connect_client')->loadByProperties(['id' => $client_name])[$client_name];
     $plugin = $client->getPlugin();
