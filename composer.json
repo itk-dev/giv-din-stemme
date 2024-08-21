@@ -23,7 +23,8 @@
     },
     "require-dev": {
         "drupal/core-dev": "^11.0",
-        "ergebnis/composer-normalize": "^2.43"
+        "ergebnis/composer-normalize": "^2.43",
+        "vincentlanglet/twig-cs-fixer": "^3.0"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -129,7 +130,7 @@
             "phpcbf --standard=phpcs.xml.dist"
         ],
         "coding-standards-apply/twig-cs-fixer": [
-            "twig-cs-fixer lint web/themes/custom/hoeringsportal/templates --fix"
+            "twig-cs-fixer lint web/themes/custom/*/templates --fix"
         ],
         "coding-standards-check": [
             "@coding-standards-check/phpcs",
@@ -139,7 +140,7 @@
             "phpcs --standard=phpcs.xml.dist"
         ],
         "coding-standards-check/twig-cs-fixer": [
-            "twig-cs-fixer lint web/themes/custom/hoeringsportal/templates"
+            "twig-cs-fixer lint web/themes/custom/*/templates"
         ]
     }
 }

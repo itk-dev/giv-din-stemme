@@ -196,3 +196,4 @@ node_modules
 
 # Docker
 .env.docker.local
+.twig-cs-fixer.cache
