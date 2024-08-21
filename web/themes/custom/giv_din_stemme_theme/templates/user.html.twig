@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ * Default theme implementation to present all user data.
+ *
+ * This template is used when viewing a registered user's page,
+ * e.g., example.com/user/123. 123 being the user's ID.
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.field_example'. Fields attached to a user
+ *   such as 'user_picture' are available as 'content.user_picture'.
+ * - attributes: HTML attributes for the container element.
+ * - user: A Drupal User entity.
+ *
+ * @see template_preprocess_user()
+ *
+ * @ingroup themeable
+ */
+#}
+<h1 class="px-5">{{ 'Profile'|t }}</h1>
+<div class="bg-white drop-shadow-md p-5 grid grid-cols-2 gap-2">
+  <div class="col-span-1">
+    {{ content.field_gender }}
+    {{ content.field_birth_year }}
+  </div>
+  <div class="col-span-1">
+    {{ content.field_postal_code }}
+    {{ content.field_dialects }}
+  </div>
+  <div>
+    {{ content|without('member_for', 'field_postal_code', 'field_gender', 'field_dialects', 'field_birth_year') }}
+  </div>
+</div>
+
+

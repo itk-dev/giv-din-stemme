@@ -1,0 +1,20 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a 'form' element.
+ *
+ * Available variables
+ * - attributes: A list of HTML attributes for the wrapper element.
+ * - children: The child elements of the form.
+ *
+ * @see template_preprocess_form()
+ *
+ * @ingroup themeable
+ */
+#}
+<div class="-mx-5 px-5 pt-10 pb-5 border-b-2">
+  {{ 'Fill out your profile to help us utilize your donation.'|t }}
+</div>
+<form{{ attributes.addClass('grid gap-4 grid-cols-2 pt-10') }}>
+  {{ children }}
+</form>

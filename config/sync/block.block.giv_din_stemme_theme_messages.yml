@@ -1,17 +1,18 @@
 uuid: 27355ccc-89bf-409f-88cf-275925968500
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - system
+    - user
   theme:
     - giv_din_stemme_theme
 _core:
   default_config_hash: aeqlWs7HwctZeZC7ADcbxfqehJzBRfZKmuZz3DsH3_4
 id: giv_din_stemme_theme_messages
 theme: giv_din_stemme_theme
-region: header
-weight: 0
+region: content
+weight: -2
 provider: null
 plugin: system_messages_block
 settings:
@@ -19,4 +20,11 @@ settings:
   label: 'Status messages'
   label_display: '0'
   provider: system
-visibility: {  }
+visibility:
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      editor: editor

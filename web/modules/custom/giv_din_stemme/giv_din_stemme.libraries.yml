@@ -1,4 +1,11 @@
 giv_din_stemme:
-  version: 1.x
   js:
     js/giv_din_stemme.js: {}
+
+check_microphone:
+  js:
+    js/checkMicrophonePermission.js: {}
+
+test_microphone:
+  js:
+    js/testMicrophone.js: {}

@@ -11,6 +11,8 @@ use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Routing\TrustedRedirectResponse;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\file\Entity\File;
@@ -21,61 +23,19 @@ use Drupal\openid_connect\OpenIDConnectSessionInterface;
 use Random\RandomException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * UserBooking controller.
+ * Givdinstemme controller.
  */
 class GivDinStemmeController extends ControllerBase {
-
   private const GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY = '/audio';
   
   /**
-   * The audio helper.
-   *
-   * @var \Drupal\giv_din_stemme\Helper\AudioHelper
-   */
-  protected AudioHelper $audioHelper;
-
-
-  /**
-   * The database connection.
-   *
-   * @var \Drupal\Core\Database\Connection
-   */
-  protected Connection $connection;
-
-  /**
-   * The audio helper.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected FileSystemInterface $fileSystem;
-
-  /**
-   * The settings.
-   *
-   * @var \Drupal\Core\Site\Settings
-   */
-  protected Settings $settings;
-
-  /**
-   * The entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * The OpenID Connect session service.
-   *
-   * @var \Drupal\openid_connect\OpenIDConnectSessionInterface
-   */
-  protected $session;
-
-  /**
-   * UserBookingsController constructor.
+   * Givdinstemme constructor.
    *
    * @param \Drupal\giv_din_stemme\Helper\AudioHelper $audioHelper
    *   The audio helper.
@@ -85,23 +45,25 @@ class GivDinStemmeController extends ControllerBase {
    *   The file system.
    * @param \Drupal\Core\Site\Settings $settings
    *   Settings.
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   Entity type manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+      *   Entity type manager.
+   * @param \Drupal\openid_connect\OpenIDConnectSessionInterface $session
+   *   The OpenID Connect session service.
+   * @param \Drupal\Core\Session\AccountInterface $currentUser
+   *   The account interface
+   * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
+   *   The request stack.
    */
   public function __construct(
-    AudioHelper $audioHelper,
-    Connection $connection,
-    FileSystemInterface $fileSystem,
-    Settings $settings,
-    EntityTypeManagerInterface $entity_type_manager,
-    OpenIDConnectSessionInterface $session
+    protected AudioHelper $audioHelper,
+    protected Connection $connection,
+    protected FileSystemInterface $fileSystem,
+    protected Settings $settings,
+    protected $entityTypeManager,
+    protected OpenIDConnectSessionInterface $session,
+    protected $currentUser,
+    protected RequestStack $requestStack
   ) {
-    $this->audioHelper = $audioHelper;
-    $this->connection = $connection;
-    $this->fileSystem = $fileSystem;
-    $this->settings = $settings;
-    $this->entityTypeManager = $entity_type_manager;
-    $this->session = $session;
   }
 
   /**
@@ -114,7 +76,9 @@ class GivDinStemmeController extends ControllerBase {
       $container->get('file_system'),
       $container->get('settings'),
       $container->get('entity_type.manager'),
-      $container->get('openid_connect.session')
+      $container->get('openid_connect.session'),
+      $container->get('current_user'),
+      $container->get('request_stack'),
     );
   }
 
@@ -122,15 +86,9 @@ class GivDinStemmeController extends ControllerBase {
    * Landing page.
    */
   public function landing(Request $request): array {
-
     return [
       '#theme' => 'landing_page',
       '#name' => $this->t('Landing Page'),
-//      '#login_url' => 'login url',
-//      '#logout_url' => 'logout url',
-//      '#attached' => [
-//        'library' => ['giv_din_stemme/giv_din_stemme'],
-//      ],
     ];
   }
 
@@ -143,36 +101,65 @@ class GivDinStemmeController extends ControllerBase {
     ];
   }
 
-  public function login(Request $request): array {
-    $client_name = 'connection';
+  /**
+   * Login through OIDC if consent is given.
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   *
+   * @return \Drupal\Core\Routing\TrustedRedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function login(Request $request): TrustedRedirectResponse|RedirectResponse {
+    // Get login URL.
+    $client_name = 'generic';
     $this->session->saveOp('login');
     $client = $this->entityTypeManager->getStorage('openid_connect_client')->loadByProperties(['id' => $client_name])[$client_name];
     $plugin = $client->getPlugin();
     $scopes = 'openid profile';
     $response = $plugin->authorize($scopes);
-
     $url = $response->getTargetUrl();
+
+    // Go to login or front page if no consent.
+    if ('consent_given' === $request->get('consent') && isset($url)) {
+      return new TrustedRedirectResponse($url);
+    }
+    else {
+      return $this->redirect('giv_din_stemme.landing');
+    }
+  }
+
+  /**
+   * Profile page.
+   */
+  public function givDinStemmeProfile(Request $request): array {
     return [
-      '#theme' => 'oidc_login_page',
-      '#url' => $response->getTargetUrl() ?? NULL
+      '#theme' => 'giv_din_stemme_profile_form',
     ];
   }
 
+  /**
+   * Permissions page.
+   */
   public function permissions(Request $request): array {
     return [
       '#theme' => 'permissions_page',
     ];
   }
 
+  /**
+   * Test page.
+   */
   public function test(Request $request): array {
-
     return [
       '#theme' => 'test_page',
     ];
   }
 
+  /**
+   * Donate page.
+   */
   public function donate(Request $request): array {
-
     return [
       '#theme' => 'donate_page',
     ];

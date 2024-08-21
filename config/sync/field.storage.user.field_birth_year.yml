@@ -1,0 +1,54 @@
+uuid: b5e5f250-97d9-4b92-b764-8a1e8a13fb1a
+langcode: da
+status: true
+dependencies:
+  module:
+    - options
+    - user
+id: user.field_birth_year
+field_name: field_birth_year
+entity_type: user
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 1920_erne
+      label: "1920'erne"
+    -
+      value: 1930_erne
+      label: "1930'erne"
+    -
+      value: 1940_erne
+      label: "1940'erne"
+    -
+      value: 1950_erne
+      label: "1950'erne"
+    -
+      value: 1960_erne
+      label: "1960'erne"
+    -
+      value: 1970_erne
+      label: "1970'erne"
+    -
+      value: 1980_erne
+      label: "1980'erne"
+    -
+      value: 1990_erne
+      label: "1990'erne"
+    -
+      value: 2000_erne
+      label: "2000'erne"
+    -
+      value: 2010_erne
+      label: "2010'erne"
+    -
+      value: 2020_erne
+      label: "2020'erne"
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -3,7 +3,12 @@
 /**
  * @file
  * Hooks for giv din stemme module.
+ *
+ * @todo Create Helper for these hooks.
  */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Implements hook_theme().
@@ -11,11 +16,6 @@
 function giv_din_stemme_theme(array $existing, string $type, string $theme, string $path): array {
   return [
     'giv_din_stemme' => [
-      'variables' => [
-        'test_variable' => 'TEST VARIABLE',
-//        'logout_url' => NULL,
-//        'name' => NULL,
-      ],
       'template' => 'giv_din_stemme',
     ],
     'landing_page' => [
@@ -26,14 +26,8 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       'variables' => [],
       'template' => 'consent-page',
     ],
-    'oidc_login_page' => [
-      'variables' => [
-        'url' => NULL
-      ],
-      'template' => 'oidc-login-page',
-    ],
     'giv_din_stemme_profile_form' => [
-      'render element' => 'form',
+      'render element' => 'giv-din-stemme-profile-form',
     ],
     'permissions_page' => [
       'variables' => [],
@@ -66,8 +60,53 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
 }
 
 
+/**
+ * Implements hook_theme_suggestions_form_alter().
+ */
 function giv_din_stemme_theme_suggestions_form_alter(array &$suggestions, array $variables) {
   if (isset($variables['element']['#form_id'])) {
     $suggestions[] = 'form__' . $variables['element']['#form_id'];
   };
+}
+
+/**
+ * Implements hook_form_FORMID_alter().
+ */
+function giv_din_stemme_form_user_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Add redirect submit handler.
+  $form['actions']['submit']['#submit'][] = 'giv_din_stemme_redirect';
+
+  // Style submit button.
+  $form['actions']['submit']['#attributes']['fa-icon'] = 'fa-solid fa-circle-arrow-right';
+  $form['actions']['submit']['#value'] = new TranslatableMarkup('Continue');
+
+  // Disable access to form elements.
+  $form['actions']['delete']['#access'] = FALSE;
+  $form['account']['#access'] = FALSE;
+  $form['path']['#access'] = FALSE;
+  $form['language']['#access'] = FALSE;
+
+  // Move actions to footer.
+  $form['footer'] = [
+    '#type' => 'html_tag',
+    '#tag' => 'footer',
+    '#attributes' => [
+      'class' => 'footer grid bg-gray-100 -mx-5 px-3 py-5 col-span-2 justify-end basis-full',
+    ],
+    '#weight' => '100'
+  ];
+  $form['footer']['actions'] = $form['actions'];
+  unset ($form['actions']);
+}
+
+/**
+ * Custom submit handler
+ *
+ * @param $form
+ *   The form.
+ * @param $form_state
+ *   The state of the form.
+ */
+function giv_din_stemme_redirect(&$form, &$form_state) {
+  $form_state->setRedirect('giv_din_stemme.permissions');
 }

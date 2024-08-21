@@ -5,9 +5,7 @@
 {% endblock %}
 
 {% block gds_content %}
-  {{ form.actions }}
-  {# Renders the rest of the form #}
-  {{ form }}
+  {{ drupal_entity_form('user', user.id()) }}
 {% endblock %}
 
 

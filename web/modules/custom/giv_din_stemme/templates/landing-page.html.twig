@@ -1,25 +1,29 @@
+{%
+  set redirect_url = url(user.isAuthenticated() ? 'giv_din_stemme.profile' : 'giv_din_stemme.consent')
+%}
+
+{% set modal_id = 'terms-modal' %}
+
 <h1 class="px-5 mt-10 text-5xl">{{ drupal_title() }}</h1>
 <section class="content">
   <main class="main px-5">
     <div class="py-5 grid grid-cols-2 gap-x-6 text-lg text-gray-500 font-light">
       <div class="col-span-1">
-        <div>{{ 'Voice recording is necessary to train our danish language model.' }}
+        <div>{{ 'Voice recording is necessary to train our danish language model.'|t }}
         </div>
         <div class="mt-5">
-          <a href="#" class="text-black">{{ 'Read our terms'|t }}</a>
+          <span modal-id="{{ modal_id }}" class="cursor-pointer btnOpenModal text-black">{{ 'Read our terms'|t }}</span>
         </div>
       </div>
       <div class="col-span-1">
         <p>
-          <span class="text-black font-medium">
-            <i class="mr-3 fa-regular fa-user"></i>X
-          </span> {{ 'people have donated'|t }}
-          <span class="text-black font-medium">
-            <i class="mr-3 fa-regular fa-clock"></i>X
-          </span> {{ 'minutes'|t }}
+          <span class="text-black font-medium"><i class="mr-3 fa-regular fa-user"></i>X</span> {{ 'Donations'|t }}
+        </p>
+        <p>
+          <span class="text-black font-medium"><i class="mr-3 fa-regular fa-clock"></i>X</span> {{ 'Minutes'|t }}
         </p>
         <div class="my-10">
-          <a href="{{ url('giv_din_stemme.consent') }}" class="btn-primary button">
+          <a href="{{ redirect_url }}" class="btn-primary button">
             <i class="mr-3 fa-solid fa-microphone"></i>
             <span>{{ 'Start donation'|t }}</span>
           </a>
@@ -28,4 +32,7 @@
     </div>
   </main>
 </section>
+
+{% include '@giv_din_stemme_theme/templates/modal.html.twig' with {'text_template': '@giv_din_stemme_theme/texts/terms-text.html', 'modal_id': modal_id } %}
+
 

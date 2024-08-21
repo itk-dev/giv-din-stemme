@@ -6,8 +6,9 @@ services:
     working_dir: /app
     volumes:
       - .:/app:delegated
+
   idp-citizen:
-    image: ghcr.io/soluto/oidc-server-mock:latest
+    image: ghcr.io/soluto/oidc-server-mock:0.8.6
     profiles:
       - oidc
       - test
@@ -17,15 +18,26 @@ services:
       - app
       - frontend
     ports:
-      - '80'
+      # https://github.com/Soluto/oidc-server-mock?tab=readme-ov-file#https
+      # - '80'
+      - '443'
     volumes:
       - .:/tmp/config:ro
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=frontend"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_idp-citizen.rule=Host(`idp-citizen.${COMPOSE_DOMAIN}`)"
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}_idp-citizen.loadbalancer.server.port=80"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}_idp-citizen.loadbalancer.server.port=443"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}_idp-citizen.loadbalancer.server.scheme=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}_idp-citizen.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
     environment:
+      # https://github.com/Soluto/oidc-server-mock?tab=readme-ov-file#https
+      ASPNETCORE_URLS: https://+:443;http://+:80
+      ASPNETCORE_Kestrel__Certificates__Default__Password: mock
+      ASPNETCORE_Kestrel__Certificates__Default__Path: /tmp/config/.docker/oidc-server-mock/cert/docker.pfx
+
       ASPNETCORE_ENVIRONMENT: Development
       SERVER_OPTIONS_INLINE: |
         AccessTokenJwtType: JWT
@@ -108,5 +120,5 @@ services:
             Value: '1111'
             ValueType: string
           - Type: uuid
-            Value: 'xyz123xyz123xyz123'
+            Value: '11111111-1111-1111-1111-111111111111'
             ValueType: string
