@@ -160,6 +160,11 @@ docker compose run --rm phpfpm composer coding-standards-check/twig-cs-fixer
 ```
 
 ``` shell name=coding-standards-markdown
-docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md) --fix
-docker run --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md)
+docker run --platform linux/amd64 --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md) --fix
+docker run --platform linux/amd64 --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md)
+```
+
+```shell name="coding-standards-assets"
+itkdev-docker-compose run node yarn coding-standards-apply
+itkdev-docker-compose run node yarn coding-standards-check
 ```
