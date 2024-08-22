@@ -54,7 +54,6 @@ class GivDinStemmeController extends ControllerBase {
    */
   public function __construct(
     protected Helper $helper,
-    protected AudioHelper $audioHelper,
     protected Connection $connection,
     protected FileSystemInterface $fileSystem,
     protected Settings $settings,
@@ -71,7 +70,6 @@ class GivDinStemmeController extends ControllerBase {
   public static function create(ContainerInterface $container): GivDinStemmeController {
     return new static(
       $container->get(Helper::class),
-      $container->get('giv_din_stemme.audio_helper'),
       $container->get('database'),
       $container->get('file_system'),
       $container->get('settings'),
@@ -166,23 +164,29 @@ class GivDinStemmeController extends ControllerBase {
   }
 
   /**
-   * @throws EntityStorageException
-   * @throws MissingDataException
+   * Thank you page.
    */
-  public function startDonating(Request $request): \Symfony\Component\HttpFoundation\RedirectResponse
-  {
-    $text = $this->getRandomText();
+  public function thankYou(Request $request): array {
+    return [
+      '#theme' => 'thank_you_page',
+    ];
+  }
 
-    // TODO: use injection
-    $uuidService = \Drupal::service('uuid');
-    $collectionId = $uuidService->generate();
+  /**
+   * Start donating page.
+   *
+   * Creates a collection of GivDinStemme entities
+   * and redirects to the first.
+   */
+  public function startDonating(Request $request): RedirectResponse
+  {
+    $text = $this->helper->getRandomText();
+    $collectionId = $this->helper->generateUuid();
     $delta = 0;
 
     $parts = $text->get('field_text_parts');
-
     $numberOfParts = count($parts);
 
-    // TODO: How do we handle this?
     if ($numberOfParts < 1) {
       throw new \Exception('A text should contain at least one part');
     }
@@ -191,21 +195,20 @@ class GivDinStemmeController extends ControllerBase {
     foreach($parts as $part) {
       $entity = GivDinStemme::create();
 
+      $hashedAccountName = sha1($this->currentUser->getAccountName());
+
       $entity->set('collection_id', $collectionId);
       $entity->set('collection_delta', $delta++);
-      // TODO: Use unique id from user possibly also hashed
-      $entity->set('user_hash', md5($this->currentUser()->getAccountName()));
+      $entity->set('user_hash', $hashedAccountName);
 
       // Save these on entity as metadata.
       $partTextToRead = $part->getValue()['value'];
       $textId = $text->id();
-      // TODO: Use unique id from user possibly also hashed
-      $accountName = $this->currentUser()->getAccountName();
 
       $entity->set('metadata', json_encode([
         'text' => $partTextToRead,
         'text_id' => $textId,
-        'account_name' => $accountName,
+        'user' => $hashedAccountName,
         'number_of_parts' => $numberOfParts,
       ]));
 
@@ -220,93 +223,25 @@ class GivDinStemmeController extends ControllerBase {
   }
 
   /**
-   * @throws \Exception
+   * Read page.
+   *
+   * Handles 'GET' and 'POST' method.
    */
   public function read(Request $request, string $collection_id, string $delta): array|Response
   {
     if ('POST' === $request->getMethod()) {
-      return $this->handlePost($request, $collection_id, $delta);
+      return $this->handleReadPost($request, $collection_id, $delta);
     } else {
-      return $this->handleGet($request, $collection_id, $delta);
+      return $this->handleReadGet($request, $collection_id, $delta);
     }
   }
 
   /**
-   * @throws InvalidPluginDefinitionException
-   * @throws PluginNotFoundException
-   * @throws \Exception
+   * Handles read 'GET' method.
    */
-  private function getGivDinStemmeByCollectionUuidAndDelta(string $uuid, string $delta): ?GivDinStemme {
-    $result = $this->entityTypeManager->getStorage('gds')->loadByProperties([
-      'collection_id' => $uuid,
-      'collection_delta' => $delta,
-    ]);
-
-    if (1 !== count($result)) {
-      throw new \Exception('Unique GivDinStemme not found');
-    }
-
-    return reset($result);
-  }
-
-
-  /**
-   * @throws InvalidPluginDefinitionException
-   * @throws PluginNotFoundException
-   */
-  private function getCountOfGivDinStemmeByCollectionUuid(string $uuid): int {
-    $result = $this->entityTypeManager->getStorage('gds')->loadByProperties([
-      'collection_id' => $uuid,
-    ]);
-
-    return count($result);
-  }
-
-  private function getRandomText(): Node {
-
-    $nids = \Drupal::entityQuery('node')->condition('type','text')->accessCheck(FALSE)->execute();
-    $nodes =  Node::loadMultiple($nids);
-
-    $count  = count($nodes);
-    $keys = array_keys($nodes);
-
-    $randomKey = $keys[rand(0, $count - 1)];
-
-    return $nodes[$randomKey];
-  }
-
-  public function thankYou(Request $request): array {
-    return [
-      '#theme' => 'thank_you_page',
-    ];
-  }
-
-  /**
-   * Show.
-   */
-  public function show(Request $request): array {
-
-    return [
-      '#theme' => 'giv_din_stemme',
-    // '#name' => 'name',
-    //      '#login_url' => 'loigin ur',
-    //      '#logout_url' => 'logout url',
-      '#attached' => [
-        'library' => ['giv_din_stemme/giv_din_stemme'],
-      ],
-    ];
-  }
-
-  private function handleGet(Request $request, string $collection_id, string $delta): array
+  private function handleReadGet(Request $request, string $collection_id, string $delta): array
   {
-    $collectionId = $request->get('collection_id');
-    $delta = $request->get('delta');
-
-    $givDinStemme = $this->getGivDinStemmeByCollectionUuidAndDelta($collectionId, $delta);
-
-    if (!$givDinStemme) {
-      throw new \Exception('Invalid collection id and delta provided');
-    }
+    $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
 
     $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
     $textToRead = $metadata['text'];
@@ -316,14 +251,17 @@ class GivDinStemmeController extends ControllerBase {
       '#theme' => 'read_page',
       '#textToRead' => $textToRead,
       '#totalTexts' => $count,
-      '#nextUrl' => '/read/'. $collectionId . '/' . $delta ,
+      '#nextUrl' => '/read/'. $collection_id . '/' . $delta ,
       '#attached' => [
         'library' => ['giv_din_stemme/giv_din_stemme'],
       ],
     ];
   }
 
-  private function handlePost(Request $request, string $collection_id, string $delta): RedirectResponse
+  /**
+   * Handles read 'POST' method.
+   */
+  private function handleReadPost(Request $request, string $collection_id, string $delta): RedirectResponse
   {
     $directory = 'private://audio/';
     $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
@@ -342,20 +280,18 @@ class GivDinStemmeController extends ControllerBase {
         $file->save();
 
         // Load GivDinStemme and attach file.
-        $givDinStemme = $this->getGivDinStemmeByCollectionUuidAndDelta($collection_id, $delta);
+        $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
         $givDinStemme->set('file', $file);
         $givDinStemme->save();
       }
       catch (FileException | EntityStorageException |\Exception $e) {
-        // @todo LOG THIS SOMEWHERE?
+        // @todo How do we handle this?
       }
     }
 
-
     // Redirect based on whether another text part exists.
     $nextDelta = ((int) $delta) + 1;
-    $countOfParts = $this->getCountOfGivDinStemmeByCollectionUuid($collection_id);
-
+    $countOfParts = $this->helper->getCountOfGivDinStemmeByCollectionId($collection_id);
 
     if ($nextDelta < $countOfParts) {
       return $this->redirect('giv_din_stemme.read', [

@@ -73,7 +73,6 @@ giv_din_stemme.start_donating:
   path: '/start-donating'
   methods:
     - 'GET'
-    - 'POST'
   defaults:
     _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::startDonating'
     _title: 'Start optagelser'
@@ -105,25 +104,6 @@ giv_din_stemme.thank_you:
   requirements:
     _permission: 'access content'
 
-giv_din_stemme.show:
-  path: '/giv_din_stemme'
-  methods:
-    - 'GET'
-  defaults:
-    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::show'
-    _title: 'Indtal'
-  requirements:
-    _permission: 'access content'
-
-giv_din_stemme.audio_process:
-  path: '/process'
-  methods:
-    - 'POST'
-  defaults:
-    _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::process'
-    _title: 'Behandl'
-  requirements:
-    _permission: 'access content'
 
 
 

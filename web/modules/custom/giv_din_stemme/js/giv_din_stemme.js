@@ -17,8 +17,6 @@ const canvasCtx = canvas.getContext("2d");
 
 // Main block for doing the audio recording
 if (navigator.mediaDevices.getUserMedia) {
-  console.log("The mediaDevices.getUserMedia() method is supported.");
-
   const constraints = { audio: true };
   let chunks = [];
 
@@ -29,8 +27,6 @@ if (navigator.mediaDevices.getUserMedia) {
 
     record.onclick = function () {
       mediaRecorder.start();
-      console.log(mediaRecorder.state);
-      console.log("Recorder started.");
       record.style.background = "red";
 
       stop.disabled = false;
@@ -39,8 +35,6 @@ if (navigator.mediaDevices.getUserMedia) {
 
     stop.onclick = function () {
       mediaRecorder.stop();
-      console.log(mediaRecorder.state);
-      console.log("Recorder stopped.");
       record.style.background = "";
       record.style.color = "";
 
@@ -49,8 +43,6 @@ if (navigator.mediaDevices.getUserMedia) {
     };
 
     mediaRecorder.onstop = function (e) {
-      console.log("Last data to read (after MediaRecorder.stop() called).");
-
       const clipContainer = document.createElement("article");
       const clipLabel = document.createElement("p");
       const audio = document.createElement("audio");
@@ -70,7 +62,7 @@ if (navigator.mediaDevices.getUserMedia) {
 
       audio.src = window.URL.createObjectURL(blob);
 
-      let file = new File([blob], "ehst.ogg",{type:blob.type, lastModified:new Date().getTime()});
+      let file = new File([blob], "audio_recording.ogg",{type:blob.type, lastModified:new Date().getTime()});
 
       let container = new DataTransfer();
       container.items.add(file);
@@ -94,13 +86,7 @@ if (navigator.mediaDevices.getUserMedia) {
     };
   };
 
-  let onError = function (err) {
-    console.log("The following error occured: " + err);
-  };
-
-  navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
-} else {
-  console.log("MediaDevices.getUserMedia() not supported on your browser!");
+  navigator.mediaDevices.getUserMedia(constraints).then(onSuccess);
 }
 
 function visualize(stream) {
