@@ -31,6 +31,7 @@ itkdev-docker-compose run node yarn watch
 ```
 
 Run the following to build assets once.
+
 ```shell name="assets-build"
 itkdev-docker-compose run node yarn build
 ```

@@ -11,4 +11,4 @@ See [keep a changelog] for information about writing changes to this log.
 - [PR-13](https://github.com/itk-dev/giv-din-stemme/pull/13)
   Mobile optimization.
 
-* Initial project.
+- Initial project.
