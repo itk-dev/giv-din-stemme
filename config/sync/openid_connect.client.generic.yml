@@ -12,7 +12,7 @@ settings:
   issuer_url: ''
   authorization_endpoint: 'https://idp-citizen.givdinstemme.local.itkdev.dk/connect/authorize'
   token_endpoint: 'https://idp-citizen.givdinstemme.local.itkdev.dk/connect/token'
-  userinfo_endpoint: 'https://idp-citizen.givdinstemme.local.itkdev.dk/connect/userinfo'
+  userinfo_endpoint: ''
   end_session_endpoint: 'https://idp-citizen.givdinstemme.local.itkdev.dk/connect/endsession'
   scopes:
     - openid
