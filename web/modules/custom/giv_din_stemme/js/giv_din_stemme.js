@@ -3,31 +3,17 @@ const record = document.querySelector(".record");
 const stop = document.querySelector(".stop");
 const canvas = document.querySelector(".visualizer");
 const mainSection = document.querySelector(".main-controls");
+const soundClips = document.querySelector(".sound-clips");
+const submitButton = document.querySelector("#read_submit_button");
+const fileElement = document.querySelector("#audio_input");
 
 // Disable stop button while not recording
 stop.disabled = true;
+submitButton.disabled = true;
 
 // Visualiser setup - create web audio api context and canvas
 let audioCtx;
 const canvasCtx = canvas.getContext("2d");
-
-function sendAudio(blob) {
-  console.info('Sending data to backend....');
-  const formData = new FormData();
-  formData.append("audio_file", blob, Date.now() + '.' + blob.type);
-
-  const url = new URL(location.href)
-
-  console.log(url.toString())
-
-  // Send the chat request to the backend.
-  fetch(url, {
-    method: 'POST',
-    body: formData
-  }).then(res => {
-    console.log('Sent to backend', res);
-  })
-}
 
 // Main block for doing the audio recording
 if (navigator.mediaDevices.getUserMedia) {
@@ -65,18 +51,42 @@ if (navigator.mediaDevices.getUserMedia) {
     mediaRecorder.onstop = function (e) {
       console.log("Last data to read (after MediaRecorder.stop() called).");
 
+      const clipContainer = document.createElement("article");
+      const clipLabel = document.createElement("p");
       const audio = document.createElement("audio");
+      const deleteButton = document.createElement("button");
+
+      clipContainer.classList.add("clip");
       audio.setAttribute("controls", "");
+      deleteButton.textContent = "Delete";
 
-      const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
+      clipContainer.appendChild(audio);
+      clipContainer.appendChild(clipLabel);
+      clipContainer.appendChild(deleteButton);
+      soundClips.appendChild(clipContainer);
 
-      audio.controls = true;
+      const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
       chunks = [];
+
       audio.src = window.URL.createObjectURL(blob);
-      console.log("recorder stopped");
 
-      sendAudio(blob);
+      let file = new File([blob], "ehst.ogg",{type:blob.type, lastModified:new Date().getTime()});
 
+      let container = new DataTransfer();
+      container.items.add(file);
+
+      fileElement.files = container.files;
+
+      deleteButton.onclick = (e) => {
+        let evtTgt = e.target;
+        evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+        record.disabled = false;
+        submitButton.disabled = true;
+        fileElement.files = new DataTransfer().files;
+      };
+
+      submitButton.disabled = false;
+      record.disabled = true;
     };
 
     mediaRecorder.ondataavailable = function (e) {

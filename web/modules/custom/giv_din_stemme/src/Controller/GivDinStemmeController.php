@@ -6,13 +6,11 @@ use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\DefaultContent\InvalidEntityException;
 use Drupal\Core\Entity\EntityStorageException;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\Exception\FileException;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\file\Entity\File;
@@ -20,9 +18,7 @@ use Drupal\giv_din_stemme\Entity\GivDinStemme;
 use Drupal\giv_din_stemme\Helper\AudioHelper;
 use Drupal\node\Entity\Node;
 use Drupal\openid_connect\OpenIDConnectSessionInterface;
-use Random\RandomException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -32,8 +28,6 @@ use Symfony\Component\HttpFoundation\Response;
  * Givdinstemme controller.
  */
 class GivDinStemmeController extends ControllerBase {
-  private const GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY = '/audio';
-  
   /**
    * Givdinstemme constructor.
    *
@@ -249,6 +243,19 @@ class GivDinStemmeController extends ControllerBase {
     return reset($result);
   }
 
+
+  /**
+   * @throws InvalidPluginDefinitionException
+   * @throws PluginNotFoundException
+   */
+  private function getCountOfGivDinStemmeByCollectionUuid(string $uuid): int {
+    $result = $this->entityTypeManager->getStorage('gds')->loadByProperties([
+      'collection_id' => $uuid,
+    ]);
+
+    return count($result);
+  }
+
   private function getRandomText(): Node {
 
     $nids = \Drupal::entityQuery('node')->condition('type','text')->accessCheck(FALSE)->execute();
@@ -284,44 +291,6 @@ class GivDinStemmeController extends ControllerBase {
     ];
   }
 
-  /**
-   * Process.
-   */
-  public function process(Request $request): Response {
-    $privateFileDirectory = $this->settings->get('file_private_path');
-    $directory = $privateFileDirectory . self::GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY;
-    $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
-
-    $collectionId = $request->get('collection_id');
-    $delta = $request->get('delta');
-
-    foreach ($request->files->all() as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
-      try {
-        // Copy audio file to private files.
-        // @todo Figure out why $file->getClientOriginalName() is strange.
-        $destination = $directory . '/' . $file->getFilename() . '_' . bin2hex(random_bytes(10)) . '.' . $file->guessExtension();
-        $this->fileSystem->copy($file->getPathname(), $destination, FileSystemInterface::EXISTS_ERROR);
-        $file = File::create([
-          'filename' => basename($destination),
-          'uri' => 'private://audio/' . basename($destination),
-          // Make file permanent.
-          'status' => 1,
-        ]);
-        $file->save();
-
-        // Load GivDinStemme and attach file.
-        $givDinStemme = $this->getGivDinStemmeByCollectionUuidAndDelta($collectionId, $delta);
-        $givDinStemme->set('file', $file);
-        $givDinStemme->save();
-      }
-      catch (FileException | EntityStorageException | RandomException | \Exception $e) {
-        // @todo LOG THIS SOMEWHERE?
-      }
-    }
-
-    return new JsonResponse([], Response::HTTP_CREATED);
-  }
-
   private function handleGet(Request $request, string $collection_id, string $delta): array
   {
     $collectionId = $request->get('collection_id');
@@ -336,36 +305,31 @@ class GivDinStemmeController extends ControllerBase {
     $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
     $textToRead = $metadata['text'];
     $count = $metadata['number_of_parts'];
-    $nextReading = $delta + 1;
-    $isDone = $nextReading === $count;
 
     return [
       '#theme' => 'read_page',
       '#textToRead' => $textToRead,
       '#totalTexts' => $count,
-      '#nextUrl' => $isDone ? '/thank-you' : '/read/'. $collectionId . '/' . $nextReading ,
-      '#hasNext' => !$isDone,
+      '#nextUrl' => '/read/'. $collectionId . '/' . $delta ,
       '#attached' => [
         'library' => ['giv_din_stemme/giv_din_stemme'],
       ],
     ];
   }
 
-  private function handlePost(Request $request, string $collection_id, string $delta): JsonResponse
+  private function handlePost(Request $request, string $collection_id, string $delta): RedirectResponse
   {
-    $privateFileDirectory = $this->settings->get('file_private_path');
-    $directory = $privateFileDirectory . self::GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY;
+    $directory = 'private://audio/';
     $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
 
     foreach ($request->files->all() as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
       try {
         // Copy audio file to private files.
-        // @todo Figure out why $file->getClientOriginalName() is strange.
-        $destination = $directory . '/' . $file->getFilename() . '_' . bin2hex(random_bytes(10)) . '.' . $file->guessExtension();
-        $this->fileSystem->copy($file->getPathname(), $destination, FileSystemInterface::EXISTS_ERROR);
+        $destination = $directory . '/' . $file->getClientOriginalName();
+        $newFilename = $this->fileSystem->copy($file->getPathname(), $destination, FileExists::Rename);
         $file = File::create([
-          'filename' => basename($destination),
-          'uri' => 'private://audio/' . basename($destination),
+          'filename' => basename($newFilename),
+          'uri' => $directory . basename($newFilename),
           // Make file permanent.
           'status' => 1,
         ]);
@@ -376,12 +340,25 @@ class GivDinStemmeController extends ControllerBase {
         $givDinStemme->set('file', $file);
         $givDinStemme->save();
       }
-      catch (FileException | EntityStorageException | RandomException | \Exception $e) {
+      catch (FileException | EntityStorageException |\Exception $e) {
         // @todo LOG THIS SOMEWHERE?
       }
     }
 
-    return new JsonResponse([], Response::HTTP_CREATED);
+
+    // Redirect based on whether another text part exists.
+    $nextDelta = ((int) $delta) + 1;
+    $countOfParts = $this->getCountOfGivDinStemmeByCollectionUuid($collection_id);
+
+
+    if ($nextDelta < $countOfParts) {
+      return $this->redirect('giv_din_stemme.read', [
+        'collection_id' => $collection_id,
+        'delta' => (string) $nextDelta,
+      ]);
+    } else {
+      return $this->redirect('giv_din_stemme.thank_you');
+    }
   }
 
 }

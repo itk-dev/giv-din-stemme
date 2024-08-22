@@ -21,21 +21,21 @@
       <button class="stop">Stop</button>
     </div>
   </div>
+  <section class="sound-clips">
+
+  </section>
 {% endblock %}
 {% block gds_footer %}
   <div class="py-5">
-    <form action="{{ nextUrl }}" method="post">
+    <form action="{{ nextUrl }}" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" id="audio_input" hidden>
       <div class="grid grid-cols-2">
         <div class="sm:col-span-1">
         </div>
         <div class="sm:col-span-1 justify-self-end">
-          <button type="submit" class="btn-default">
+          <button id="read_submit_button" type="submit" class="btn-default">
             <span class="mr-3">
-              {% if hasNext %}
-                {{ 'Continue'|t }}
-              {% else %}
-                {{ 'End'|t }}
-              {% endif %}
+              {{ 'Continue'|t }}
             </span>
             <i class="fa-solid fa-circle-arrow-right"></i>
           </button>

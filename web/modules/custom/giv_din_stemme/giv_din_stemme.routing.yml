@@ -99,7 +99,6 @@ giv_din_stemme.thank_you:
   path: '/thank-you'
   methods:
     - 'GET'
-    - 'POST'
   defaults:
     _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::thankYou'
     _title: 'Din donation'
