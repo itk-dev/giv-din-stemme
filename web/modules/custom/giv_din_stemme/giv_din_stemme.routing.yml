@@ -88,6 +88,3 @@ giv_din_stemme.audio_process:
     _title: 'Indtal'
   requirements:
     _permission: 'access content'
-
-
-

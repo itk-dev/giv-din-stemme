@@ -1,21 +1,36 @@
 <?php
 
+/**
+ * @file
+ * The file for the giv_din_stemme theme.
+ */
+
+/**
+ * Implements hook theme_suggestions_input_alter().
+ */
 function giv_din_stemme_theme_theme_suggestions_input_alter(array &$suggestions, array $variables) {
   if (isset($variables['element']['#attributes']['fa-icon'])) {
     $suggestions[] = 'input__submit__icon';
   }
 }
 
+/**
+ * Implements hook_theme_suggestions_container_alter().
+ */
 function giv_din_stemme_theme_theme_suggestions_container_alter(array &$suggestions, array $variables, $hook) {
-  if(isset($variables['element']['#id'])) {
-    $suggestions[] = $hook . '__' . str_replace('-','_', $variables['element']['#id']);
+  if (isset($variables['element']['#id'])) {
+    $suggestions[] = $hook . '__' . str_replace('-', '_', $variables['element']['#id']);
   }
 }
+
+/**
+ * Implements hook_theme_suggestions_form_element_alter().
+ */
 function giv_din_stemme_theme_theme_suggestions_form_element_alter(array &$suggestions, array $variables, $hook) {
-  if(isset($variables['element']['#field_name'])) {
-    $suggestions[] = $hook . '__' . str_replace('-','_', $variables['element']['#field_name']);
+  if (isset($variables['element']['#field_name'])) {
+    $suggestions[] = $hook . '__' . str_replace('-', '_', $variables['element']['#field_name']);
   }
   elseif (isset($variables['element']['#title'])) {
-    $suggestions[] = $hook . '__' . str_replace('-','_', strtolower($variables['element']['#title']));
+    $suggestions[] = $hook . '__' . str_replace('-', '_', strtolower($variables['element']['#title']));
   }
 }
