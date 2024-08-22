@@ -9,3 +9,6 @@ services:
       - '@database'
       - '@file_system'
       - '@settings'
+  Drupal\giv_din_stemme\Helper\Helper:
+    arguments:
+      - '@entity_type.manager'

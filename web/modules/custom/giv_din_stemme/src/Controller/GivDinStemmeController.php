@@ -17,6 +17,7 @@ use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
 use Drupal\giv_din_stemme\Helper\AudioHelper;
 use Drupal\node\Entity\Node;
+use Drupal\giv_din_stemme\Helper\Helper;
 use Drupal\openid_connect\OpenIDConnectSessionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -31,6 +32,8 @@ class GivDinStemmeController extends ControllerBase {
   /**
    * Givdinstemme constructor.
    *
+   * @param \Drupal\giv_din_stemme\Helper\Helper $helper
+   *   The helper.
    * @param \Drupal\giv_din_stemme\Helper\AudioHelper $audioHelper
    *   The audio helper.
    * @param \Drupal\Core\Database\Connection $connection
@@ -47,8 +50,10 @@ class GivDinStemmeController extends ControllerBase {
    *   The account interface
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
+   * @param
    */
   public function __construct(
+    protected Helper $helper,
     protected AudioHelper $audioHelper,
     protected Connection $connection,
     protected FileSystemInterface $fileSystem,
@@ -65,6 +70,7 @@ class GivDinStemmeController extends ControllerBase {
    */
   public static function create(ContainerInterface $container): GivDinStemmeController {
     return new static(
+      $container->get(Helper::class),
       $container->get('giv_din_stemme.audio_helper'),
       $container->get('database'),
       $container->get('file_system'),
@@ -82,7 +88,7 @@ class GivDinStemmeController extends ControllerBase {
   public function landing(Request $request): array {
     return [
       '#theme' => 'landing_page',
-      '#name' => $this->t('Landing Page'),
+      '#values' => $this->helper->getFrontpageValues()
     ];
   }
 
