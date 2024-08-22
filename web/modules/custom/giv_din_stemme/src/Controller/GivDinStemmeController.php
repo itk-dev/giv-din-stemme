@@ -47,7 +47,6 @@ class GivDinStemmeController extends ControllerBase {
    *   The account interface.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
-   * @param
    */
   public function __construct(
     protected Helper $helper,
@@ -85,7 +84,7 @@ class GivDinStemmeController extends ControllerBase {
   public function landing(Request $request): array {
     return [
       '#theme' => 'landing_page',
-      '#values' => $this->helper->getFrontpageValues()
+      '#values' => $this->helper->getFrontpageValues(),
     ];
   }
 

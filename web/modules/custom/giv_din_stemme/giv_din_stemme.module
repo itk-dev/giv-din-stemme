@@ -20,7 +20,7 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
     ],
     'landing_page' => [
       'variables' => [
-        'values' => NULL
+        'values' => NULL,
       ],
       'template' => 'landing-page',
     ],

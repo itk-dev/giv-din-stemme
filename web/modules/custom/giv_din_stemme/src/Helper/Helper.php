@@ -12,8 +12,7 @@ class Helper {
   use StringTranslationTrait;
 
   /**
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   Entity type manager.
+   * Constructor.
    */
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
@@ -30,7 +29,8 @@ class Helper {
     // @todo when the entity is settled.
     return [
       'donations' => 15,
-      'minutes' => 43
+      'minutes' => 43,
     ];
   }
+
 }
