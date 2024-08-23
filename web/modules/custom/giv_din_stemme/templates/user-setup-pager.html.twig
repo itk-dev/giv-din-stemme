@@ -27,11 +27,12 @@
     {% set classes = key is same as active_page ? element.classes ~ ' ' ~ 'active' : element.classes %}
     <div class="basis-full md:basis-auto {{ classes }}">
       <div class="inline-block">
-        <span>{{ key }}.</span>
-        <span>{{ element.title }}</span>
         {% if key < active_page %}
           <span><i class="text-green-600 fa-regular fa-circle-check"></i></span>
+        {% else %}
+          <span><i class="text-black fa-regular fa-circle-dot"></i></span>
         {% endif %}
+        <span class="label">{{ element.title }}</span>
       </div>
     </div>
   {% endfor %}

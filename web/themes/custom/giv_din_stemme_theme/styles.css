@@ -90,7 +90,7 @@
       @apply text-brand;
   }
 
-  .pager-item.active > div {
+  .pager-item.active > div .label {
       @apply border-brand border-b;
   }
 }
