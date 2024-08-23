@@ -2,8 +2,6 @@
 
 namespace Drupal\giv_din_stemme\Controller;
 
-use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
-use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityStorageException;
@@ -12,11 +10,8 @@ use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Site\Settings;
-use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
-use Drupal\giv_din_stemme\Helper\AudioHelper;
-use Drupal\node\Entity\Node;
 use Drupal\giv_din_stemme\Helper\Helper;
 use Drupal\openid_connect\OpenIDConnectSessionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -29,13 +24,12 @@ use Symfony\Component\HttpFoundation\Response;
  * Givdinstemme controller.
  */
 class GivDinStemmeController extends ControllerBase {
+
   /**
    * Givdinstemme constructor.
    *
    * @param \Drupal\giv_din_stemme\Helper\Helper $helper
    *   The helper.
-   * @param \Drupal\giv_din_stemme\Helper\AudioHelper $audioHelper
-   *   The audio helper.
    * @param \Drupal\Core\Database\Connection $connection
    *   The database connection.
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
@@ -180,8 +174,7 @@ class GivDinStemmeController extends ControllerBase {
    * Creates a collection of GivDinStemme entities
    * and redirects to the first.
    */
-  public function startDonating(Request $request): RedirectResponse
-  {
+  public function startDonating(Request $request): RedirectResponse {
     $text = $this->helper->getRandomText();
     $collectionId = $this->helper->generateUuid();
     $delta = 0;
@@ -194,7 +187,7 @@ class GivDinStemmeController extends ControllerBase {
     }
 
     // Create a GivDinStemme entity per text part.
-    foreach($parts as $part) {
+    foreach ($parts as $part) {
       $entity = GivDinStemme::create();
 
       $hashedAccountName = sha1($this->currentUser->getAccountName());
@@ -229,11 +222,11 @@ class GivDinStemmeController extends ControllerBase {
    *
    * Handles 'GET' and 'POST' method.
    */
-  public function read(Request $request, string $collection_id, string $delta): array|Response
-  {
+  public function read(Request $request, string $collection_id, string $delta): array|Response {
     if ('POST' === $request->getMethod()) {
       return $this->handleReadPost($request, $collection_id, $delta);
-    } else {
+    }
+    else {
       return $this->handleReadGet($request, $collection_id, $delta);
     }
   }
@@ -241,8 +234,7 @@ class GivDinStemmeController extends ControllerBase {
   /**
    * Handles read 'GET' method.
    */
-  private function handleReadGet(Request $request, string $collection_id, string $delta): array
-  {
+  private function handleReadGet(Request $request, string $collection_id, string $delta): array {
     $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
 
     $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
@@ -253,7 +245,7 @@ class GivDinStemmeController extends ControllerBase {
       '#theme' => 'read_page',
       '#textToRead' => $textToRead,
       '#totalTexts' => $count,
-      '#nextUrl' => '/read/'. $collection_id . '/' . $delta ,
+      '#nextUrl' => '/read/' . $collection_id . '/' . $delta ,
       '#attached' => [
         'library' => ['giv_din_stemme/giv_din_stemme'],
       ],
@@ -263,8 +255,7 @@ class GivDinStemmeController extends ControllerBase {
   /**
    * Handles read 'POST' method.
    */
-  private function handleReadPost(Request $request, string $collection_id, string $delta): RedirectResponse
-  {
+  private function handleReadPost(Request $request, string $collection_id, string $delta): RedirectResponse {
     $directory = 'private://audio/';
     $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
 
@@ -291,13 +282,12 @@ class GivDinStemmeController extends ControllerBase {
         // Attach file.
         $givDinStemme->set('file', $file);
       }
-      catch (FileException | EntityStorageException |\Exception $e) {
+      catch (FileException | EntityStorageException | \Exception $e) {
         // @todo How do we handle this?
       }
     }
 
     $givDinStemme->save();
-
 
     // Redirect based on whether another text part exists.
     $nextDelta = ((int) $delta) + 1;
@@ -308,7 +298,8 @@ class GivDinStemmeController extends ControllerBase {
         'collection_id' => $collection_id,
         'delta' => (string) $nextDelta,
       ]);
-    } else {
+    }
+    else {
       return $this->redirect('giv_din_stemme.thank_you');
     }
   }

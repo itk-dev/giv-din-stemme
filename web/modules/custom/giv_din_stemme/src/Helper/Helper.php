@@ -16,10 +16,12 @@ class Helper {
   use StringTranslationTrait;
 
   /**
-   *  Constructor.
+   * Constructor.
+   *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity type manager.
    * @param \Drupal\Component\Uuid\Php $uuid
+   *   Uuid generator.
    */
   public function __construct(
     protected EntityTypeManagerInterface $entityTypeManager,
@@ -44,14 +46,13 @@ class Helper {
   /**
    * Gets random Text.
    */
-  public function getRandomText(): EntityInterface
-  {
+  public function getRandomText(): EntityInterface {
 
     $nodes = $this->entityTypeManager->getStorage('node')->loadByProperties([
-      'type' => 'text'
+      'type' => 'text',
     ]);
 
-    $count  = count($nodes);
+    $count = count($nodes);
     $keys = array_keys($nodes);
 
     $randomKey = $keys[rand(0, $count - 1)];
@@ -62,8 +63,7 @@ class Helper {
   /**
    * Generate new uuid.
    */
-  public function generateUuid(): string
-  {
+  public function generateUuid(): string {
     return $this->uuid->generate();
   }
 
@@ -93,4 +93,5 @@ class Helper {
 
     return count($result);
   }
+
 }
