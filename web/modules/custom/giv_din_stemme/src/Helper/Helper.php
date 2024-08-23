@@ -6,8 +6,8 @@ use Drupal\Component\Uuid\Php;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
-use Drupal\giv_din_stemme\Exception\UniqueGivDinStemmeNotFoundException;
 use Drupal\giv_din_stemme\Exception\NoTextFoundException;
+use Drupal\giv_din_stemme\Exception\UniqueGivDinStemmeNotFoundException;
 use Drupal\node\NodeInterface;
 
 /**
