@@ -27,14 +27,15 @@ class Helper {
    * Change display of username.
    *
    * @param string $name
+   *   The name.
    * @param \Drupal\Core\Session\AccountInterface $user
-   *
-   * @return void
+   *   The user.
    */
-  public function alterUserName(string &$name, AccountInterface $user) {
+  public function alterUserName(string &$name, AccountInterface $user): void {
     // Alter name if only authenticated and not super admin.
     if (count($user->getRoles()) === 1 && $user->id() > 1) {
       $name = $this->t('Profile');
     }
   }
+
 }

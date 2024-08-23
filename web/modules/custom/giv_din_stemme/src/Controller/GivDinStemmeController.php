@@ -43,14 +43,13 @@ class GivDinStemmeController extends ControllerBase {
    * @param \Drupal\Core\Site\Settings $settings
    *   Settings.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-      *   Entity type manager.
+   *   Entity type manager.
    * @param \Drupal\openid_connect\OpenIDConnectSessionInterface $session
    *   The OpenID Connect session service.
    * @param \Drupal\Core\Session\AccountInterface $currentUser
-   *   The account interface
+   *   The account interface.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
-   * @param
    */
   public function __construct(
     protected Helper $helper,
@@ -60,7 +59,7 @@ class GivDinStemmeController extends ControllerBase {
     protected $entityTypeManager,
     protected OpenIDConnectSessionInterface $session,
     protected $currentUser,
-    protected RequestStack $requestStack
+    protected RequestStack $requestStack,
   ) {
   }
 
@@ -86,7 +85,7 @@ class GivDinStemmeController extends ControllerBase {
   public function landing(Request $request): array {
     return [
       '#theme' => 'landing_page',
-      '#values' => $this->helper->getFrontpageValues()
+      '#values' => $this->helper->getFrontpageValues(),
     ];
   }
 
@@ -103,8 +102,11 @@ class GivDinStemmeController extends ControllerBase {
    * Login through OIDC if consent is given.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request.
    *
    * @return \Drupal\Core\Routing\TrustedRedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+   *   The response.
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */

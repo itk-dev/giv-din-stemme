@@ -196,3 +196,7 @@ node_modules
 
 # Docker
 .env.docker.local
+.twig-cs-fixer.cache
+
+# Assets
+web/themes/custom/giv_din_stemme_theme/build/

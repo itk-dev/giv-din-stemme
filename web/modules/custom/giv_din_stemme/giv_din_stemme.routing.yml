@@ -103,7 +103,3 @@ giv_din_stemme.thank_you:
     _title: 'Din donation'
   requirements:
     _permission: 'access content'
-
-
-
-

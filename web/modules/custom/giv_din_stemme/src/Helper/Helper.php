@@ -16,6 +16,7 @@ class Helper {
   use StringTranslationTrait;
 
   /**
+   *  Constructor.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity type manager.
    * @param \Drupal\Component\Uuid\Php $uuid
@@ -36,7 +37,7 @@ class Helper {
     // @todo when the entity is settled.
     return [
       'donations' => 15,
-      'minutes' => 43
+      'minutes' => 43,
     ];
   }
 

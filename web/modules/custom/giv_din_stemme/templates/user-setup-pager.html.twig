@@ -22,12 +22,12 @@
 }
 %}
 
-<div class="mb-10 mx-5 flex md:space-x-8 text-xl flex-wrap md:flex-nowrap">
+<div class="mb-10 mx-5 flex flex-col gap-1 md:flex-row md:gap-5">
   {% for key, element in pager %}
     {% set classes = key is same as active_page ? element.classes ~ ' ' ~ 'active' : element.classes %}
     <div class="basis-full md:basis-auto {{ classes }}">
       <div class="inline-block">
-        <span class="pr-2">{{ key }}.</span>
+        <span>{{ key }}.</span>
         <span>{{ element.title }}</span>
         {% if key < active_page %}
           <span><i class="text-green-600 fa-regular fa-circle-check"></i></span>

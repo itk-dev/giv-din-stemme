@@ -18,34 +18,48 @@ docker network create --driver=bridge --attachable --internal=false frontend
 
 ### Building assets for the frontend
 
-Run `itkdev-docker-compose run node yarn watch` to continuesly build assets uppon file changes.
+Run the following to install dependencies with yarn.
 
-Run `itkdev-docker-compose run node yarn build` to build assets once.
+```shell name="assets-install"
+itkdev-docker-compose run node yarn install
+```
+
+Run the following to continuesly build assets uppon file changes.
+
+```shell name="assets-watch"
+itkdev-docker-compose run node yarn watch
+```
+
+Run the following to build assets once.
+
+```shell name="assets-build"
+itkdev-docker-compose run node yarn build
+```
 
 ### Site installation
 
 Run the following commands to set up the site. This will run a normal Drupal site installation with the existing
 configuration that comes with this project.
 
-```shell
-itkdev-docker-compose up -d
+```shell name="site-up"
+itkdev-docker-compose up --detach
 itkdev-docker-compose composer install
-itkdev-docker-compose drush site-install minimal --existing-config -y
+itkdev-docker-compose drush site-install --existing-config --yes
 ```
 
 When the installation is completed, that admin user is created and the password for logging in the outputted. If you
 forget the password, use drush uli command to get a one-time-login link (not the uri here only works if you are using
 trafik).
 
-```shell
-itkdev-docker-compose drush uli --uri="http://givdinstemme.local.itkdev.dk/"
+```shell name="site-login"
+itkdev-docker-compose drush --uri="https://givdinstemme.local.itkdev.dk/" user:login
 ```
 
 ### Access the site
 
 If you are using out `itkdev-docker-compose` simple use the command below to åbne the site in you default browser.
 
-```shell
+```shell name="site-open"
 itkdev-docker-compose open
 ```
 
@@ -53,7 +67,7 @@ Alternatively you can find the port number that is mapped nginx container that s
 by using this command:
 
 ```shell
-docker compose port nginx 8080
+open "http://$(docker compose port nginx 8080)"
 ```
 
 ### Drupal config
@@ -74,10 +88,6 @@ Import config from config files:
 ```shell
 itkdev-docker-compose drush config:import
 ```
-
-### Coding standards
-
-@todo Add description about running and applying coding standards
 
 ## Production setup
 
@@ -128,4 +138,33 @@ $config['openid_connect.client.connection']['settings']['authorization_endpoint'
 $config['openid_connect.client.connection']['settings']['token_endpoint'] = '…';
 $config['openid_connect.client.connection']['settings']['userinfo_endpoint'] = '…';
 $config['openid_connect.client.connection']['settings']['end_session_endpoint'] = '…';
+```
+
+### Coding standards
+
+``` shell name=coding-standards-composer
+docker compose run --rm phpfpm composer install
+docker compose run --rm phpfpm composer normalize
+```
+
+``` shell name=coding-standards-php
+docker compose run --rm phpfpm composer install
+docker compose run --rm phpfpm composer coding-standards-apply/phpcs
+docker compose run --rm phpfpm composer coding-standards-check/phpcs
+```
+
+``` shell name=coding-standards-twig
+docker compose run --rm phpfpm composer install
+docker compose run --rm phpfpm composer coding-standards-apply/twig-cs-fixer
+docker compose run --rm phpfpm composer coding-standards-check/twig-cs-fixer
+```
+
+``` shell name=coding-standards-markdown
+docker run --platform linux/amd64 --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md) --fix
+docker run --platform linux/amd64 --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md)
+```
+
+```shell name="coding-standards-assets"
+itkdev-docker-compose run node yarn coding-standards-apply
+itkdev-docker-compose run node yarn coding-standards-check
 ```
