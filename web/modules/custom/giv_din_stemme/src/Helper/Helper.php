@@ -58,12 +58,7 @@ class Helper {
       throw new NoTextFoundException('No text node found.');
     }
 
-    $count = count($nodes);
-    $keys = array_keys($nodes);
-
-    $randomKey = $keys[rand(0, $count - 1)];
-
-    return $nodes[$randomKey];
+    return $nodes[array_rand($nodes)];
   }
 
   /**
