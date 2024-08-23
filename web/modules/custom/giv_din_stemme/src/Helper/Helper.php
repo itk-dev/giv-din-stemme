@@ -44,12 +44,13 @@ class Helper {
   }
 
   /**
-   * Gets random Text.
+   * Gets random published Text.
    */
   public function getRandomText(): EntityInterface {
 
     $nodes = $this->entityTypeManager->getStorage('node')->loadByProperties([
       'type' => 'text',
+      'status' => 1,
     ]);
 
     $count = count($nodes);
