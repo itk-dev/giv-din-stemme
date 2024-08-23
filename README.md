@@ -21,19 +21,19 @@ docker network create --driver=bridge --attachable --internal=false frontend
 Run the following to install dependencies with yarn.
 
 ```shell name="assets-install"
-itkdev-docker-compose run node yarn install
+docker compose run --rm node yarn install
 ```
 
 Run the following to continuesly build assets uppon file changes.
 
 ```shell name="assets-watch"
-itkdev-docker-compose run node yarn watch
+docker compose run --rm node yarn watch
 ```
 
 Run the following to build assets once.
 
 ```shell name="assets-build"
-itkdev-docker-compose run node yarn build
+docker compose run --rm node yarn build
 ```
 
 ### Site installation
@@ -110,9 +110,13 @@ itkdev-docker-compose --profile oidc up --detach
 
 to start the OIDC mock along with the other stuff.
 
-The OIDC mock uses a selfsigned `pfx` certificate for
-[HTTPS](https://github.com/Soluto/oidc-server-mock?tab=readme-ov-file#https). The certificate is generated from our
-selfsigned development Traefik certificates:
+<details>
+<summary>Updating the self-signed certificate</summary>
+
+**Note**: This section is only kept as an internal note on how the self-signed certificate,
+[`.docker/oidc-server-mock/cert/docker.pfx`](.docker/oidc-server-mock/cert/docker.pfx), is generated from our
+self-signed development Traefik certificates. The certificate is committed to Git and should only be updated if our
+Traefik certificates are ever updated.
 
 ```shell name=generate-mock-pfx-certificate
 cert_path="$(dirname $(dirname $(which itkdev-docker-compose)))/traefik/ssl"
@@ -120,6 +124,8 @@ openssl pkcs12 -export -out .docker/oidc-server-mock/cert/docker.pfx -inkey $cer
 
 openssl pkcs12 -in .docker/oidc-server-mock/cert/docker.pfx -passin pass:mock -passout pass: -info
 ```
+
+</details>
 
 ### Production
 
@@ -130,13 +136,13 @@ For production, we override (some) OpenID Connect configuration (rather than ign
 // …
 
 // https://idp-citizen.givdinstemme.srvitkstgweb01.itkdev.dk/.well-known/openid-configuration
-$config['openid_connect.client.connection']['settings']['client_id'] = '…';
-$config['openid_connect.client.connection']['settings']['client_secret'] = '…';
+$config['openid_connect.client.generic']['settings']['client_id'] = '…';
+$config['openid_connect.client.generic']['settings']['client_secret'] = '…';
 
 // Get these from your OIDC Discovery document.
-$config['openid_connect.client.connection']['settings']['authorization_endpoint'] = '…';
-$config['openid_connect.client.connection']['settings']['token_endpoint'] = '…';
-$config['openid_connect.client.connection']['settings']['end_session_endpoint'] = '…';
+$config['openid_connect.client.generic']['settings']['authorization_endpoint'] = '…';
+$config['openid_connect.client.generic']['settings']['token_endpoint'] = '…';
+$config['openid_connect.client.generic']['settings']['end_session_endpoint'] = '…';
 ```
 
 ### Coding standards
@@ -164,6 +170,7 @@ docker run --platform linux/amd64 --rm --volume "$PWD:/md" peterdavehello/markdo
 ```
 
 ```shell name="coding-standards-assets"
-itkdev-docker-compose run node yarn coding-standards-apply
-itkdev-docker-compose run node yarn coding-standards-check
+docker compose run --rm node yarn install
+docker compose run --rm node yarn coding-standards-apply
+docker compose run --rm node yarn coding-standards-check
 ```
