@@ -62,20 +62,19 @@ if (navigator.mediaDevices.getUserMedia) {
       clipContainer.appendChild(deleteButton);
       soundClips.appendChild(clipContainer);
 
-      const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
+      const blob = new Blob(chunks, { type: "audio/mp3" });
       chunks = [];
 
       audio.src = window.URL.createObjectURL(blob);
 
-      let file = new File([blob], "audio_recording.ogg",{type:blob.type, lastModified:new Date().getTime()});
-
+      // Convert blob to file and attach to file element.
+      let file = new File([blob], "audio_recording.mp3", {type:blob.type, lastModified:new Date().getTime()});
       let container = new DataTransfer();
       container.items.add(file);
-
       fileElement.files = container.files;
 
-      let duration = Math.round((endTime - startTime) / 1000);
-      durationElement.value = duration;
+      // Set duration time
+      durationElement.value = Math.round((endTime - startTime) / 1000);
 
       deleteButton.onclick = (e) => {
         let evtTgt = e.target;
