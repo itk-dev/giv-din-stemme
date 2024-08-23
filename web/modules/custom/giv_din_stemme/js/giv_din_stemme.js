@@ -1,158 +1,132 @@
-// Set up basic variables for app
-const record = document.querySelector(".record");
-const stop = document.querySelector(".stop");
-const canvas = document.querySelector(".visualizer");
-const mainSection = document.querySelector(".main-controls");
-const soundClips = document.querySelector(".sound-clips");
-const submitButton = document.querySelector("#read_submit_button");
-const fileElement = document.querySelector("#audio_input");
-const durationElement = document.querySelector("#recording_duration");
+(async () => {
 
-// Disable stop button while not recording
-stop.disabled = true;
-submitButton.disabled = true;
+  let volumeCallback = null;
+  let volumeInterval = null;
+  const volumeVisualizer = document.getElementById('btn-microphone-toggle');
+  const toggleButton = document.getElementById('btn-microphone-toggle');
+  const mainSection = document.querySelector(".main-controls");
+  const soundClips = document.querySelector(".sound-clips");
+  const submitButton = document.querySelector("#read_submit_button");
+  const fileElement = document.querySelector("#audio_input");
+  const durationElement = document.querySelector("#recording_duration");
 
-// Visualiser setup - create web audio api context and canvas
-let audioCtx;
-const canvasCtx = canvas.getContext("2d");
+  // Initialize
+  try {
+    const audioStream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true
+      }
+    });
+    const audioContext = new AudioContext();
+    const audioSource = audioContext.createMediaStreamSource(audioStream);
+    const analyser = audioContext.createAnalyser();
+    analyser.fftSize = 512;
+    analyser.minDecibels = -127;
+    analyser.maxDecibels = 0;
+    analyser.smoothingTimeConstant = 0.4;
+    audioSource.connect(analyser);
+    const volumes = new Uint8Array(analyser.frequencyBinCount);
 
-// Main block for doing the audio recording
-if (navigator.mediaDevices.getUserMedia) {
-  const constraints = { audio: true };
-  let chunks = [];
-  let startTime;
-  let endTime;
-
-  let onSuccess = function (stream) {
-    const mediaRecorder = new MediaRecorder(stream);
-
-    visualize(stream);
-
-    record.onclick = function () {
-      startTime = Date.now();
-      mediaRecorder.start();
-      record.style.background = "red";
-
-      stop.disabled = false;
-      record.disabled = true;
+    volumeCallback = () => {
+      analyser.getByteFrequencyData(volumes);
+      let volumeSum = 0;
+      for(const volume of volumes)
+        volumeSum += volume;
+      const averageVolume = volumeSum / volumes.length;
+      // Value range: 127 = analyser.maxDecibels - analyser.minDecibels;
+      volumeVisualizer.style.setProperty('--volume', Math.ceil((averageVolume * 100 / 127)) + 'px');
     };
+  } catch(e) {
+    console.error('Failed to initialize volume visualizer.', e);
+  }
 
-    stop.onclick = function () {
-      mediaRecorder.stop();
-      record.style.background = "";
-      record.style.color = "";
+  // Disable next button while not recording
+  submitButton.disabled = true;
 
-      stop.disabled = true;
-      record.disabled = false;
-      endTime = Date.now();
-    };
+  // Main block for doing the audio recording
+  if (navigator.mediaDevices.getUserMedia) {
+    const constraints = { audio: true };
+    let chunks = [];
+    let startTime;
+    let endTime;
 
-    mediaRecorder.onstop = function (e) {
-      const clipContainer = document.createElement("article");
-      const clipLabel = document.createElement("p");
-      const audio = document.createElement("audio");
-      const deleteButton = document.createElement("button");
+    let onSuccess = function (stream) {
+      const mediaRecorder = new MediaRecorder(stream);
 
-      clipContainer.classList.add("clip");
-      audio.setAttribute("controls", "");
-      deleteButton.textContent = "Delete";
+      // visualize(stream);
 
-      clipContainer.appendChild(audio);
-      clipContainer.appendChild(clipLabel);
-      clipContainer.appendChild(deleteButton);
-      soundClips.appendChild(clipContainer);
+      toggleButton.addEventListener('click', () => {
+        if (toggleButton.classList.contains('active')) {
+          if (volumeInterval !== null) {
+            clearInterval(volumeInterval);
+            volumeInterval = null;
+          }
+          mediaRecorder.stop();
+          endTime = Date.now();
+          toggleButton.classList.remove('active')
+        }
+        else {
+          toggleButton.classList.add('active');
+          startTime = Date.now();
+          mediaRecorder.start();
+          if (volumeCallback !== null && volumeInterval === null) {
+            volumeInterval = setInterval(volumeCallback, 100);
+          }
+        }
+      });
 
-      const blob = new Blob(chunks, { type: "audio/mp3" });
-      chunks = [];
+      mediaRecorder.onstop = function (e) {
+        const clipContainer = document.createElement("article");
+        // TODO: Do we use this clipLabel?
+        const clipLabel = document.createElement("p");
+        const audio = document.createElement("audio");
+        const deleteButton = document.createElement("button");
 
-      audio.src = window.URL.createObjectURL(blob);
+        clipContainer.classList.add("clip", "flex");
+        deleteButton.classList.add("btn-primary");
+        audio.setAttribute("controls", "");
+        // TODO: This should be translateable
+        deleteButton.textContent = "Delete recording";
 
-      // Convert blob to file and attach to file element.
-      let file = new File([blob], "audio_recording.mp3", {type:blob.type, lastModified:new Date().getTime()});
-      let container = new DataTransfer();
-      container.items.add(file);
-      fileElement.files = container.files;
+        clipContainer.appendChild(audio);
+        clipContainer.appendChild(clipLabel);
+        clipContainer.appendChild(deleteButton);
+        soundClips.appendChild(clipContainer);
 
-      // Set duration time
-      durationElement.value = Math.round((endTime - startTime) / 1000);
+        const blob = new Blob(chunks, { type: "audio/mp3" });
+        chunks = [];
 
-      deleteButton.onclick = (e) => {
-        let evtTgt = e.target;
-        evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
-        record.disabled = false;
-        submitButton.disabled = true;
-        fileElement.files = new DataTransfer().files;
-        startTime = null;
-        endTime = null;
+        audio.src = window.URL.createObjectURL(blob);
+
+        // Convert blob to file and attach to file element.
+        let file = new File([blob], "audio_recording.mp3", {type:blob.type, lastModified:new Date().getTime()});
+        let container = new DataTransfer();
+        container.items.add(file);
+        fileElement.files = container.files;
+
+        // Set duration time
+        durationElement.value = Math.round((endTime - startTime) / 1000);
+
+        deleteButton.onclick = (e) => {
+          let evtTgt = e.target;
+          evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+          submitButton.disabled = true;
+          fileElement.files = new DataTransfer().files;
+          startTime = null;
+          endTime = null;
+        };
+
+        submitButton.disabled = false;
       };
 
-      submitButton.disabled = false;
-      record.disabled = true;
+      mediaRecorder.ondataavailable = function (e) {
+        chunks.push(e.data);
+      };
     };
 
-    mediaRecorder.ondataavailable = function (e) {
-      chunks.push(e.data);
-    };
-  };
-
-  navigator.mediaDevices.getUserMedia(constraints).then(onSuccess);
-}
-
-function visualize(stream) {
-  if (!audioCtx) {
-    audioCtx = new AudioContext();
+    navigator.mediaDevices.getUserMedia(constraints).then(onSuccess);
   }
 
-  const source = audioCtx.createMediaStreamSource(stream);
 
-  const analyser = audioCtx.createAnalyser();
-  analyser.fftSize = 2048;
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
+})();
 
-  source.connect(analyser);
-
-  draw();
-
-  function draw() {
-    const WIDTH = canvas.width;
-    const HEIGHT = canvas.height;
-
-    requestAnimationFrame(draw);
-
-    analyser.getByteTimeDomainData(dataArray);
-
-    canvasCtx.fillStyle = "rgb(200, 200, 200)";
-    canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
-
-    canvasCtx.lineWidth = 2;
-    canvasCtx.strokeStyle = "rgb(0, 0, 0)";
-
-    canvasCtx.beginPath();
-
-    let sliceWidth = (WIDTH * 1.0) / bufferLength;
-    let x = 0;
-
-    for (let i = 0; i < bufferLength; i++) {
-      let v = dataArray[i] / 128.0;
-      let y = (v * HEIGHT) / 2;
-
-      if (i === 0) {
-        canvasCtx.moveTo(x, y);
-      } else {
-        canvasCtx.lineTo(x, y);
-      }
-
-      x += sliceWidth;
-    }
-
-    canvasCtx.lineTo(canvas.width, canvas.height / 2);
-    canvasCtx.stroke();
-  }
-}
-
-window.onresize = function () {
-  canvas.width = mainSection.offsetWidth;
-};
-
-window.onresize();

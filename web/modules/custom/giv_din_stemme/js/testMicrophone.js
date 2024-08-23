@@ -1,8 +1,8 @@
 (async () => {
   let volumeCallback = null;
   let volumeInterval = null;
-  const volumeVisualizer = document.getElementById('volume-test-toggle');
-  const toggleButton = document.getElementById('volume-test-toggle');
+  const volumeVisualizer = document.getElementById('btn-microphone-toggle');
+  const toggleButton = document.getElementById('btn-microphone-toggle');
 
   // Initialize
   try {

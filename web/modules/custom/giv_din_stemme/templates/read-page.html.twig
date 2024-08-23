@@ -1,24 +1,23 @@
 {% extends "@giv_din_stemme/gds-page-wrapper.html.twig" %}
 
 {% block gds_content %}
-  <div class="py-5">
-    <div class="consent-intro text-lg">
-      <p>
-        {{ "Activate the microphone and read the displayed text. Press 'Next Section' to continue"|t }}
-      </p>
+    <div class="py-5">
+      <div class="consent-intro text-lg">
+        <p>
+          {{ "Activate the microphone and read the displayed text. Press 'Next Section' to continue"|t }}
+        </p>
+      </div>
+      <div class="mb-5 pb-5 border-b-2"></div>
     </div>
-    <div class="mb-5 pb-5 border-b-2"></div>
-    <div class="consent-text max-h-52 overflow-y-scroll">
-      <p>
-        {{ textToRead }}
-      </p>
-    </div>
-  </div>
-  <div class="py-5">
-    <canvas class="visualizer" height="60px"></canvas>
-    <div id="buttons">
-      <button class="record">Record</button>
-      <button class="stop">Stop</button>
+
+    <div class="relative flex flex-col md:flex-row md:gap-5 md:min-h-36">
+      <div class="consent-text max-h-52 overflow-y-scroll flex align-content-center">
+        <p class="text-lg">
+          {{ textToRead }}
+        </p>
+      </div>
+    <div class="">
+      {% include "@giv_din_stemme/components/button-microphone-toggle.html.twig" %}
     </div>
   </div>
   <section class="sound-clips">

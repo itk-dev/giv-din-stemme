@@ -95,7 +95,15 @@
   }
 }
 
-#volume-test-toggle {
-    background-color: red;
-    box-shadow: 0 0 var(--volume, 5px) var(--volume, 5px) #EF4123;
+.btn-microphone-toggle.active.visualizer-shadow {
+  box-shadow: 0 0 var(--volume, 5px) var(--volume, 5px) hsla(9, 86%, 54%, 50%);
+}
+.btn-microphone-toggle.active .fa-microphone {
+  display: none;
+}
+.btn-microphone-toggle.active .fa-microphone-slash {
+  display: inline;
+}
+.btn-microphone-toggle .fa-microphone-slash {
+  display: none;
 }
