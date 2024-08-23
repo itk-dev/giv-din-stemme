@@ -6,15 +6,15 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\File\Exception\FileException;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Site\Settings;
 use Drupal\file\Entity\File;
-use Drupal\giv_din_stemme\Helper\AudioHelper;
+use Drupal\giv_din_stemme\Entity\GivDinStemme;
 use Drupal\giv_din_stemme\Helper\Helper;
 use Drupal\openid_connect\OpenIDConnectSessionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -24,15 +24,12 @@ use Symfony\Component\HttpFoundation\Response;
  * Givdinstemme controller.
  */
 class GivDinStemmeController extends ControllerBase {
-  private const GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY = '/audio';
 
   /**
    * Givdinstemme constructor.
    *
    * @param \Drupal\giv_din_stemme\Helper\Helper $helper
    *   The helper.
-   * @param \Drupal\giv_din_stemme\Helper\AudioHelper $audioHelper
-   *   The audio helper.
    * @param \Drupal\Core\Database\Connection $connection
    *   The database connection.
    * @param \Drupal\Core\File\FileSystemInterface $fileSystem
@@ -50,7 +47,6 @@ class GivDinStemmeController extends ControllerBase {
    */
   public function __construct(
     protected Helper $helper,
-    protected AudioHelper $audioHelper,
     protected Connection $connection,
     protected FileSystemInterface $fileSystem,
     protected Settings $settings,
@@ -67,7 +63,6 @@ class GivDinStemmeController extends ControllerBase {
   public static function create(ContainerInterface $container): GivDinStemmeController {
     return new static(
       $container->get(Helper::class),
-      $container->get('giv_din_stemme.audio_helper'),
       $container->get('database'),
       $container->get('file_system'),
       $container->get('settings'),
@@ -165,12 +160,92 @@ class GivDinStemmeController extends ControllerBase {
   }
 
   /**
-   * Show.
+   * Thank you page.
    */
-  public function show(Request $request): array {
+  public function thankYou(Request $request): array {
+    return [
+      '#theme' => 'thank_you_page',
+    ];
+  }
+
+  /**
+   * Start donating page.
+   *
+   * Creates a collection of GivDinStemme entities
+   * and redirects to the first.
+   */
+  public function startDonating(Request $request): RedirectResponse {
+    $text = $this->helper->getRandomText();
+    $collectionId = $this->helper->generateUuid();
+    $delta = 0;
+
+    $parts = $text->get('field_text_parts');
+    $numberOfParts = count($parts);
+
+    if ($numberOfParts < 1) {
+      throw new \Exception('A text should contain at least one part');
+    }
+
+    // Create a GivDinStemme entity per text part.
+    foreach ($parts as $part) {
+      $entity = GivDinStemme::create();
+
+      $hashedAccountName = sha1($this->currentUser->getAccountName());
+
+      $entity->set('collection_id', $collectionId);
+      $entity->set('collection_delta', $delta++);
+      $entity->set('user_hash', $hashedAccountName);
+
+      // Save these on entity as metadata.
+      $partTextToRead = $part->getValue()['value'];
+      $textId = $text->id();
+
+      $entity->set('metadata', json_encode([
+        'text' => $partTextToRead,
+        'text_id' => $textId,
+        'user' => $hashedAccountName,
+        'number_of_parts' => $numberOfParts,
+      ]));
+
+      $entity->save();
+    }
+
+    return $this->redirect('giv_din_stemme.read', [
+      'collection_id' => $collectionId,
+      'delta' => 0,
+    ]);
+
+  }
+
+  /**
+   * Read page.
+   *
+   * Handles 'GET' and 'POST' method.
+   */
+  public function read(Request $request, string $collection_id, string $delta): array|Response {
+    if ('POST' === $request->getMethod()) {
+      return $this->handleReadPost($request, $collection_id, $delta);
+    }
+    else {
+      return $this->handleReadGet($request, $collection_id, $delta);
+    }
+  }
+
+  /**
+   * Handles read 'GET' method.
+   */
+  private function handleReadGet(Request $request, string $collection_id, string $delta): array {
+    $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
+
+    $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
+    $textToRead = $metadata['text'];
+    $count = $metadata['number_of_parts'];
 
     return [
-      '#theme' => 'giv_din_stemme',
+      '#theme' => 'read_page',
+      '#textToRead' => $textToRead,
+      '#totalTexts' => $count,
+      '#nextUrl' => '/read/' . $collection_id . '/' . $delta ,
       '#attached' => [
         'library' => ['giv_din_stemme/giv_din_stemme'],
       ],
@@ -178,45 +253,55 @@ class GivDinStemmeController extends ControllerBase {
   }
 
   /**
-   * Process.
+   * Handles read 'POST' method.
    */
-  public function process(Request $request): Response {
-    $privateFileDirectory = $this->settings->get('file_private_path');
-    $directory = $privateFileDirectory . self::GIV_DIN_STEMME_AUDIO_FILES_SUBDIRECTORY;
+  private function handleReadPost(Request $request, string $collection_id, string $delta): RedirectResponse {
+    $directory = 'private://audio/';
     $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+
+    // Load GivDinStemme.
+    $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
+
+    $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
+    $metadata['duration'] = $request->request->get('duration');
+    $givDinStemme->set('metadata', json_encode($metadata));
 
     foreach ($request->files->all() as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
       try {
         // Copy audio file to private files.
-        // @todo Figure out why $file->getClientOriginalName() is strange.
-        $destination = $directory . '/' . $file->getFilename() . '_' . bin2hex(random_bytes(10)) . '.' . $file->guessExtension();
-        $this->fileSystem->copy($file->getPathname(), $destination, FileSystemInterface::EXISTS_ERROR);
+        $destination = $directory . '/' . $file->getClientOriginalName();
+        $newFilename = $this->fileSystem->copy($file->getPathname(), $destination, FileExists::Rename);
         $file = File::create([
-          'filename' => basename($destination),
-          'uri' => 'private://audio/' . basename($destination),
+          'filename' => basename($newFilename),
+          'uri' => $directory . basename($newFilename),
           // Make file permanent.
           'status' => 1,
         ]);
         $file->save();
 
-        // Create submission with references to file and webform submission.
-        $this->connection->upsert('giv_din_stemme_submission')
-          ->key('job_id')
-          ->fields([
-            'id' => 1,
-            'webform_submission_id' => 1,
-            'webform_id' => 1,
-            'recording_file_id' => $file->id(),
-          ])
-          ->execute();
+        // Attach file.
+        $givDinStemme->set('file', $file);
       }
-      catch (FileException | EntityStorageException | RandomException | \Exception $e) {
-        // @todo LOG THIS SOMEWHERE?
+      catch (FileException | EntityStorageException | \Exception $e) {
+        // @todo How do we handle this?
       }
     }
 
-    return new JsonResponse([], Response::HTTP_CREATED);
+    $givDinStemme->save();
 
+    // Redirect based on whether another text part exists.
+    $nextDelta = ((int) $delta) + 1;
+    $countOfParts = $this->helper->getCountOfGivDinStemmeByCollectionId($collection_id);
+
+    if ($nextDelta < $countOfParts) {
+      return $this->redirect('giv_din_stemme.read', [
+        'collection_id' => $collection_id,
+        'delta' => (string) $nextDelta,
+      ]);
+    }
+    else {
+      return $this->redirect('giv_din_stemme.thank_you');
+    }
   }
 
 }

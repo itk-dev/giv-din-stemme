@@ -3,38 +3,25 @@ const record = document.querySelector(".record");
 const stop = document.querySelector(".stop");
 const canvas = document.querySelector(".visualizer");
 const mainSection = document.querySelector(".main-controls");
+const soundClips = document.querySelector(".sound-clips");
+const submitButton = document.querySelector("#read_submit_button");
+const fileElement = document.querySelector("#audio_input");
+const durationElement = document.querySelector("#recording_duration");
 
 // Disable stop button while not recording
 stop.disabled = true;
+submitButton.disabled = true;
 
 // Visualiser setup - create web audio api context and canvas
 let audioCtx;
 const canvasCtx = canvas.getContext("2d");
 
-function sendAudio(blob) {
-  console.info('Sending data to backend....');
-  const formData = new FormData();
-  formData.append("audio_file", blob, Date.now() + '.' + blob.type);
-
-  const url = new URL(location.href)
-
-  console.log(url.toString())
-
-  // Send the chat request to the backend.
-  fetch(url, {
-    method: 'POST',
-    body: formData
-  }).then(res => {
-    console.log('Sent to backend', res);
-  })
-}
-
 // Main block for doing the audio recording
 if (navigator.mediaDevices.getUserMedia) {
-  console.log("The mediaDevices.getUserMedia() method is supported.");
-
   const constraints = { audio: true };
   let chunks = [];
+  let startTime;
+  let endTime;
 
   let onSuccess = function (stream) {
     const mediaRecorder = new MediaRecorder(stream);
@@ -42,9 +29,8 @@ if (navigator.mediaDevices.getUserMedia) {
     visualize(stream);
 
     record.onclick = function () {
+      startTime = Date.now();
       mediaRecorder.start();
-      console.log(mediaRecorder.state);
-      console.log("Recorder started.");
       record.style.background = "red";
 
       stop.disabled = false;
@@ -53,30 +39,56 @@ if (navigator.mediaDevices.getUserMedia) {
 
     stop.onclick = function () {
       mediaRecorder.stop();
-      console.log(mediaRecorder.state);
-      console.log("Recorder stopped.");
       record.style.background = "";
       record.style.color = "";
 
       stop.disabled = true;
       record.disabled = false;
+      endTime = Date.now();
     };
 
     mediaRecorder.onstop = function (e) {
-      console.log("Last data to read (after MediaRecorder.stop() called).");
-
+      const clipContainer = document.createElement("article");
+      const clipLabel = document.createElement("p");
       const audio = document.createElement("audio");
+      const deleteButton = document.createElement("button");
+
+      clipContainer.classList.add("clip");
       audio.setAttribute("controls", "");
+      deleteButton.textContent = "Delete";
 
-      const blob = new Blob(chunks, { type: mediaRecorder.mimeType });
+      clipContainer.appendChild(audio);
+      clipContainer.appendChild(clipLabel);
+      clipContainer.appendChild(deleteButton);
+      soundClips.appendChild(clipContainer);
 
-      audio.controls = true;
+      const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
       chunks = [];
+
       audio.src = window.URL.createObjectURL(blob);
-      console.log("recorder stopped");
 
-      sendAudio(blob);
+      let file = new File([blob], "audio_recording.ogg",{type:blob.type, lastModified:new Date().getTime()});
 
+      let container = new DataTransfer();
+      container.items.add(file);
+
+      fileElement.files = container.files;
+
+      let duration = Math.round((endTime - startTime) / 1000);
+      durationElement.value = duration;
+
+      deleteButton.onclick = (e) => {
+        let evtTgt = e.target;
+        evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+        record.disabled = false;
+        submitButton.disabled = true;
+        fileElement.files = new DataTransfer().files;
+        startTime = null;
+        endTime = null;
+      };
+
+      submitButton.disabled = false;
+      record.disabled = true;
     };
 
     mediaRecorder.ondataavailable = function (e) {
@@ -84,13 +96,7 @@ if (navigator.mediaDevices.getUserMedia) {
     };
   };
 
-  let onError = function (err) {
-    console.log("The following error occured: " + err);
-  };
-
-  navigator.mediaDevices.getUserMedia(constraints).then(onSuccess, onError);
-} else {
-  console.log("MediaDevices.getUserMedia() not supported on your browser!");
+  navigator.mediaDevices.getUserMedia(constraints).then(onSuccess);
 }
 
 function visualize(stream) {
