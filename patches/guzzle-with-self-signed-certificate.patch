@@ -1,0 +1,14 @@
+diff --git a/web/modules/contrib/openid_connect/src/Plugin/OpenIDConnectClientBase.php b/web/modules/contrib/openid_connect/src/Plugin/OpenIDConnectClientBase.php
+index f70effe8..4c9cec4a 100644
+--- a/web/modules/contrib/openid_connect/src/Plugin/OpenIDConnectClientBase.php
++++ b/web/modules/contrib/openid_connect/src/Plugin/OpenIDConnectClientBase.php
+@@ -341,6 +341,9 @@ protected function getRequestOptions(string $authorization_code, string $redirec
+       'headers' => [
+         'Accept' => 'application/json',
+       ],
++      // We use a self-signed certificate for development.
++      // https://docs.guzzlephp.org/en/stable/request-options.html?highlight=verify#verify
++      \GuzzleHttp\RequestOptions::VERIFY => FALSE,
+     ];
+   }
+ 
