@@ -110,6 +110,14 @@ itkdev-docker-compose --profile oidc up --detach
 
 to start the OIDC mock along with the other stuff.
 
+The OIDC mock uses a selfsigned `pfx` certificate for
+[HTTPS](https://github.com/Soluto/oidc-server-mock?tab=readme-ov-file#https), and to make everything work during
+development a little patch must be applied to [Guzzle](https://docs.guzzlephp.org/):
+
+``` shell name=guzzle-development-patch
+docker compose exec phpfpm bash -c 'patch --strip=1 < patches/guzzle-with-self-signed-certificate.patch'
+```
+
 <details>
 <summary>Updating the self-signed certificate</summary>
 
