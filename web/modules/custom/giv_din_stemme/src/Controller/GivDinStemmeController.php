@@ -266,6 +266,13 @@ class GivDinStemmeController extends ControllerBase {
     $directory = 'private://audio/';
     $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
 
+    // Load GivDinStemme.
+    $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
+
+    $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
+    $metadata['duration'] = $request->request->get('duration');
+    $givDinStemme->set('metadata', json_encode($metadata));
+
     foreach ($request->files->all() as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
       try {
         // Copy audio file to private files.
@@ -279,15 +286,16 @@ class GivDinStemmeController extends ControllerBase {
         ]);
         $file->save();
 
-        // Load GivDinStemme and attach file.
-        $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
+        // Attach file.
         $givDinStemme->set('file', $file);
-        $givDinStemme->save();
       }
       catch (FileException | EntityStorageException |\Exception $e) {
         // @todo How do we handle this?
       }
     }
+
+    $givDinStemme->save();
+
 
     // Redirect based on whether another text part exists.
     $nextDelta = ((int) $delta) + 1;

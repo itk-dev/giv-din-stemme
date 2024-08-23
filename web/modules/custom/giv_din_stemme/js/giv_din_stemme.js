@@ -6,6 +6,7 @@ const mainSection = document.querySelector(".main-controls");
 const soundClips = document.querySelector(".sound-clips");
 const submitButton = document.querySelector("#read_submit_button");
 const fileElement = document.querySelector("#audio_input");
+const durationElement = document.querySelector("#recording_duration");
 
 // Disable stop button while not recording
 stop.disabled = true;
@@ -19,6 +20,8 @@ const canvasCtx = canvas.getContext("2d");
 if (navigator.mediaDevices.getUserMedia) {
   const constraints = { audio: true };
   let chunks = [];
+  let startTime;
+  let endTime;
 
   let onSuccess = function (stream) {
     const mediaRecorder = new MediaRecorder(stream);
@@ -26,6 +29,7 @@ if (navigator.mediaDevices.getUserMedia) {
     visualize(stream);
 
     record.onclick = function () {
+      startTime = Date.now();
       mediaRecorder.start();
       record.style.background = "red";
 
@@ -40,6 +44,7 @@ if (navigator.mediaDevices.getUserMedia) {
 
       stop.disabled = true;
       record.disabled = false;
+      endTime = Date.now();
     };
 
     mediaRecorder.onstop = function (e) {
@@ -69,12 +74,17 @@ if (navigator.mediaDevices.getUserMedia) {
 
       fileElement.files = container.files;
 
+      let duration = Math.round((endTime - startTime) / 1000);
+      durationElement.value = duration;
+
       deleteButton.onclick = (e) => {
         let evtTgt = e.target;
         evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
         record.disabled = false;
         submitButton.disabled = true;
         fileElement.files = new DataTransfer().files;
+        startTime = null;
+        endTime = null;
       };
 
       submitButton.disabled = false;
