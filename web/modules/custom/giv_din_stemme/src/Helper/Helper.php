@@ -45,13 +45,14 @@ class Helper {
   }
 
   /**
-   * Gets random Text.
+   * Gets random published Text.
    */
-  public function getRandomText(): NodeInterface {
+  public function getRandomPublishedText(): NodeInterface {
 
     /** @var \Drupal\node\NodeInterface[] $nodes */
     $nodes = $this->entityTypeManager->getStorage('node')->loadByProperties([
       'type' => 'text',
+      'status' => 1,
     ]);
 
     if (empty($nodes)) {
