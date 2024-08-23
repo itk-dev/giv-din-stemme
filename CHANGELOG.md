@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-19](https://github.com/itk-dev/giv-din-stemme/pull/19)
+  Only get published texts.
 * [PR-16](https://github.com/itk-dev/giv-din-stemme/pull/16)
   Development OIDC fixes
 * [PR-13](https://github.com/itk-dev/giv-din-stemme/pull/13)
