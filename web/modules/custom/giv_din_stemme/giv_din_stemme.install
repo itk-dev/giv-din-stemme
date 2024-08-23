@@ -15,12 +15,12 @@ function giv_din_stemme_schema(): array {
     'description' => 'A table gathering all information on a completed submission.',
     'fields' => [
       'id' => [
-         'description' => 'Submission id',
-         'type' => 'int',
-         'unsigned' => TRUE,
-         'not null' => TRUE,
-         'default' => 0,
-       ],
+        'description' => 'Submission id',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
       'webform_submission_id' => [
         'description' => 'Webform submission id',
         'type' => 'int',
@@ -62,7 +62,7 @@ function giv_din_stemme_schema(): array {
  * Implements hook_uninstall().
  */
 function giv_din_stemme_uninstall($is_syncing) {
-  // Remove giv_din_stemme_submission table
+  // Remove giv_din_stemme_submission table.
   $tableName = 'giv_din_stemme_submission';
   $schema = \Drupal::database()->schema();
   if ($schema->tableExists($tableName)) {

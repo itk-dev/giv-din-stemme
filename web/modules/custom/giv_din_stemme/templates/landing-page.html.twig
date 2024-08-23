@@ -4,15 +4,14 @@
 
 {% set modal_id = 'terms-modal' %}
 
-<h1 class="px-5 mt-10 text-5xl">{{ drupal_title() }}</h1>
 <section class="content">
   <main class="main px-5">
-    <div class="py-5 grid grid-cols-2 gap-x-6 text-lg text-gray-500 font-light">
+    <h1 class="text-5xl">{{ drupal_title() }}</h1>
+    <div class="py-5 grid md:grid-cols-2 md:gap-x-6 text-lg text-gray-500">
       <div class="col-span-1">
-        <div>{{ 'Voice recording is necessary to train our danish language model.'|t }}
-        </div>
-        <div class="mt-5">
-          <span modal-id="{{ modal_id }}" class="cursor-pointer btnOpenModal text-black">{{ 'Read our terms'|t }}</span>
+        <p class="font-light">{{ 'Voice recording is necessary to train our danish language model.'|t }}</p>
+        <div class="my-5">
+          <span modal-id="terms-modal" class="cursor-pointer btnOpenModal text-black">{{ 'Read our terms'|t }}</span>
         </div>
       </div>
       <div class="col-span-1">
@@ -23,7 +22,7 @@
           <span class="text-black font-medium"><i class="mr-3 fa-regular fa-clock"></i>{{ values.minutes }}</span> {{ 'Minutes'|t }}
         </p>
         <div class="my-10">
-          <a href="{{ redirect_url }}" class="btn-primary button">
+          <a href="{{ redirect_url }}" class="btn-primary">
             <i class="mr-3 fa-solid fa-microphone"></i>
             <span>{{ 'Start donation'|t }}</span>
           </a>

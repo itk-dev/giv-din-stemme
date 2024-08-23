@@ -43,7 +43,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 class GivDinStemmeText extends ContentEntityBase implements ContentEntityInterface {
 
   /**
-   *
+   * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
 

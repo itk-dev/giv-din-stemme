@@ -1,10 +1,15 @@
 <?php
 
+/**
+ * @file
+ * Module file for itk_openid_connect_interpreter module.
+ */
+
 use Drupal\Core\Session\AccountInterface;
 use Drupal\itk_openid_connect_interpreter\Helper\Helper;
 
 /**
- * Implements hook_openid_connect_userinfo_alter()
+ * Implements hook_openid_connect_userinfo_alter().
  */
 function itk_openid_connect_interpreter_openid_connect_userinfo_alter(array &$userinfo, array $context): void {
   \Drupal::service(Helper::class)->openidConnectUserinfoAlter($userinfo, $context);

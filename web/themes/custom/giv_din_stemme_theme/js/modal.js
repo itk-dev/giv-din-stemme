@@ -7,11 +7,11 @@
 });
 
 function openModal() {
-  let id = this.getAttribute('modal-id');
+  let id = this.getAttribute("modal-id");
   document.getElementById(id).classList.remove("hidden");
 }
 
 function closeModal() {
-  let id = this.getAttribute('modal-id');
+  let id = this.getAttribute("modal-id");
   document.getElementById(id).classList.add("hidden");
 }

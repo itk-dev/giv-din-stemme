@@ -5,11 +5,9 @@ namespace Drupal\giv_din_stemme\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityStorageException;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Helper\AudioHelper;
@@ -42,14 +40,13 @@ class GivDinStemmeController extends ControllerBase {
    * @param \Drupal\Core\Site\Settings $settings
    *   Settings.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-      *   Entity type manager.
+   *   Entity type manager.
    * @param \Drupal\openid_connect\OpenIDConnectSessionInterface $session
    *   The OpenID Connect session service.
    * @param \Drupal\Core\Session\AccountInterface $currentUser
-   *   The account interface
+   *   The account interface.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
-   * @param
    */
   public function __construct(
     protected Helper $helper,
@@ -60,7 +57,7 @@ class GivDinStemmeController extends ControllerBase {
     protected $entityTypeManager,
     protected OpenIDConnectSessionInterface $session,
     protected $currentUser,
-    protected RequestStack $requestStack
+    protected RequestStack $requestStack,
   ) {
   }
 
@@ -87,7 +84,7 @@ class GivDinStemmeController extends ControllerBase {
   public function landing(Request $request): array {
     return [
       '#theme' => 'landing_page',
-      '#values' => $this->helper->getFrontpageValues()
+      '#values' => $this->helper->getFrontpageValues(),
     ];
   }
 
@@ -104,8 +101,11 @@ class GivDinStemmeController extends ControllerBase {
    * Login through OIDC if consent is given.
    *
    * @param \Symfony\Component\HttpFoundation\Request $request
+   *   The request.
    *
    * @return \Drupal\Core\Routing\TrustedRedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+   *   The response.
+   *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
@@ -171,9 +171,6 @@ class GivDinStemmeController extends ControllerBase {
 
     return [
       '#theme' => 'giv_din_stemme',
-    // '#name' => 'name',
-    //      '#login_url' => 'loigin ur',
-    //      '#logout_url' => 'logout url',
       '#attached' => [
         'library' => ['giv_din_stemme/giv_din_stemme'],
       ],

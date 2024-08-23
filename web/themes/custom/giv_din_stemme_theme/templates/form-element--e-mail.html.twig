@@ -19,7 +19,7 @@
   ]
 %}
 <div>
-  {% include "@giv_din_stemme_theme/texts/competition-text.html" %}
+  {{ include('@giv_din_stemme_theme/texts/competition-text.html') }}
 </div>
 <div{{ attributes.addClass(classes) }}>
   {% if label_display in ['before', 'invisible'] %}
