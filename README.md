@@ -136,7 +136,6 @@ $config['openid_connect.client.connection']['settings']['client_secret'] = '…'
 // Get these from your OIDC Discovery document.
 $config['openid_connect.client.connection']['settings']['authorization_endpoint'] = '…';
 $config['openid_connect.client.connection']['settings']['token_endpoint'] = '…';
-$config['openid_connect.client.connection']['settings']['userinfo_endpoint'] = '…';
 $config['openid_connect.client.connection']['settings']['end_session_endpoint'] = '…';
 ```
 

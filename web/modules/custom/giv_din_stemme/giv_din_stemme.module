@@ -43,6 +43,21 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       'variables' => [],
       'template' => 'donate-page',
     ],
+    'read_page' => [
+      'variables' => [
+        'textToRead' => '',
+        'textId' => '',
+        'nextReading' => '',
+        'totalTexts' => '',
+        'nextUrl' => '',
+        'hasNext' => '',
+      ],
+      'template' => 'read-page',
+    ],
+    'thank_you_page' => [
+      'variables' => [],
+      'template' => 'thank-you-page',
+    ],
   ];
 }
 
