@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-21](https://github.com/itk-dev/giv-din-stemme/pull/21)
+  Added web accessiblity statement
 * [PR-38](https://github.com/itk-dev/giv-din-stemme/pull/38)
   Added file data to metadata.
 * [PR-35](https://github.com/itk-dev/giv-din-stemme/pull/35)
