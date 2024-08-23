@@ -37,7 +37,7 @@ giv_din_stemme.profile:
     _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::givDinStemmeProfile'
     _title: 'Profil'
   requirements:
-    _permission: 'access giv din stemme'
+    _permission: 'access content'
 
 giv_din_stemme.permissions:
   path: '/permissions'
@@ -47,7 +47,7 @@ giv_din_stemme.permissions:
     _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::permissions'
     _title: 'Tilladelser'
   requirements:
-    _permission: 'access giv din stemme'
+    _permission: 'access content'
 
 giv_din_stemme.test:
   path: '/test'
@@ -57,7 +57,7 @@ giv_din_stemme.test:
     _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::test'
     _title: 'Test'
   requirements:
-    _permission: 'access giv din stemme'
+    _permission: 'access content'
 
 giv_din_stemme.donate:
   path: '/donate'
@@ -67,7 +67,7 @@ giv_din_stemme.donate:
     _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::donate'
     _title: 'Donér'
   requirements:
-    _permission: 'access giv din stemme'
+    _permission: 'access content'
 
 giv_din_stemme.start_donating:
   path: '/start-donating'
@@ -77,7 +77,7 @@ giv_din_stemme.start_donating:
     _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::startDonating'
     _title: 'Start optagelser'
   requirements:
-    _permission: 'access giv din stemme'
+    _permission: 'access content'
   options:
     no_cache: TRUE
 
@@ -90,7 +90,7 @@ giv_din_stemme.read:
     _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::read'
     _title: 'Indtal'
   requirements:
-    _permission: 'access giv din stemme'
+    _permission: 'access content'
   options:
     no_cache: TRUE
 
@@ -102,4 +102,4 @@ giv_din_stemme.thank_you:
     _controller: '\Drupal\giv_din_stemme\Controller\GivDinStemmeController::thankYou'
     _title: 'Din donation'
   requirements:
-    _permission: 'access giv din stemme'
+    _permission: 'access content'
