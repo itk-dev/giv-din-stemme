@@ -6,8 +6,7 @@
 
 {% block gds_content %}
   <div class="py-5">
-    {% include '@giv_din_stemme_theme/texts/ready-to-donate-text.html' %}
-    <a class="underline" href="{{ url('user.page') }}">{{ 'View your profile'|t }}</a>
+    {{ donate_page_text|raw }}
   </div>
 {% endblock %}
 {% block gds_footer %}

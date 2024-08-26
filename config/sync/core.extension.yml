@@ -12,6 +12,7 @@ module:
   file: 0
   filter: 0
   giv_din_stemme: 0
+  itk_admin: 0
   itk_openid_connect_interpreter: 0
   language: 0
   locale: 0

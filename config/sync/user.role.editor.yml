@@ -3,8 +3,11 @@ langcode: da
 status: true
 dependencies:
   config:
+    - filter.format.simpel_html
     - node.type.text
   module:
+    - filter
+    - itk_admin
     - locale
     - node
     - system
@@ -16,6 +19,7 @@ is_admin: false
 permissions:
   - 'access administration pages'
   - 'access content overview'
+  - 'access itk admin settings'
   - 'access site in maintenance mode'
   - 'access toolbar'
   - 'access user profiles'
@@ -28,5 +32,6 @@ permissions:
   - 'edit any text content'
   - 'edit own text content'
   - 'translate interface'
+  - 'use text format simpel_html'
   - 'view own unpublished content'
   - 'view the administration theme'
