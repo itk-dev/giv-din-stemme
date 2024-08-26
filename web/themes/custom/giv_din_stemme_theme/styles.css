@@ -38,13 +38,16 @@
 
   /* Define common buttons */
   .btn-primary {
-    @apply border border-brand bg-brand text-white rounded-lg px-3 py-2 min-h-9 hover:bg-orange-700;
+    @apply border border-brand bg-brand text-white rounded-lg px-3 py-2 min-h-9 hover:bg-orange-700 transition-colors;
   }
   .btn-default {
-    @apply border border-secondary bg-black text-white rounded-lg px-3 py-2 min-h-9 hover:bg-stone-700;
+    @apply border border-secondary bg-black text-white rounded-lg px-3 py-2 min-h-9 hover:bg-stone-700 transition-colors;
   }
-  .btn-disabled {
-    @apply border border-secondary bg-gray-300 text-gray-500 rounded-lg px-3 py-2 min-h-9 hover:bg-stone-700;
+  .btn-danger {
+    @apply border border-secondary bg-red-600 text-white rounded-lg px-3 py-2 min-h-9 hover:bg-red-700 transition-colors;
+  }
+  .btn-disabled, button:disabled {
+    @apply border border-secondary bg-gray-400 text-gray-200 cursor-not-allowed hover:bg-gray-400 hover:text-gray-200;
   }
 
   .btn-icon {
@@ -87,23 +90,34 @@
   }
 
   .pager-item.active {
-      @apply text-brand;
+    @apply text-brand;
   }
 
   .pager-item.active > div .label {
-      @apply border-brand border-b;
+    @apply border-brand border-b;
+  }
+
+  /* Nav item */
+  .nav-item {
+    @apply mr-3 hover:underline hover:text-black transition-colors;
+  }
+  
+  /* Microphone button active */
+  .btn-microphone-toggle.active {
+    @apply bg-red-600 hover:bg-red-700;
+  }
+
+  .btn-microphone-toggle.active.visualizer-shadow {
+    box-shadow: 0 0 calc(var(--volume, 2px) / 4) calc(var(--volume, 2px) / 4) hsla(9, 86%, 54%, 60%);
+  }
+  .btn-microphone-toggle.active .fa-microphone {
+    display: none;
+  }
+  .btn-microphone-toggle.active .fa-microphone-slash {
+    display: inline;
+  }
+  .btn-microphone-toggle .fa-microphone-slash {
+    display: none;
   }
 }
 
-.btn-microphone-toggle.active.visualizer-shadow {
-  box-shadow: 0 0 var(--volume, 5px) var(--volume, 5px) hsla(9, 86%, 54%, 50%);
-}
-.btn-microphone-toggle.active .fa-microphone {
-  display: none;
-}
-.btn-microphone-toggle.active .fa-microphone-slash {
-  display: inline;
-}
-.btn-microphone-toggle .fa-microphone-slash {
-  display: none;
-}

@@ -1,4 +1,4 @@
-<header role="banner" class="bg-white text-primary px-3 md:px-5 py-3 flex flex-row place-content-between gap-5">
+<header role="banner" class="bg-white text-primary px-3 md:px-5 py-3 flex flex-col md:flex-row place-content-between gap-3 md:gap-5">
     <!--
   <div class="flex items-center place-items-start gap-5">
     {{ include(directory ~ '/templates/components/nav-button.html.twig') }}
@@ -8,10 +8,10 @@
     {{ page.breadcrumb }}
   </div>
   <div>
-    <div class="container mx-auto px-3 text-secondary my-3">
+    <div class="flex gap-5 font-semibold md:container md:mx-auto md:px-3 text-secondary md:my-3 border-b md:border-0 pb-3">
       {% if user.isAuthenticated() %}
-        <a href="{{ url('user.page') }}" class="mx-5"><i class="mr-3 fa-regular fa-user"></i> {{ 'Profile'|t }}</a>
-        <a href="{{ url('user.logout') }}" class="mx-5">{{ 'Log out'|t }} <i class="ml-3 fa-solid fa-arrow-right-from-bracket"></i></a>
+        <a href="{{ url('user.page') }}" class="nav-item"><i class="mr-3 fa-solid fa-user"></i> {{ 'Profile'|t }}</a>
+        <a href="{{ url('user.logout') }}" class="nav-item">{{ 'Log out'|t }} <i class="ml-3 fa-solid fa-arrow-right-from-bracket"></i></a>
       {% endif %}
     </div>
   </div>

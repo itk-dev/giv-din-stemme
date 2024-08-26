@@ -11,16 +11,18 @@
     </div>
 
     <div class="relative flex flex-col md:flex-row md:gap-5 md:min-h-36">
-      <div class="consent-text max-h-52 overflow-y-scroll flex align-content-center">
-        <p class="text-lg">
+      <div class="consent-text max-h-52 overflow-y-auto flex align-content-center grow">
+        <p class="text-xl mx-3 md:mx-5">
           {{ textToRead }}
         </p>
       </div>
-    <div class="">
+    <div class="flex my-5 justify-center md:justify-self-end">
       {% include "@giv_din_stemme/components/button-microphone-toggle.html.twig" %}
     </div>
   </div>
-  <section class="sound-clips">
+  <section class="sound-clips hidden flex flex-col">
+    {{ "If you want, you can listen to your recording before you continue."|t }}
+    {{ "You may delete and record another if you want."|t }}
 
   </section>
 {% endblock %}

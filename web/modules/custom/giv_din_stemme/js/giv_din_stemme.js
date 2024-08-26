@@ -4,7 +4,6 @@
   let volumeInterval = null;
   const volumeVisualizer = document.getElementById('btn-microphone-toggle');
   const toggleButton = document.getElementById('btn-microphone-toggle');
-  const mainSection = document.querySelector(".main-controls");
   const soundClips = document.querySelector(".sound-clips");
   const submitButton = document.querySelector("#read_submit_button");
   const fileElement = document.querySelector("#audio_input");
@@ -82,11 +81,13 @@
         const audio = document.createElement("audio");
         const deleteButton = document.createElement("button");
 
-        clipContainer.classList.add("clip", "flex");
-        deleteButton.classList.add("btn-primary");
+        soundClips.classList.remove('hidden');
+
+        clipContainer.classList.add("clip", "flex", "gap-2", "border-t", "my-1", "py-2");
+        deleteButton.classList.add("btn-danger", "self-center");
         audio.setAttribute("controls", "");
         // TODO: This should be translateable
-        deleteButton.textContent = "Delete recording";
+        deleteButton.textContent = "Delete";
 
         clipContainer.appendChild(audio);
         clipContainer.appendChild(clipLabel);
@@ -110,13 +111,16 @@
         deleteButton.onclick = (e) => {
           let evtTgt = e.target;
           evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
-          submitButton.disabled = true;
           fileElement.files = new DataTransfer().files;
           startTime = null;
           endTime = null;
+          submitButton.disabled = true;
+          toggleButton.disabled = false;
+          soundClips.classList.add('hidden');
         };
 
         submitButton.disabled = false;
+        toggleButton.disabled = true;
       };
 
       mediaRecorder.ondataavailable = function (e) {
