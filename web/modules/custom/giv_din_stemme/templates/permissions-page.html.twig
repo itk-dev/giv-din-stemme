@@ -33,8 +33,8 @@
   </div>
 {% endblock %}
 {% block gds_footer %}
-  <div id="continue-button" class="py-5 grid justify-end">
-    <a href="{{ url('giv_din_stemme.test') }}" class="pointer-events-none btn-disabled button button--primary">
+  <div class="py-5 grid justify-end">
+    <a id="continue-button" href="{{ url('giv_din_stemme.test')}}" class="btn-default pointer-events-none">
       <span class="mr-3">{{ 'Continue'|t }}</span>
       <i class="fa-solid fa-circle-arrow-right"></i>
     </a>
