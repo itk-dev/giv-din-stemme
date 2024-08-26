@@ -10,6 +10,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 * [PR-20](https://github.com/itk-dev/giv-din-stemme/pull/20)
   Styling recording
+* [PR-22](https://github.com/itk-dev/giv-din-stemme/pull/22)
+  Added userdata to metadata.
 * [PR-17](https://github.com/itk-dev/giv-din-stemme/pull/17)
   Added permission and required it on some pages.
 * [PR-18](https://github.com/itk-dev/giv-din-stemme/pull/18)

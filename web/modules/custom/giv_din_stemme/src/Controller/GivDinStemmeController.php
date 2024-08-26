@@ -14,6 +14,7 @@ use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
 use Drupal\giv_din_stemme\Helper\Helper;
 use Drupal\openid_connect\OpenIDConnectSessionInterface;
+use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -190,21 +191,31 @@ class GivDinStemmeController extends ControllerBase {
     foreach ($parts as $part) {
       $entity = GivDinStemme::create();
 
-      $hashedAccountName = sha1($this->currentUser->getAccountName());
+      $user = User::load($this->currentUser->id());
+
+      $hashedAccountName = sha1($user->getAccountName());
 
       $entity->set('collection_id', $collectionId);
       $entity->set('collection_delta', $delta++);
       $entity->set('user_hash', $hashedAccountName);
 
-      // Save these on entity as metadata.
+      // Collect metadata.
       $partTextToRead = $part->getValue()['value'];
       $textId = $text->id();
+      $birthYear = $user->get('field_birth_year')->value;
+      $dialect = $user->get('field_dialects')->value;
+      $gender = $user->get('field_gender')->value;
+      $postalCode = $user->get('field_postal_code')->value;
 
       $entity->set('metadata', json_encode([
         'text' => $partTextToRead,
         'text_id' => $textId,
         'user' => $hashedAccountName,
         'number_of_parts' => $numberOfParts,
+        'birth_year' => $birthYear,
+        'dialect' => $dialect,
+        'gender' => $gender,
+        'postal_code' => $postalCode,
       ]));
 
       $entity->save();
