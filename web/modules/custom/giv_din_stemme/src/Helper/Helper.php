@@ -3,11 +3,12 @@
 namespace Drupal\giv_din_stemme\Helper;
 
 use Drupal\Component\Uuid\Php;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
-use Drupal\giv_din_stemme\Exception\InvalidRequestException;
+use Drupal\giv_din_stemme\Exception\NoTextFoundException;
+use Drupal\giv_din_stemme\Exception\UniqueGivDinStemmeNotFoundException;
+use Drupal\node\NodeInterface;
 
 /**
  * A helper.
@@ -44,20 +45,21 @@ class Helper {
   }
 
   /**
-   * Gets random Text.
+   * Gets random published Text.
    */
-  public function getRandomText(): EntityInterface {
+  public function getRandomPublishedText(): NodeInterface {
 
+    /** @var \Drupal\node\NodeInterface[] $nodes */
     $nodes = $this->entityTypeManager->getStorage('node')->loadByProperties([
       'type' => 'text',
+      'status' => 1,
     ]);
 
-    $count = count($nodes);
-    $keys = array_keys($nodes);
+    if (empty($nodes)) {
+      throw new NoTextFoundException('No text node found.');
+    }
 
-    $randomKey = $keys[rand(0, $count - 1)];
-
-    return $nodes[$randomKey];
+    return $nodes[array_rand($nodes)];
   }
 
   /**
@@ -76,8 +78,10 @@ class Helper {
       'collection_delta' => $delta,
     ]);
 
-    if (1 !== count($result)) {
-      throw new InvalidRequestException('Unique GivDinStemme not found');
+    $count = count($result);
+
+    if (1 !== $count) {
+      throw new UniqueGivDinStemmeNotFoundException(sprintf('Unique GivDinStemme entity not found. Found %d.', $count));
     }
 
     return reset($result);

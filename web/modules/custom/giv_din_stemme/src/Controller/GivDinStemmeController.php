@@ -175,7 +175,7 @@ class GivDinStemmeController extends ControllerBase {
    * and redirects to the first.
    */
   public function startDonating(Request $request): RedirectResponse {
-    $text = $this->helper->getRandomText();
+    $text = $this->helper->getRandomPublishedText();
     $collectionId = $this->helper->generateUuid();
     $delta = 0;
 
