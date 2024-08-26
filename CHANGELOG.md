@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-24](https://github.com/itk-dev/giv-din-stemme/pull/24)
+  Keep total donation count and duration in state.
 * [PR-17](https://github.com/itk-dev/giv-din-stemme/pull/17)
   Added permission and required it on some pages.
 * [PR-18](https://github.com/itk-dev/giv-din-stemme/pull/18)
