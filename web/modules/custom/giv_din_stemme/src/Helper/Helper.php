@@ -112,12 +112,7 @@ class Helper {
 
     $currentTotal = $this->getTotalNumberOfDonations();
 
-    if (is_null($currentTotal)) {
-      $this->state->set(self::GIV_DIN_STEMME_DONATION_COUNT_STATE_KEY, 1);
-    }
-    else {
-      $this->state->set(self::GIV_DIN_STEMME_DONATION_COUNT_STATE_KEY, $currentTotal + 1);
-    }
+    $this->state->set(self::GIV_DIN_STEMME_DONATION_COUNT_STATE_KEY, ($currentTotal ?? 0) + 1);
 
     $this->lock->release(self::GIV_DIN_STEMME_UPDATE_STATE_LOCK);
   }
