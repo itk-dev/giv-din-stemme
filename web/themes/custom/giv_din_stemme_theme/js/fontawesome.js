@@ -12,7 +12,6 @@ const {
   faMicrophone,
   faMicrophoneSlash,
   faArrowRightFromBracket,
-  faUser,
 } = require("@fortawesome/free-solid-svg-icons");
 
 // Import icons from the free regular package
@@ -20,6 +19,7 @@ const {
   faCircleDot,
   faCircleCheck,
   faClock,
+  faUser,
 } = require("@fortawesome/free-regular-svg-icons");
 
 // Add the icons to the library for replacing <i class="fa-solid fa-sort"></i> with the intended svg.

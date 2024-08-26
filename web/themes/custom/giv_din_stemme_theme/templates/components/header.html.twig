@@ -10,7 +10,7 @@
   <div>
     <div class="flex gap-5 font-semibold md:container md:mx-auto md:px-3 text-secondary md:my-3 border-b md:border-0 pb-3">
       {% if user.isAuthenticated() %}
-        <a href="{{ url('user.page') }}" class="nav-item"><i class="mr-3 fa-solid fa-user"></i> {{ 'Profile'|t }}</a>
+        <a href="{{ url('user.page') }}" class="nav-item"><i class="mr-3 fa-regular fa-user"></i> {{ 'Profile'|t }}</a>
         <a href="{{ url('user.logout') }}" class="nav-item">{{ 'Log out'|t }} <i class="ml-3 fa-solid fa-arrow-right-from-bracket"></i></a>
       {% endif %}
     </div>
