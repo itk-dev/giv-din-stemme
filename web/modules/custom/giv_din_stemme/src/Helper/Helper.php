@@ -115,8 +115,9 @@ class Helper {
    * Gets the GIV_DIN_STEMME_UPDATE_STATE_LOCK lock.
    */
   private function getLock(): void {
+    // Attempt acquiring lock, wait if failed.
+    // @see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Lock%21LockBackendInterface.php/group/lock/11.x
     while (!$this->lock->acquire(self::GIV_DIN_STEMME_UPDATE_STATE_LOCK)) {
-      // @see https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Lock%21LockBackendAbstract.php/function/LockBackendAbstract%3A%3Await/11.x
       $this->lock->wait(self::GIV_DIN_STEMME_UPDATE_STATE_LOCK);
     }
   }
