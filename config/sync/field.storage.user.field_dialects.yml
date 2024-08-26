@@ -14,6 +14,30 @@ settings:
     -
       value: oestjysk
       label: Østjysk
+    -
+      value: nordjysk
+      label: Nordjysk
+    -
+      value: vestjysk
+      label: Vestjysk
+    -
+      value: soenderjysk
+      label: Sønderjysk
+    -
+      value: koebenhavnsk
+      label: Københavnsk
+    -
+      value: sjaellandsk
+      label: Sjællandsk
+    -
+      value: fynsk
+      label: Fynsk
+    -
+      value: bornholmsk
+      label: Bornholmsk
+    -
+      value: sydoemaal
+      label: Sydømål
   allowed_values_function: ''
 module: options
 locked: false

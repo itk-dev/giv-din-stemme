@@ -1,0 +1,23 @@
+uuid: ab479763-84fa-4464-aab9-fca480d63290
+langcode: da
+status: true
+dependencies: {  }
+name: 'Simpel HTML'
+format: simpel_html
+weight: 0
+filters:
+  filter_html:
+    id: filter_html
+    provider: filter
+    status: true
+    weight: -10
+    settings:
+      allowed_html: '<br> <p> <h2> <h3> <strong> <em> <blockquote> <a href> <ul> <ol reversed start> <li>'
+      filter_html_help: false
+      filter_html_nofollow: false
+  filter_htmlcorrector:
+    id: filter_htmlcorrector
+    provider: filter
+    status: true
+    weight: 10
+    settings: {  }

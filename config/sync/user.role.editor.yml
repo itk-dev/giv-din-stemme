@@ -3,8 +3,10 @@ langcode: da
 status: true
 dependencies:
   config:
+    - filter.format.simpel_html
     - node.type.text
   module:
+    - filter
     - locale
     - node
     - system
@@ -28,5 +30,6 @@ permissions:
   - 'edit any text content'
   - 'edit own text content'
   - 'translate interface'
+  - 'use text format simpel_html'
   - 'view own unpublished content'
   - 'view the administration theme'
