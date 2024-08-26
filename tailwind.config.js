@@ -16,11 +16,11 @@ module.exports = {
     extend: {
       colors: {
         orange: {
-          600: '#EF4123'
+          600: '#A62811'
         },
       },
       boxShadow: {
-        'mic-button': '0 0 5px 5px #EF4123',
+        'mic-button': '0 0 5px 5px #A62811',
       },
       keyframes: {
         wiggle: {

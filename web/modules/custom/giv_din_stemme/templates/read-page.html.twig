@@ -1,35 +1,36 @@
 {% extends "@giv_din_stemme/gds-page-wrapper.html.twig" %}
 
 {% block gds_content %}
-  <div class="py-5">
-    <div class="consent-intro text-lg">
-      <p>
-        {{ "Activate the microphone and read the displayed text. Press 'Next Section' to continue"|t }}
-      </p>
+    <div class="py-5">
+      <div class="consent-intro text-lg">
+        <p>
+          {{ "Activate the microphone and read the displayed text. Press 'Next Section' to continue"|t }}
+        </p>
+      </div>
+      <div class="mb-5 pb-5 border-b-2"></div>
     </div>
-    <div class="mb-5 pb-5 border-b-2"></div>
-    <div class="consent-text max-h-52 overflow-y-scroll">
-      <p>
-        {{ textToRead }}
-      </p>
+
+    <div class="relative flex flex-col md:flex-row md:gap-5 md:min-h-36">
+      <div class="consent-text max-h-52 overflow-y-auto flex align-content-center grow">
+        <p class="text-xl mx-3 md:mx-5">
+          {{ textToRead }}
+        </p>
+      </div>
+    <div class="flex my-5 justify-center md:justify-self-end">
+      {% include "@giv_din_stemme/components/button-microphone-toggle.html.twig" %}
     </div>
   </div>
-  <div class="py-5">
-    <canvas class="visualizer" height="60px"></canvas>
-    <div id="buttons">
-      <button class="record">Record</button>
-      <button class="stop">Stop</button>
-    </div>
-  </div>
-  <section class="sound-clips">
+  <section class="sound-clips hidden flex flex-col">
+    {{ "If you want, you can listen to your recording before you continue."|t }}
+    {{ "You may delete and record another if you want."|t }}
 
   </section>
 {% endblock %}
 {% block gds_footer %}
   <div class="py-5">
     <form action="{{ nextUrl }}" method="post" enctype="multipart/form-data">
-      <input type="file" name="file" id="audio_input" hidden>
-      <input type="number" id="recording_duration" name="duration" hidden>
+      <input type="hidden" name="file" id="audio_input">
+      <input type="hidden" id="recording_duration" name="duration">
       <div class="grid grid-cols-2">
         <div class="sm:col-span-1">
         </div>
