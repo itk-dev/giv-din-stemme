@@ -21,7 +21,7 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
     'landing_page' => [
       'variables' => [
         'values' => NULL,
-        'front_page_text' => NULL
+        'front_page_text' => NULL,
       ],
       'template' => 'landing-page',
     ],
@@ -42,7 +42,7 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
     ],
     'donate_page' => [
       'variables' => [
-        'donate_page_text' => NULL
+        'donate_page_text' => NULL,
       ],
       'template' => 'donate-page',
     ],
