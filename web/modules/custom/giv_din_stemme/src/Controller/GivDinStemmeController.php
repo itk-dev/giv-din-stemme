@@ -262,9 +262,8 @@ class GivDinStemmeController extends ControllerBase {
     // Load GivDinStemme.
     $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
 
-    $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
-    $metadata['duration'] = $request->request->get('duration');
-    $givDinStemme->set('metadata', json_encode($metadata));
+    $this->helper->updateTotalDonationDuration((int) $request->request->get('duration'));
+    $this->helper->updateTotalNumberOfDonations();
 
     foreach ($request->files->all() as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
       try {
