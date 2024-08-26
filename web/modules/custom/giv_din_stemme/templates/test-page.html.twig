@@ -13,14 +13,13 @@
       </p>
     </div>
     <div class="-mx-5 mb-5 pb-5 border-b-2"></div>
-    <div class="text-center text-lg">{{ 'Try to say'|t }}:</div>
-    <div class="text-center text-xl">"{{ 'She sells seashells by the seashore'|t }}"</div>
-    <div id="volume-test-toggle" class="my-16 mx-auto rounded-full table w-20 h-20 cursor-pointer text-center">
-      <div class="align-middle table-cell">
-        <i class="text-white text-3xl fa-solid fa-microphone"></i>
-      </div>
+    <div class="text-center flex flex-col items-center">
+      <p class="text-xl">{{ 'Press the microphone button to activate'|t }}</p>
+      <span class="my-10">{% include "@giv_din_stemme/components/button-microphone-toggle.html.twig" %}</span>
+      <p class="text-lg">{{ 'Try to say'|t }}:</p>
+      <p class="text-lg mb-3">"{{ 'She sells seashells by the seashore'|t }}"</p>
+      <p class="text-lg">{{ 'The button will show feedback based on your input volume.'|t }}</p>
     </div>
-    <div class="text-center text-lg">{{ 'If the button is not vibrating you must adjust your device input volume.'|t }}</div>
   </div>
 {% endblock %}
 {% block gds_footer %}

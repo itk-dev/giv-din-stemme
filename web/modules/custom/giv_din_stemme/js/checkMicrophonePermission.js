@@ -10,24 +10,21 @@ function getLocalStream() {
   const microphoneDisallowedDisplay = document.getElementById('microphone-disallowed-display');
   const helpText = document.getElementById('microphone-help-text');
 
+  continueButton.classList.add('disabled');
   navigator.mediaDevices
-    .getUserMedia({ video: false, audio: true })
-    .then((stream) => {
-      window.localStream = stream;
 
-      continueButton.querySelector('.button').classList.remove('btn-disabled', 'pointer-events-none');
-      continueButton.querySelector('.button').classList.add('btn-default');
-
-      microphoneAllowedDisplay.classList.remove('hidden');
-      microphoneAllowedDisplay.classList.add('table');
-
-      microphoneDisallowedDisplay.classList.add('hidden');
-      helpText.classList.add('hidden');
-    })
-    .catch((err) => {
-      helpText.classList.add('animate-wiggle')
-      delay(1000).then(() => helpText.classList.remove('animate-wiggle'));
-    });
+  .getUserMedia({ video: false, audio: true })
+  .then((stream) => {
+    window.localStream = stream;
+    continueButton.classList.remove('disabled', 'pointer-events-none');
+    microphoneAllowedDisplay.classList.remove('hidden');
+    microphoneDisallowedDisplay.classList.add('hidden');
+    helpText.classList.add('hidden');
+  })
+  .catch((err) => {
+    helpText.classList.add('animate-wiggle')
+    delay(1000).then(() => helpText.classList.remove('animate-wiggle'));
+  });
 }
 
 function delay(time) {

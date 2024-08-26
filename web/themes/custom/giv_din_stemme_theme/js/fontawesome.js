@@ -7,19 +7,7 @@ const { library, dom } = require("@fortawesome/fontawesome-svg-core");
 // Import the icons from the free solid package.
 const {
   faBars,
-  faRobot,
-  faXmark,
-  faImage,
-  faLanguage,
-  faVideoCamera,
   faMicrophoneLines,
-  faWindowMinimize,
-  faWindowMaximize,
-  faWindowClose,
-  faRotateLeft,
-  faMessage,
-  faCircle,
-  faAngleRight,
   faCircleArrowRight,
   faMicrophone,
   faMicrophoneSlash,
@@ -28,6 +16,7 @@ const {
 
 // Import icons from the free regular package
 const {
+  faCircleDot,
   faCircleCheck,
   faClock,
   faUser,
@@ -35,21 +24,9 @@ const {
 
 // Add the icons to the library for replacing <i class="fa-solid fa-sort"></i> with the intended svg.
 library.add(
-  // Solid
   faBars,
-  faRobot,
-  faXmark,
-  faImage,
-  faLanguage,
-  faVideoCamera,
   faMicrophoneLines,
-  faWindowMinimize,
-  faWindowMaximize,
-  faWindowClose,
-  faRotateLeft,
-  faMessage,
-  faCircle,
-  faAngleRight,
+  faCircleDot,
   faCircleArrowRight,
   faCircleCheck,
   faMicrophone,
@@ -57,8 +34,6 @@ library.add(
   faClock,
   faUser,
   faArrowRightFromBracket,
-  // Brand
-  // faXTwitter
 );
 
 // Run <i> to <svg> replace
