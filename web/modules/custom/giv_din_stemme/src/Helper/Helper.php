@@ -82,14 +82,8 @@ class Helper {
 
     $this->getLock();
 
-    $totalDonationDuration = $this->getTotalDonationDuration();
-
-    if (is_null($totalDonationDuration)) {
-      $this->state->set(self::GIV_DIN_STEMME_TOTAL_DONATION_DURATION_STATE_KEY, $duration);
-    }
-    else {
-      $this->state->set(self::GIV_DIN_STEMME_TOTAL_DONATION_DURATION_STATE_KEY, $totalDonationDuration + $duration);
-    }
+    $totalDonationDuration = $this->getTotalDonationDuration() ?? 0;
+    $this->state->set(self::GIV_DIN_STEMME_TOTAL_DONATION_DURATION_STATE_KEY, $totalDonationDuration + $duration);
 
     $this->lock->release(self::GIV_DIN_STEMME_UPDATE_STATE_LOCK);
   }
