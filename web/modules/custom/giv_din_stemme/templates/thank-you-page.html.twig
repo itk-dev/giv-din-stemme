@@ -2,7 +2,7 @@
 
 {% block gds_content %}
   <div class="py-5">
-    {% include '@giv_din_stemme_theme/texts/thank-you-for-the-donation-text.html' %}
+    {{ thank_you_text|raw }}
   </div>
 {% endblock %}
 {% block gds_footer %}
