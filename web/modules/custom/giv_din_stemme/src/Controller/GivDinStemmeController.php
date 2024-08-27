@@ -9,7 +9,6 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\State\State;
-use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
 use Drupal\giv_din_stemme\Exception\InvalidRequestException;
