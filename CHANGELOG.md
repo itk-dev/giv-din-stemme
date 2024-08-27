@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-34](https://github.com/itk-dev/giv-din-stemme/pull/34)
+  Set required fields.
 * [PR-32](https://github.com/itk-dev/giv-din-stemme/pull/32)
   Static content styling
 * [PR-33](https://github.com/itk-dev/giv-din-stemme/pull/33)

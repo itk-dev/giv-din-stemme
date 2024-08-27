@@ -11,7 +11,7 @@ field_name: field_e_mail
 entity_type: user
 bundle: user
 label: E-mail
-description: ''
+description: "Deltagelse er frivilligt og gælder kun donationer i perioden 30. august – 1. september 2024. Du kan lave en stemmedonation uden at deltage i lodtrækningen.\r\nVinderen bliver udtrukket den 2. september 2024 blandt de personer, som har angivet mailadresse og lavet en donation.\r\nLæs mere om, hvordan vi behandler dine oplysninger i vores privatlivspolitik, som fremgår på <a href=\"/persondatapolitik\">https://donerdinstemme.dk/persondatapolitik</a>"
 required: false
 translatable: false
 default_value: {  }

@@ -156,5 +156,10 @@
   .static-content blockquote {
     @apply italic border-l-2 ml-3 pl-3;
   }
+
+  input.error,
+  select.error {
+    @apply border-red-600;
+  }
 }
 
