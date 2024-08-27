@@ -58,7 +58,6 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
         'nextReading' => '',
         'currentText' => '',
         'totalTexts' => '',
-        'nextUrl' => '',
         'hasNext' => '',
       ],
       'template' => 'read-page',

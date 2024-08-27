@@ -267,10 +267,6 @@ class GivDinStemmeController extends ControllerBase {
       '#textToRead' => $textToRead,
       '#currentText' => $delta + 1,
       '#totalTexts' => $count,
-      '#nextUrl' => Url::fromRoute('giv_din_stemme.read', [
-        'collection_id' => $collection_id,
-        'delta' => $delta,
-      ])->toString(TRUE)->getGeneratedUrl(),
       '#attached' => [
         'library' => ['giv_din_stemme/giv_din_stemme'],
       ],
