@@ -51,7 +51,8 @@ function giv_din_stemme_theme_preprocess_form_element(&$variables) {
 function giv_din_stemme_preprocess_status_messages(&$variables) {
   $currentUser = \Drupal::currentUser();
 
-  // Disable access to form elements.
+  // Do not show messages to end user in this theme.
+  // @todo Design/theme messages if we want to show them some day.
   if (!in_array('editor', $currentUser->getRoles()) && $currentUser->id() !== '1') {
     unset($variables['message_list']);
   }
