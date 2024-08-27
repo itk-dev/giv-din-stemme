@@ -27,7 +27,9 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       'template' => 'landing-page',
     ],
     'consent_page' => [
-      'variables' => [],
+      'variables' => [
+        'consent_text' => NULL,
+      ],
       'template' => 'consent-page',
     ],
     'giv_din_stemme_profile_form' => [
