@@ -265,6 +265,7 @@ class GivDinStemmeController extends ControllerBase {
     return [
       '#theme' => 'read_page',
       '#textToRead' => $textToRead,
+      '#currentText' => $delta + 1,
       '#totalTexts' => $count,
       '#nextUrl' => Url::fromRoute('giv_din_stemme.read', [
         'collection_id' => $collection_id,
@@ -314,11 +315,13 @@ class GivDinStemmeController extends ControllerBase {
 
       $givDinStemme->save();
 
+      $finish = 'finish' === $request->get('action');
+
       // Redirect based on whether another text part exists.
       $nextDelta = $delta + 1;
       $countOfParts = $this->helper->getCountOfGivDinStemmeByCollectionId($collection_id);
 
-      if ($nextDelta < $countOfParts) {
+      if (!$finish && $nextDelta < $countOfParts) {
         return $this->redirect('giv_din_stemme.read', [
           'collection_id' => $collection_id,
           'delta' => $nextDelta,
