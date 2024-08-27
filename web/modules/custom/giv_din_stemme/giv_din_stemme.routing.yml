@@ -16,6 +16,8 @@ giv_din_stemme.landing:
     _title: 'Donér din stemme'
   requirements:
     _permission: 'access content'
+  options:
+    no_cache: TRUE
 
 giv_din_stemme.consent:
   path: '/consent'
