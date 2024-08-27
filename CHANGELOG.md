@@ -8,6 +8,14 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-34](https://github.com/itk-dev/giv-din-stemme/pull/34)
+  Set required fields.
+* [PR-32](https://github.com/itk-dev/giv-din-stemme/pull/32)
+  Static content styling
+* [PR-33](https://github.com/itk-dev/giv-din-stemme/pull/33)
+  Recorded audio in the `.wav` format.
+* [PR-24](https://github.com/itk-dev/giv-din-stemme/pull/24)
+  Keep total donation count and duration in state.
 * [PR-28](https://github.com/itk-dev/giv-din-stemme/pull/28)
   Ensure file is passed to server.
 * [PR-25](https://github.com/itk-dev/giv-din-stemme/pull/25)

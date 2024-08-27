@@ -10,9 +10,9 @@ id: user.user.field_postal_code
 field_name: field_postal_code
 entity_type: user
 bundle: user
-label: Postnummer
+label: 'Postnummer (Fødested)'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

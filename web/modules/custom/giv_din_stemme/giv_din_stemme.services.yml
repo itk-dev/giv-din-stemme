@@ -12,3 +12,5 @@ services:
     arguments:
       - '@entity_type.manager'
       - '@uuid'
+      - '@state'
+      - '@lock'
