@@ -20,9 +20,13 @@
       {% include "@giv_din_stemme/components/button-microphone-toggle.html.twig" %}
     </div>
   </div>
-  <section class="sound-clips hidden flex flex-col">
+  <section class="sound-clips hidden flex flex-col" aria-hidden="true">
     {{ "If you want, you can listen to your recording before you continue."|t }}
     {{ "You may delete and record another if you want."|t }}
+    <article class="clip flex gap-2 border-t my-1 py-2">
+      <audio controls=""></audio>
+      <button type="button" class="btn-danger self-center">{{ "Delete"|t }}</button>
+    </article>
   </section>
 {% endblock %}
 {% block gds_progress %}
