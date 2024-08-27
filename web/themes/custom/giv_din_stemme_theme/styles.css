@@ -50,7 +50,7 @@
     @apply border border-secondary bg-red-600 text-white rounded-lg px-3 py-2 min-h-9 hover:bg-red-700 transition-colors;
   }
   .disabled, button:disabled {
-    @apply border border-secondary bg-gray-400 text-gray-200 cursor-not-allowed hover:bg-gray-400 hover:text-gray-200;
+    @apply border border-secondary bg-gray-400 text-gray-200 cursor-not-allowed hover:bg-gray-400 hover:text-gray-200 hover:border-secondary;
   }
 
   .btn-icon {

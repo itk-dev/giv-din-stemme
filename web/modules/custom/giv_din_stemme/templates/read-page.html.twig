@@ -28,7 +28,7 @@
 {% block gds_progress %}
   {# Progressbar #}
   <div class="progress-bar bg-primary flex h-1">
-    <div class="progress-indicator bg-brand h-1" style="width: 37%"></div>
+    <div class="progress-indicator bg-brand h-1" style="width: {{ (100*currentText/(totalTexts+1))|number_format(4, '.', '') }}%"></div>
   </div>
 {% endblock %}
 {% block gds_footer %}
