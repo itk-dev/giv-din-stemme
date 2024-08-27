@@ -89,9 +89,14 @@ function giv_din_stemme_form_user_form_alter(&$form, FormStateInterface $form_st
   $form['actions']['submit']['#attributes']['fa-icon'] = 'fa-solid fa-circle-arrow-right';
   $form['actions']['submit']['#value'] = new TranslatableMarkup('Continue');
 
+  $currentUser = \Drupal::currentUser();
+
   // Disable access to form elements.
+  if (!in_array('editor', $currentUser->getRoles()) && $currentUser->id() !== '1') {
+    $form['account']['#access'] = FALSE;
+  }
+
   $form['actions']['delete']['#access'] = FALSE;
-  $form['account']['#access'] = FALSE;
   $form['path']['#access'] = FALSE;
   $form['language']['#access'] = FALSE;
 
