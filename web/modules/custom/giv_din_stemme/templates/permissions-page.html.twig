@@ -2,7 +2,6 @@
 {% set modal_id = 'permissions-modal' %}
 
 {% block gds_pager %}
-  {% include '@giv_din_stemme_theme/templates/modal.html.twig' with {'text_template': '@giv_din_stemme_theme/texts/permission-text.html', 'modal_id': modal_id } %}
   {% include "@giv_din_stemme/user-setup-pager.html.twig" with {'active_page': 3} %}
 {% endblock %}
 
