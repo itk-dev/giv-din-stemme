@@ -1,6 +1,6 @@
 giv_din_stemme:
   js:
-    js/giv_din_stemme.js: {}
+    build/giv_din_stemme.js: { preprocess: false }
 
 check_microphone:
   js:
