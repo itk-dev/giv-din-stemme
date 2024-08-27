@@ -104,9 +104,8 @@ class Helper {
 
     $this->getLock();
 
-    $currentTotal = $this->getTotalNumberOfDonations();
-
-    $this->state->set(self::GIV_DIN_STEMME_DONATION_COUNT_STATE_KEY, ($currentTotal ?? 0) + 1);
+    $currentTotal = $this->getTotalNumberOfDonations() ?? 0;
+    $this->state->set(self::GIV_DIN_STEMME_DONATION_COUNT_STATE_KEY, $currentTotal + 1);
 
     $this->lock->release(self::GIV_DIN_STEMME_UPDATE_STATE_LOCK);
   }
