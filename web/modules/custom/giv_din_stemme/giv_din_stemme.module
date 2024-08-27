@@ -7,9 +7,9 @@
  * @todo Create Helper for these hooks.
  */
 
+use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 
 /**
  * Implements hook_theme().
@@ -35,7 +35,7 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
     ],
     'permissions_page' => [
       'variables' => [
-        'permissions_help_page_node' => NULL
+        'permissions_help_page_node' => NULL,
       ],
       'template' => 'permissions-page',
     ],
@@ -122,10 +122,6 @@ function giv_din_stemme_redirect(array &$form, FormStateInterface $form_state) {
 
 /**
  * Implements hook_ckeditor5_plugin_info_alter().
- *
- * @param array $plugin_definitions
- *
- * @return void
  */
 function giv_din_stemme_ckeditor5_plugin_info_alter(array &$plugin_definitions) : void {
   assert($plugin_definitions['ckeditor5_link'] instanceof CKEditor5PluginDefinition);

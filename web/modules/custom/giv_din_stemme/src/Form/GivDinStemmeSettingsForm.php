@@ -122,7 +122,6 @@ class GivDinStemmeSettingsForm extends FormBase {
       '#weight' => '1',
     ];
 
-
     $form['references']['permissions_help_page'] = [
       '#type' => 'entity_autocomplete',
       '#target_type' => 'node',
