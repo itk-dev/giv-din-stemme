@@ -38,7 +38,7 @@ content:
     weight: 35
     region: content
     settings:
-      placeholder: ''
+      placeholder: 'Indtast e-mail'
       size: 60
     third_party_settings: {  }
   field_gender:
