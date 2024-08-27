@@ -10,6 +10,7 @@ use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Site\Settings;
+use Drupal\Core\State\State;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
 use Drupal\giv_din_stemme\Helper\Helper;
@@ -45,6 +46,8 @@ class GivDinStemmeController extends ControllerBase {
    *   The account interface.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
+   * @param \Drupal\Core\State\State $state
+   *   The object state.
    */
   public function __construct(
     protected Helper $helper,
@@ -55,6 +58,7 @@ class GivDinStemmeController extends ControllerBase {
     protected OpenIDConnectSessionInterface $session,
     protected $currentUser,
     protected RequestStack $requestStack,
+    protected State $state,
   ) {
   }
 
@@ -71,6 +75,7 @@ class GivDinStemmeController extends ControllerBase {
       $container->get('openid_connect.session'),
       $container->get('current_user'),
       $container->get('request_stack'),
+      $container->get('state'),
     );
   }
 
@@ -81,6 +86,7 @@ class GivDinStemmeController extends ControllerBase {
     return [
       '#theme' => 'landing_page',
       '#values' => $this->helper->getFrontpageValues(),
+      '#front_page_text' => $this->state->get('giv_din_stemme.front_page_text'),
     ];
   }
 
@@ -157,6 +163,7 @@ class GivDinStemmeController extends ControllerBase {
   public function donate(Request $request): array {
     return [
       '#theme' => 'donate_page',
+      '#donate_page_text' => $this->state->get('giv_din_stemme.donate_page_text'),
     ];
   }
 

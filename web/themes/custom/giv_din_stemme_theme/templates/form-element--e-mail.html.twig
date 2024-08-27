@@ -18,8 +18,9 @@
     description_display == 'invisible' ? 'visually-hidden',
   ]
 %}
+
 <div>
-  {{ include('@giv_din_stemme_theme/texts/competition-text.html') }}
+  {{ prefix_text|raw }}
 </div>
 <div{{ attributes.addClass(classes) }}>
   {% if label_display in ['before', 'invisible'] %}
