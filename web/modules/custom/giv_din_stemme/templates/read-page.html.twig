@@ -23,7 +23,6 @@
   <section class="sound-clips hidden flex flex-col">
     {{ "If you want, you can listen to your recording before you continue."|t }}
     {{ "You may delete and record another if you want."|t }}
-
   </section>
 {% endblock %}
 {% block gds_footer %}
@@ -38,10 +37,9 @@
         <div class="sm:col-span-1 justify-self-start">
           {% if has_next %}
             <button type="submit" class="btn-secondary" name="action" value="finish" disabled>
-            <span class="mr-3">
-              {{ 'Save and finish'|t }}
-            </span>
-            <i class="fa-solid fa-circle-arrow-right"></i>
+              <span class="mr-3">
+                {{ 'Save and finish'|t }}
+              </span>
             </button>
           {% endif %}
         </div>
