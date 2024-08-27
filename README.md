@@ -24,7 +24,7 @@ Run the following to install dependencies with yarn.
 docker compose run --rm node yarn install
 ```
 
-Run the following to continuesly build assets uppon file changes.
+Run the following to continuously build assets upon file changes.
 
 ```shell name="assets-watch"
 docker compose run --rm node yarn watch
@@ -34,6 +34,26 @@ Run the following to build assets once.
 
 ```shell name="assets-build"
 docker compose run --rm node yarn build
+```
+
+## Build assets for Giv Din Stemme module
+
+Run the following to install dependencies with yarn.
+
+```shell name="gds-assets-install"
+docker compose run --rm node yarn --cwd web/modules/custom/giv_din_stemme/ install
+```
+
+Run the following to continuously build assets upon file changes.
+
+```shell name="gds-assets-watch"
+docker compose run --rm node yarn --cwd web/modules/custom/giv_din_stemme/ watch
+```
+
+Run the following to build assets once.
+
+```shell name="gds-assets-build"
+docker compose run --rm node yarn --cwd web/modules/custom/giv_din_stemme/ build
 ```
 
 ### Site installation

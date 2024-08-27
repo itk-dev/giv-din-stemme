@@ -120,18 +120,37 @@
     display: none;
   }
 
-    /* Static content */
-
+  /* Static content */
   .static-content ul {
-     @apply list-disc list-inside;
+    @apply list-disc list-inside mb-3;
   }
-
+  
+  .static-content ul ul {
+    list-style-type: revert;
+    @apply  mb-0 ml-5 mt-1;
+  }
+  
   .static-content ol {
-    @apply list-decimal list-inside;
+    @apply list-decimal list-inside mb-3;
+    list-style-type: revert;
+  }
+  
+  .static-content ol ol {
+    list-style-type: revert;
+    @apply  mb-0 ml-5 mt-1;
+  }
+  
+  .static-content ul li,
+  .static-content ol li {
+    @apply mb-1;
   }
 
   .static-content a {
     @apply underline;
+  }
+  
+  .static-content p {
+    @apply mb-3;
   }
 
   .static-content blockquote {

@@ -4,13 +4,12 @@ namespace Drupal\giv_din_stemme\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Entity\EntityStorageException;
-use Drupal\Core\File\Exception\FileException;
 use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\State\State;
+use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
 use Drupal\giv_din_stemme\Exception\InvalidRequestException;
@@ -256,7 +255,7 @@ class GivDinStemmeController extends ControllerBase {
   /**
    * Handles read 'GET' method.
    */
-  private function handleReadGet(Request $request, string $collection_id, string $delta): array {
+  private function handleReadGet(Request $request, string $collection_id, int $delta): array {
     $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
 
     $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
@@ -267,7 +266,10 @@ class GivDinStemmeController extends ControllerBase {
       '#theme' => 'read_page',
       '#textToRead' => $textToRead,
       '#totalTexts' => $count,
-      '#nextUrl' => '/read/' . $collection_id . '/' . $delta ,
+      '#nextUrl' => Url::fromRoute('giv_din_stemme.read', [
+        'collection_id' => $collection_id,
+        'delta' => $delta,
+      ])->toString(TRUE)->getGeneratedUrl(),
       '#attached' => [
         'library' => ['giv_din_stemme/giv_din_stemme'],
       ],
@@ -277,25 +279,24 @@ class GivDinStemmeController extends ControllerBase {
   /**
    * Handles read 'POST' method.
    */
-  private function handleReadPost(Request $request, string $collection_id, string $delta): RedirectResponse {
-    $directory = 'private://audio/';
-    $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+  private function handleReadPost(Request $request, string $collection_id, int $delta): RedirectResponse {
+    try {
+      $directory = 'private://audio/';
+      $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
 
-    // Load GivDinStemme.
-    $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
+      // Load GivDinStemme.
+      $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
 
-    $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
-    $metadata['duration'] = $request->request->get('duration');
-    $givDinStemme->set('metadata', json_encode($metadata));
+      $this->helper->updateTotalDonationDuration((int) $request->request->get('duration'));
+      $this->helper->updateTotalNumberOfDonations();
 
-    $files = $request->files->all();
+      $files = $request->files->all();
 
-    if (empty($files)) {
-      throw new InvalidRequestException('No file found');
-    }
+      if (empty($files)) {
+        throw new InvalidRequestException('No file found');
+      }
 
-    foreach ($files as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
-      try {
+      foreach ($files as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
         // Copy audio file to private files.
         $destination = $directory . '/' . $file->getClientOriginalName();
         $newFilename = $this->fileSystem->copy($file->getPathname(), $destination, FileExists::Rename);
@@ -310,25 +311,29 @@ class GivDinStemmeController extends ControllerBase {
         // Attach file.
         $givDinStemme->set('file', $file);
       }
-      catch (FileException | EntityStorageException | \Exception $e) {
-        // @todo How do we handle this?
+
+      $givDinStemme->save();
+
+      // Redirect based on whether another text part exists.
+      $nextDelta = $delta + 1;
+      $countOfParts = $this->helper->getCountOfGivDinStemmeByCollectionId($collection_id);
+
+      if ($nextDelta < $countOfParts) {
+        return $this->redirect('giv_din_stemme.read', [
+          'collection_id' => $collection_id,
+          'delta' => $nextDelta,
+        ]);
+      }
+      else {
+        return $this->redirect('giv_din_stemme.thank_you');
       }
     }
-
-    $givDinStemme->save();
-
-    // Redirect based on whether another text part exists.
-    $nextDelta = ((int) $delta) + 1;
-    $countOfParts = $this->helper->getCountOfGivDinStemmeByCollectionId($collection_id);
-
-    if ($nextDelta < $countOfParts) {
+    catch (\Exception $exception) {
+      $this->messenger()->addError($this->t('Something went wrong submitting your recording. Please attempt again.'));
       return $this->redirect('giv_din_stemme.read', [
         'collection_id' => $collection_id,
-        'delta' => (string) $nextDelta,
+        'delta' => $delta,
       ]);
-    }
-    else {
-      return $this->redirect('giv_din_stemme.thank_you');
     }
   }
 
