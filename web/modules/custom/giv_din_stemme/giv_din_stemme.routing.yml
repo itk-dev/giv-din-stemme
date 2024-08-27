@@ -1,3 +1,12 @@
+# --- Administration pages routing --- #
+giv_din_stemme_general.settings:
+  path: '/admin/site-setup/general'
+  defaults:
+    _form: '\Drupal\giv_din_stemme\Form\GivDinStemmeSettingsForm'
+    _title: 'General'
+  requirements:
+    _permission: 'access itk admin settings'
+
 giv_din_stemme.landing:
   path: '/landing-page'
   methods:

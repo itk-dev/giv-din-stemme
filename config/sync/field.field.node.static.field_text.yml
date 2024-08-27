@@ -1,0 +1,24 @@
+uuid: 020ead22-8dd2-4c1e-a07f-0da2e26ec2a8
+langcode: da
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_text
+    - filter.format.simpel_html
+    - node.type.static
+  module:
+    - text
+id: node.static.field_text
+field_name: field_text
+entity_type: node
+bundle: static
+label: Tekst
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - simpel_html
+field_type: text_long

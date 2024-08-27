@@ -10,6 +10,10 @@ See [keep a changelog] for information about writing changes to this log.
 
 * [PR-24](https://github.com/itk-dev/giv-din-stemme/pull/24)
   Keep total donation count and duration in state.
+* [PR-28](https://github.com/itk-dev/giv-din-stemme/pull/28)
+  Ensure file is passed to server.
+* [PR-25](https://github.com/itk-dev/giv-din-stemme/pull/25)
+  Accessibility fixes
 * [PR-20](https://github.com/itk-dev/giv-din-stemme/pull/20)
   Styling recording
 * [PR-22](https://github.com/itk-dev/giv-din-stemme/pull/22)

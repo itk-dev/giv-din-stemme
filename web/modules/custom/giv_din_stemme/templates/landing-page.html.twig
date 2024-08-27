@@ -2,17 +2,12 @@
   set redirect_url = url(user.isAuthenticated() ? 'giv_din_stemme.profile' : 'giv_din_stemme.consent')
 %}
 
-{% set modal_id = 'terms-modal' %}
-
 <section class="content">
   <main class="main px-5">
     <h1 class="text-5xl">{{ drupal_title() }}</h1>
     <div class="py-5 grid md:grid-cols-2 md:gap-x-6 text-lg text-gray-500">
-      <div class="col-span-1">
-        <p class="font-light">{{ 'Voice recording is necessary to train our danish language model.'|t }}</p>
-        <div class="my-5">
-          <span modal-id="terms-modal" class="cursor-pointer btnOpenModal text-black">{{ 'Read our terms'|t }}</span>
-        </div>
+      <div class="col-span-1 mb-10 static-content">
+        {{ front_page_text|raw }}
       </div>
       <div class="col-span-1">
         <p>
@@ -32,6 +27,5 @@
   </main>
 </section>
 
-{% include '@giv_din_stemme_theme/templates/modal.html.twig' with {'text_template': '@giv_din_stemme_theme/texts/terms-text.html', 'modal_id': modal_id } %}
 
 

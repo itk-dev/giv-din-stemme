@@ -13,7 +13,13 @@ settings:
   allowed_values:
     -
       value: male
-      label: Mand
+      label: 'Mand (inklusiv trans-mand)'
+    -
+      value: female
+      label: 'Kvinde (inklusiv trans-kvinde)'
+    -
+      value: non_binary
+      label: Non-binær
   allowed_values_function: ''
 module: options
 locked: false

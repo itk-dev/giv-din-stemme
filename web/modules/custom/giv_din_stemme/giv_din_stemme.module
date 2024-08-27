@@ -7,6 +7,7 @@
  * @todo Create Helper for these hooks.
  */
 
+use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
@@ -21,18 +22,23 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
     'landing_page' => [
       'variables' => [
         'values' => NULL,
+        'front_page_text' => NULL,
       ],
       'template' => 'landing-page',
     ],
     'consent_page' => [
-      'variables' => [],
+      'variables' => [
+        'consent_text' => NULL,
+      ],
       'template' => 'consent-page',
     ],
     'giv_din_stemme_profile_form' => [
       'render element' => 'giv-din-stemme-profile-form',
     ],
     'permissions_page' => [
-      'variables' => [],
+      'variables' => [
+        'permissions_help_page_node' => NULL,
+      ],
       'template' => 'permissions-page',
     ],
     'test_page' => [
@@ -40,7 +46,9 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       'template' => 'test-page',
     ],
     'donate_page' => [
-      'variables' => [],
+      'variables' => [
+        'donate_page_text' => NULL,
+      ],
       'template' => 'donate-page',
     ],
     'read_page' => [
@@ -55,7 +63,9 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       'template' => 'read-page',
     ],
     'thank_you_page' => [
-      'variables' => [],
+      'variables' => [
+        'thank_you_text' => NULL,
+      ],
       'template' => 'thank-you-page',
     ],
   ];
@@ -81,9 +91,14 @@ function giv_din_stemme_form_user_form_alter(&$form, FormStateInterface $form_st
   $form['actions']['submit']['#attributes']['fa-icon'] = 'fa-solid fa-circle-arrow-right';
   $form['actions']['submit']['#value'] = new TranslatableMarkup('Continue');
 
+  $currentUser = \Drupal::currentUser();
+
   // Disable access to form elements.
+  if (!in_array('editor', $currentUser->getRoles()) && $currentUser->id() !== '1') {
+    $form['account']['#access'] = FALSE;
+  }
+
   $form['actions']['delete']['#access'] = FALSE;
-  $form['account']['#access'] = FALSE;
   $form['path']['#access'] = FALSE;
   $form['language']['#access'] = FALSE;
 
@@ -110,4 +125,25 @@ function giv_din_stemme_form_user_form_alter(&$form, FormStateInterface $form_st
  */
 function giv_din_stemme_redirect(array &$form, FormStateInterface $form_state) {
   $form_state->setRedirect('giv_din_stemme.permissions');
+}
+
+/**
+ * Implements hook_ckeditor5_plugin_info_alter().
+ */
+function giv_din_stemme_ckeditor5_plugin_info_alter(array &$plugin_definitions) : void {
+  assert($plugin_definitions['ckeditor5_link'] instanceof CKEditor5PluginDefinition);
+
+  $link_plugin_definition = $plugin_definitions['ckeditor5_link']
+    ->toArray();
+
+  // Add manual target blank option on links.
+  $link_plugin_definition['ckeditor5']['config']['link']['decorators'][] = [
+    'mode' => 'manual',
+    'label' => t('Open in new window'),
+    'attributes' => [
+      'target' => '_blank',
+    ],
+  ];
+
+  $plugin_definitions['ckeditor5_link'] = new CKEditor5PluginDefinition($link_plugin_definition);
 }

@@ -1,0 +1,36 @@
+uuid: 7e4a2e6a-0441-4b26-b85f-59462fb34e4b
+langcode: da
+status: true
+dependencies:
+  config:
+    - filter.format.simpel_html
+  module:
+    - ckeditor5
+format: simpel_html
+editor: ckeditor5
+settings:
+  toolbar:
+    items:
+      - heading
+      - bold
+      - italic
+      - bulletedList
+      - numberedList
+      - link
+      - blockQuote
+      - '|'
+      - sourceEditing
+  plugins:
+    ckeditor5_heading:
+      enabled_headings:
+        - heading2
+        - heading3
+    ckeditor5_list:
+      properties:
+        reversed: true
+        startIndex: true
+      multiBlock: true
+    ckeditor5_sourceEditing:
+      allowed_tags: {  }
+image_upload:
+  status: false

@@ -8,9 +8,11 @@ use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Site\Settings;
+use Drupal\Core\State\State;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
+use Drupal\giv_din_stemme\Exception\InvalidRequestException;
 use Drupal\giv_din_stemme\Helper\Helper;
 use Drupal\openid_connect\OpenIDConnectSessionInterface;
 use Drupal\user\Entity\User;
@@ -44,6 +46,8 @@ class GivDinStemmeController extends ControllerBase {
    *   The account interface.
    * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack
    *   The request stack.
+   * @param \Drupal\Core\State\State $state
+   *   The object state.
    */
   public function __construct(
     protected Helper $helper,
@@ -54,6 +58,7 @@ class GivDinStemmeController extends ControllerBase {
     protected OpenIDConnectSessionInterface $session,
     protected $currentUser,
     protected RequestStack $requestStack,
+    protected State $state,
   ) {
   }
 
@@ -70,6 +75,7 @@ class GivDinStemmeController extends ControllerBase {
       $container->get('openid_connect.session'),
       $container->get('current_user'),
       $container->get('request_stack'),
+      $container->get('state'),
     );
   }
 
@@ -80,6 +86,7 @@ class GivDinStemmeController extends ControllerBase {
     return [
       '#theme' => 'landing_page',
       '#values' => $this->helper->getFrontpageValues(),
+      '#front_page_text' => $this->state->get('giv_din_stemme.front_page_text'),
     ];
   }
 
@@ -89,6 +96,7 @@ class GivDinStemmeController extends ControllerBase {
   public function consent(Request $request): array {
     return [
       '#theme' => 'consent_page',
+      '#consent_text' => $this->state->get('giv_din_stemme.terms_text'),
     ];
   }
 
@@ -138,6 +146,7 @@ class GivDinStemmeController extends ControllerBase {
   public function permissions(Request $request): array {
     return [
       '#theme' => 'permissions_page',
+      '#permissions_help_page_node' => $this->state->get('giv_din_stemme.permissions_help_page'),
     ];
   }
 
@@ -156,6 +165,7 @@ class GivDinStemmeController extends ControllerBase {
   public function donate(Request $request): array {
     return [
       '#theme' => 'donate_page',
+      '#donate_page_text' => $this->state->get('giv_din_stemme.donate_page_text'),
     ];
   }
 
@@ -165,6 +175,7 @@ class GivDinStemmeController extends ControllerBase {
   public function thankYou(Request $request): array {
     return [
       '#theme' => 'thank_you_page',
+      '#thank_you_text' => $this->state->get('giv_din_stemme.thank_you_text'),
     ];
   }
 
@@ -279,7 +290,13 @@ class GivDinStemmeController extends ControllerBase {
       $this->helper->updateTotalDonationDuration((int) $request->request->get('duration'));
       $this->helper->updateTotalNumberOfDonations();
 
-      foreach ($request->files->all() as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
+      $files = $request->files->all();
+
+      if (empty($files)) {
+        throw new InvalidRequestException('No file found');
+      }
+
+      foreach ($files as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
         // Copy audio file to private files.
         $destination = $directory . '/' . $file->getClientOriginalName();
         $newFilename = $this->fileSystem->copy($file->getPathname(), $destination, FileExists::Rename);
