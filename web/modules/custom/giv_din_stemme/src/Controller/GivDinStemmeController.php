@@ -13,6 +13,7 @@ use Drupal\Core\Site\Settings;
 use Drupal\Core\State\State;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
+use Drupal\giv_din_stemme\Exception\InvalidRequestException;
 use Drupal\giv_din_stemme\Helper\Helper;
 use Drupal\openid_connect\OpenIDConnectSessionInterface;
 use Drupal\user\Entity\User;
@@ -283,7 +284,13 @@ class GivDinStemmeController extends ControllerBase {
     $this->helper->updateTotalDonationDuration((int) $request->request->get('duration'));
     $this->helper->updateTotalNumberOfDonations();
 
-    foreach ($request->files->all() as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
+    $files = $request->files->all();
+
+    if (empty($files)) {
+      throw new InvalidRequestException('No file found');
+    }
+
+    foreach ($files as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
       try {
         // Copy audio file to private files.
         $destination = $directory . '/' . $file->getClientOriginalName();
