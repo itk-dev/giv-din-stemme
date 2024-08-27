@@ -26,11 +26,11 @@
     "webpack-cli": "^5.1.4"
   },
   "scripts": {
-    "coding-standards-check/eslint": "yarn eslint './web/themes/custom/giv_din_stemme_theme/**/*.js'",
-    "coding-standards-check/prettier": "yarn prettier ./web/themes/custom/giv_din_stemme_theme/**/ --check",
+    "coding-standards-check/eslint": "yarn eslint './web/*/custom/*/**/*.js'",
+    "coding-standards-check/prettier": "yarn prettier ./web/*/custom/*/**/ --check",
     "coding-standards-check": "yarn coding-standards-check/prettier && yarn coding-standards-check/eslint",
-    "coding-standards-apply/eslint": "eslint './web/themes/custom/giv_din_stemme_theme/**/*.js' --fix",
-    "coding-standards-apply/prettier": "yarn prettier ./web/themes/custom/giv_din_stemme_theme/**/ --write",
+    "coding-standards-apply/eslint": "eslint './web/*/custom/*/**/*.js' --fix",
+    "coding-standards-apply/prettier": "yarn prettier ./web/*/custom/*/**/ --write",
     "coding-standards-apply": "yarn coding-standards-apply/prettier && yarn coding-standards-apply/eslint",
     "build": "yarn encore production --progress && yarn tailwindcss -i ./web/themes/custom/giv_din_stemme_theme/styles.css -o ./web/themes/custom/giv_din_stemme_theme/build/giv_din_stemme_theme.css --minify",
     "watch": "yarn encore dev --watch & yarn tailwindcss -i ./web/themes/custom/giv_din_stemme_theme/styles.css -o ./web/themes/custom/giv_din_stemme_theme/build/giv_din_stemme_theme.css --watch"
