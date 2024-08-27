@@ -97,7 +97,7 @@ class GivDinStemmeController extends ControllerBase {
   public function consent(Request $request): array {
     return [
       '#theme' => 'consent_page',
-      '#consent_text' => $this->state->get('giv_din_stemme.consent_text'),
+      '#consent_text' => $this->state->get('giv_din_stemme.terms_text'),
     ];
   }
 
