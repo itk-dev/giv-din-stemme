@@ -17,15 +17,14 @@ await register(await connect());
   const fileElement = document.querySelector("#audio_input");
   const durationElement = document.querySelector("#recording_duration");
 
-
   function hideElement(element) {
-    element.classList.add('hidden');
-    element.setAttribute('aria-hidden', true);
+    element.classList.add("hidden");
+    element.setAttribute("aria-hidden", true);
   }
 
   function showElement(element) {
-    element.classList.remove('hidden');
-    element.setAttribute('aria-hidden', false);
+    element.classList.remove("hidden");
+    element.setAttribute("aria-hidden", false);
   }
 
   // Initialize
