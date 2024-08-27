@@ -18,6 +18,8 @@ settings:
       - numberedList
       - link
       - blockQuote
+      - '|'
+      - sourceEditing
   plugins:
     ckeditor5_heading:
       enabled_headings:
@@ -28,5 +30,7 @@ settings:
         reversed: true
         startIndex: true
       multiBlock: true
+    ckeditor5_sourceEditing:
+      allowed_tags: {  }
 image_upload:
   status: false
