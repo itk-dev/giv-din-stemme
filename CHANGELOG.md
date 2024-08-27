@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-38](https://github.com/itk-dev/giv-din-stemme/pull/38)
+  Added file data to metadata.
 * [PR-35](https://github.com/itk-dev/giv-din-stemme/pull/35)
   Made button translatable.
 * [PR-37](https://github.com/itk-dev/giv-din-stemme/pull/37)

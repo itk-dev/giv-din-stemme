@@ -288,30 +288,38 @@ class GivDinStemmeController extends ControllerBase {
       // Load GivDinStemme.
       $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
 
-      $this->helper->updateTotalDonationDuration((int) $request->request->get('duration'));
-      $this->helper->updateTotalNumberOfDonations();
+      /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+      $file = $request->files->get('file');
 
-      $files = $request->files->all();
-
-      if (empty($files)) {
+      if (!$file) {
         throw new InvalidRequestException('No file found');
       }
 
-      foreach ($files as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
-        // Copy audio file to private files.
-        $destination = $directory . '/' . $file->getClientOriginalName();
-        $newFilename = $this->fileSystem->copy($file->getPathname(), $destination, FileExists::Rename);
-        $file = File::create([
-          'filename' => basename($newFilename),
-          'uri' => $directory . basename($newFilename),
-          // Make file permanent.
-          'status' => 1,
-        ]);
-        $file->save();
+      // Copy audio file to private files.
+      $destination = $directory . '/' . $file->getClientOriginalName();
+      $newFilename = $this->fileSystem->copy($file->getPathname(), $destination, FileExists::Rename);
 
-        // Attach file.
-        $givDinStemme->set('file', $file);
-      }
+      // Create new file.
+      $file = File::create([
+        'filename' => basename($newFilename),
+        'uri' => $directory . basename($newFilename),
+        // Make file permanent.
+        'status' => 1,
+      ]);
+      $file->save();
+
+      // Attach file.
+      $givDinStemme->set('file', $file);
+
+      // Add file metadata.
+      $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
+      $metadata['durationInSeconds'] = $request->request->get('duration');
+      $metadata['audioMimeType'] = $file->getMimeType();
+      $givDinStemme->set('metadata', json_encode($metadata));
+
+      // Update donation state counter and duration.
+      $this->helper->updateTotalDonationDuration((int) $request->request->get('duration'));
+      $this->helper->updateTotalNumberOfDonations();
 
       $givDinStemme->save();
 
