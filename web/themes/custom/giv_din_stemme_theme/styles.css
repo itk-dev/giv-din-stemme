@@ -123,9 +123,10 @@
     display: none;
   }
 
-  /* Static content */
+    /* Static content */
+
   .static-content ul {
-    @apply list-disc list-inside mb-3;
+     @apply list-disc list-inside;
   }
 
   .static-content ul ul {
