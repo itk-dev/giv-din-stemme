@@ -34,7 +34,8 @@
         <input type="hidden" id="recording_duration" name="duration">
       </div>
       <div class="grid grid-cols-2">
-        <div class="sm:col-span-1">
+        <div class="sm:col-span-1 mt-2 justify-self-start">
+          <a href="{{ path('giv_din_stemme.thank_you') }}">{{ 'Finish recording'|t }}</a>
         </div>
         <div class="sm:col-span-1 justify-self-end">
           <button id="read_submit_button" type="submit" class="btn-default">

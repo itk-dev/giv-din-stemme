@@ -97,6 +97,7 @@ class GivDinStemmeController extends ControllerBase {
   public function consent(Request $request): array {
     return [
       '#theme' => 'consent_page',
+      '#consent_text' => $this->state->get('giv_din_stemme.terms_text'),
     ];
   }
 
@@ -146,6 +147,7 @@ class GivDinStemmeController extends ControllerBase {
   public function permissions(Request $request): array {
     return [
       '#theme' => 'permissions_page',
+      '#permissions_help_page_node' => $this->state->get('giv_din_stemme.permissions_help_page'),
     ];
   }
 
@@ -174,6 +176,7 @@ class GivDinStemmeController extends ControllerBase {
   public function thankYou(Request $request): array {
     return [
       '#theme' => 'thank_you_page',
+      '#thank_you_text' => $this->state->get('giv_din_stemme.thank_you_text'),
     ];
   }
 

@@ -2,7 +2,6 @@
 {% set modal_id = 'permissions-modal' %}
 
 {% block gds_pager %}
-  {% include '@giv_din_stemme_theme/templates/modal.html.twig' with {'text_template': '@giv_din_stemme_theme/texts/permission-text.html', 'modal_id': modal_id } %}
   {% include "@giv_din_stemme/user-setup-pager.html.twig" with {'active_page': 3} %}
 {% endblock %}
 
@@ -13,9 +12,11 @@
       <p>
         {{ 'To record the sound you must grant us access to use the microphone on your device. Press the microphone icon next to the address bar, and click Allow in the popup that appears in your browser.'|t }}
       </p>
-      <p>
-          {{ 'If you encounter a problem see: ' }} <a href="javascript:void" modal-id="{{ modal_id }}" class="underline btnOpenModal">{{ 'Help for permissions'|t }}</a>.
-      </p>
+      {% if permissions_help_page_node %}
+        <p>
+            {{ 'If you encounter a problem see: ' }} <a target="_blank" href="{{ path('entity.node.canonical', {'node': permissions_help_page_node}) }}" class="underline btnOpenModal">{{ 'Help for permissions'|t }}</a>.
+        </p>
+      {% endif %}
     </div>
     <div class="-mx-5 mb-5 pb-5 border-b-2"></div>
     <div id="microphone-allowed-display" class="hidden text-center">
