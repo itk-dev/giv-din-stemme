@@ -11,7 +11,9 @@ await register(await connect());
   const volumeVisualizer = document.getElementById("btn-microphone-toggle");
   const toggleButton = document.getElementById("btn-microphone-toggle");
   const soundClips = document.querySelector(".sound-clips");
-  const submitButton = document.querySelector("#read_submit_button");
+  const submitButton = document.querySelector("button[value='continue']");
+  // If we don't have a finish button, we just use an object that we can set `disabled` on. It's a hack!
+  const finishButton = document.querySelector("button[value='finish']") ?? {};
   const fileElement = document.querySelector("#audio_input");
   const durationElement = document.querySelector("#recording_duration");
 
@@ -48,7 +50,7 @@ await register(await connect());
   }
 
   // Disable next button while not recording
-  submitButton.disabled = true;
+  submitButton.disabled = finishButton.disabled = true;
 
   // Main block for doing the audio recording
   if (navigator.mediaDevices.getUserMedia) {
@@ -133,12 +135,12 @@ await register(await connect());
           fileElement.files = new DataTransfer().files;
           startTime = null;
           endTime = null;
-          submitButton.disabled = true;
+          submitButton.disabled = finishButton.disabled = true;
           toggleButton.disabled = false;
           soundClips.classList.add("hidden");
         };
 
-        submitButton.disabled = false;
+        submitButton.disabled = finishButton.disabled = false;
         toggleButton.disabled = true;
       };
 

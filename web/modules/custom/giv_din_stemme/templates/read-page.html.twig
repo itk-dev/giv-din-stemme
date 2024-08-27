@@ -23,10 +23,10 @@
   <section class="sound-clips hidden flex flex-col">
     {{ "If you want, you can listen to your recording before you continue."|t }}
     {{ "You may delete and record another if you want."|t }}
-
   </section>
 {% endblock %}
 {% block gds_footer %}
+  {% set has_next = currentText < totalTexts %}
   <div class="py-5">
     <form action="{{ nextUrl }}" method="post" enctype="multipart/form-data">
       <div aria-hidden="true">
@@ -34,13 +34,17 @@
         <input type="hidden" id="recording_duration" name="duration">
       </div>
       <div class="grid grid-cols-2">
-        <div class="sm:col-span-1 mt-2 justify-self-start">
-          <a href="{{ path('giv_din_stemme.thank_you') }}">{{ 'Finish recording'|t }}</a>
+        <div class="sm:col-span-1 justify-self-start">
+          {% if has_next %}
+            <button type="submit" class="btn-secondary" name="action" value="finish" disabled>
+              {{ 'Save and finish'|t }}
+            </button>
+          {% endif %}
         </div>
         <div class="sm:col-span-1 justify-self-end">
-          <button id="read_submit_button" type="submit" class="btn-default">
+          <button type="submit" class="btn-default" name="action" value="continue" disabled>
             <span class="mr-3">
-              {{ 'Continue'|t }}
+              {{ has_next ? 'Save and continue'|t : 'Save and finish'|t }}
             </span>
             <i class="fa-solid fa-circle-arrow-right"></i>
           </button>

@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-37](https://github.com/itk-dev/giv-din-stemme/pull/37)
+  Added “Save and finish” button
 * [PR-34](https://github.com/itk-dev/giv-din-stemme/pull/34)
   Set required fields.
 * [PR-32](https://github.com/itk-dev/giv-din-stemme/pull/32)
