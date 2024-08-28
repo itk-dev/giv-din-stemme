@@ -73,7 +73,8 @@ await register(await connect());
 
     durationCheckerCallback = () => {
       // Check whether a minute has gone by.
-      if (Math.round((Date.now() - startTime) / 1000) > 60) {
+      console.log(Date.now())
+      if (Math.round((Date.now() - startTime) / 1000) > 10) {
         toggleButton.click();
       }
     };
@@ -83,39 +84,51 @@ await register(await connect());
         mimeType: "audio/wav",
       });
 
+      function isRecording() {
+        return toggleButton.classList.contains("active");
+      }
+
+      function stopRecording() {
+        mediaRecorder.stop();
+        endTime = Date.now();
+        toggleButton.classList.remove("active");
+
+        if (durationCheckerInterval !== null) {
+          clearInterval(durationCheckerInterval);
+          durationCheckerInterval = null;
+        }
+
+        if (volumeInterval !== null) {
+          clearInterval(volumeInterval);
+          volumeInterval = null;
+        }
+      }
+
+      function startRecording() {
+        toggleButton.classList.add("active");
+        startTime = Date.now();
+        mediaRecorder.start();
+
+        if (volumeCallback !== null && volumeInterval === null) {
+          volumeInterval = setInterval(volumeCallback, 100);
+        }
+
+        if (
+          durationCheckerCallback !== null &&
+          durationCheckerInterval === null
+        ) {
+          durationCheckerInterval = setInterval(
+            durationCheckerCallback,
+            1000,
+          );
+        }
+      }
+
       toggleButton.addEventListener("click", () => {
-        if (toggleButton.classList.contains("active")) {
-          if (durationCheckerInterval !== null) {
-            clearInterval(durationCheckerInterval);
-            durationCheckerInterval = null;
-          }
-
-          if (volumeInterval !== null) {
-            clearInterval(volumeInterval);
-            volumeInterval = null;
-          }
-
-          mediaRecorder.stop();
-          endTime = Date.now();
-          toggleButton.classList.remove("active");
+        if (isRecording()){
+          stopRecording()
         } else {
-          toggleButton.classList.add("active");
-          startTime = Date.now();
-          mediaRecorder.start();
-
-          if (volumeCallback !== null && volumeInterval === null) {
-            volumeInterval = setInterval(volumeCallback, 100);
-          }
-
-          if (
-            durationCheckerCallback !== null &&
-            durationCheckerInterval === null
-          ) {
-            durationCheckerInterval = setInterval(
-              durationCheckerCallback,
-              1000,
-            );
-          }
+          startRecording()
         }
       });
 
