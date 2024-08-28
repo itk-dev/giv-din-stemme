@@ -12,6 +12,7 @@ const {
   faMicrophone,
   faMicrophoneSlash,
   faArrowRightFromBracket,
+  faStop,
 } = require("@fortawesome/free-solid-svg-icons");
 
 // Import icons from the free regular package
@@ -34,6 +35,7 @@ library.add(
   faClock,
   faUser,
   faArrowRightFromBracket,
+  faStop,
 );
 
 // Run <i> to <svg> replace
