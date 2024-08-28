@@ -10,6 +10,12 @@ See [keep a changelog] for information about writing changes to this log.
 
 * [PR-40](https://github.com/itk-dev/giv-din-stemme/pull/40)
   Cleaned up unnecessary code.
+* [PR-43](https://github.com/itk-dev/giv-din-stemme/pull/43)
+  Fix typo in `docker-compose.server.override.yml`.
+* [PR-41](https://github.com/itk-dev/giv-din-stemme/pull/41)
+  Toggle button icon change
+* [PR-21](https://github.com/itk-dev/giv-din-stemme/pull/21)
+  Added web accessiblity statement
 * [PR-38](https://github.com/itk-dev/giv-din-stemme/pull/38)
   Added file data to metadata.
 * [PR-35](https://github.com/itk-dev/giv-din-stemme/pull/35)

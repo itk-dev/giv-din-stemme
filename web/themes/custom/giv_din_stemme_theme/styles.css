@@ -113,13 +113,13 @@
   .btn-microphone-toggle.active.visualizer-shadow {
     box-shadow: 0 0 calc(var(--volume, 2px) / 4) calc(var(--volume, 2px) / 4) hsla(9, 86%, 54%, 60%);
   }
-  .btn-microphone-toggle.active .fa-microphone {
+  .btn-microphone-toggle.active #icon-record {
     display: none;
   }
-  .btn-microphone-toggle.active .fa-microphone-slash {
+  .btn-microphone-toggle.active #icon-stop {
     display: inline;
   }
-  .btn-microphone-toggle .fa-microphone-slash {
+  .btn-microphone-toggle #icon-stop {
     display: none;
   }
 
