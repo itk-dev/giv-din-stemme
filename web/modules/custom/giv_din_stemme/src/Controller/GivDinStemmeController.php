@@ -9,7 +9,6 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\State\State;
-use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
 use Drupal\giv_din_stemme\Exception\InvalidRequestException;
@@ -267,10 +266,6 @@ class GivDinStemmeController extends ControllerBase {
       '#textToRead' => $textToRead,
       '#currentText' => $delta + 1,
       '#totalTexts' => $count,
-      '#nextUrl' => Url::fromRoute('giv_din_stemme.read', [
-        'collection_id' => $collection_id,
-        'delta' => $delta,
-      ])->toString(TRUE)->getGeneratedUrl(),
       '#attached' => [
         'library' => ['giv_din_stemme/giv_din_stemme'],
       ],

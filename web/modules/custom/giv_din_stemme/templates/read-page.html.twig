@@ -38,7 +38,7 @@
 {% block gds_footer %}
   {% set has_next = currentText < totalTexts %}
   <div class="py-5">
-    <form action="{{ nextUrl }}" method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
       <div aria-hidden="true">
         <input type="file" name="file" id="audio_input" hidden>
         <input type="hidden" id="recording_duration" name="duration">

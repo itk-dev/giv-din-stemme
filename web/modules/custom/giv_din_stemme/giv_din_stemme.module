@@ -16,9 +16,6 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  */
 function giv_din_stemme_theme(array $existing, string $type, string $theme, string $path): array {
   return [
-    'giv_din_stemme' => [
-      'template' => 'giv_din_stemme',
-    ],
     'landing_page' => [
       'variables' => [
         'values' => NULL,
@@ -54,12 +51,8 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
     'read_page' => [
       'variables' => [
         'textToRead' => '',
-        'textId' => '',
-        'nextReading' => '',
         'currentText' => '',
         'totalTexts' => '',
-        'nextUrl' => '',
-        'hasNext' => '',
       ],
       'template' => 'read-page',
     ],
