@@ -8,8 +8,8 @@ await register(await connect());
 (async () => {
   let volumeCallback = null;
   let volumeInterval = null;
-  let durationCheckerCallback = null;
-  let durationCheckerInterval = null;
+  // let durationCheckerCallback = null;
+  // let durationCheckerInterval = null;
   const volumeVisualizer = document.getElementById("btn-microphone-toggle");
   const toggleButton = document.getElementById("btn-microphone-toggle");
   const soundClips = document.querySelector(".sound-clips");
@@ -70,19 +70,24 @@ await register(await connect());
     let chunks = [];
     let startTime;
     let endTime;
-
-    durationCheckerCallback = () => {
-      // Check whether a minute has gone by.
-      console.log(Date.now())
-      if (Math.round((Date.now() - startTime) / 1000) > 10) {
-        toggleButton.click();
-      }
-    };
+    let durationChecker;
 
     let onSuccess = function (stream) {
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: "audio/wav",
       });
+
+      durationChecker = () => {
+        // Check if recording is still going.
+        if (isRecording()) {
+          // Check whether a minute has gone by.
+          if (Math.round((Date.now() - startTime) / 1000) > 60) {
+            toggleButton.click();
+          } else {
+            setTimeout(durationChecker, 1000)
+          }
+        }
+      };
 
       function isRecording() {
         return toggleButton.classList.contains("active");
@@ -92,11 +97,6 @@ await register(await connect());
         mediaRecorder.stop();
         endTime = Date.now();
         toggleButton.classList.remove("active");
-
-        if (durationCheckerInterval !== null) {
-          clearInterval(durationCheckerInterval);
-          durationCheckerInterval = null;
-        }
 
         if (volumeInterval !== null) {
           clearInterval(volumeInterval);
@@ -113,15 +113,7 @@ await register(await connect());
           volumeInterval = setInterval(volumeCallback, 100);
         }
 
-        if (
-          durationCheckerCallback !== null &&
-          durationCheckerInterval === null
-        ) {
-          durationCheckerInterval = setInterval(
-            durationCheckerCallback,
-            1000,
-          );
-        }
+        durationChecker()
       }
 
       toggleButton.addEventListener("click", () => {
