@@ -8,6 +8,8 @@ await register(await connect());
 (async () => {
   let volumeCallback = null;
   let volumeInterval = null;
+  let durationCheckerCallback = null;
+  let durationCheckerInterval = null;
   const volumeVisualizer = document.getElementById("btn-microphone-toggle");
   const toggleButton = document.getElementById("btn-microphone-toggle");
   const soundClips = document.querySelector(".sound-clips");
@@ -69,19 +71,30 @@ await register(await connect());
     let startTime;
     let endTime;
 
+    durationCheckerCallback = () => {
+      // Check whether a minute has gone by.
+      if (Math.round((Date.now() - startTime) / 1000) > 60) {
+        toggleButton.click();
+      }
+    };
+
     let onSuccess = function (stream) {
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: "audio/wav",
       });
 
-      // visualize(stream);
-
       toggleButton.addEventListener("click", () => {
         if (toggleButton.classList.contains("active")) {
+          if (durationCheckerInterval !== null) {
+            clearInterval(durationCheckerInterval);
+            durationCheckerInterval = null;
+          }
+
           if (volumeInterval !== null) {
             clearInterval(volumeInterval);
             volumeInterval = null;
           }
+
           mediaRecorder.stop();
           endTime = Date.now();
           toggleButton.classList.remove("active");
@@ -89,8 +102,19 @@ await register(await connect());
           toggleButton.classList.add("active");
           startTime = Date.now();
           mediaRecorder.start();
+
           if (volumeCallback !== null && volumeInterval === null) {
             volumeInterval = setInterval(volumeCallback, 100);
+          }
+
+          if (
+            durationCheckerCallback !== null &&
+            durationCheckerInterval === null
+          ) {
+            durationCheckerInterval = setInterval(
+              durationCheckerCallback,
+              1000,
+            );
           }
         }
       });
