@@ -10,7 +10,7 @@
       <div class="mb-5 pb-5 border-b-2"></div>
     </div>
 
-    <div class="relative flex flex-col md:flex-row md:gap-5 md:min-h-36">
+    <div class="relative flex flex-col md:flex-row md:gap-5 md:min-h-36 md:py-16">
       <div class="consent-text max-h-52 overflow-y-auto flex align-content-center grow">
         <p class="text-xl mx-3 md:mx-5">
           {{ textToRead }}
@@ -20,27 +20,41 @@
       {% include "@giv_din_stemme/components/button-microphone-toggle.html.twig" %}
     </div>
   </div>
-  <section class="sound-clips hidden flex flex-col">
+  <section class="sound-clips hidden flex flex-col" aria-hidden="true">
     {{ "If you want, you can listen to your recording before you continue."|t }}
     {{ "You may delete and record another if you want."|t }}
-
+    <article class="clip flex gap-2 border-t my-1 py-2">
+      <audio controls=""></audio>
+      <button type="button" class="btn-danger self-center">{{ "Delete"|t }}</button>
+    </article>
   </section>
 {% endblock %}
+{% block gds_progress %}
+  {# Progressbar #}
+  <div class="progress-bar bg-primary flex h-1">
+    <div class="progress-indicator bg-brand h-1" style="width: {{ (100*currentText/(totalTexts+1))|number_format(4, '.', '') }}%"></div>
+  </div>
+{% endblock %}
 {% block gds_footer %}
+  {% set has_next = currentText < totalTexts %}
   <div class="py-5">
-    <form action="{{ nextUrl }}" method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
       <div aria-hidden="true">
         <input type="file" name="file" id="audio_input" hidden>
         <input type="hidden" id="recording_duration" name="duration">
       </div>
       <div class="grid grid-cols-2">
-        <div class="sm:col-span-1 mt-2 justify-self-start">
-          <a href="{{ path('giv_din_stemme.thank_you') }}">{{ 'Finish recording'|t }}</a>
+        <div class="sm:col-span-1 justify-self-start">
+          {% if has_next %}
+            <button type="submit" class="btn-secondary" name="action" value="finish" disabled>
+              {{ 'Save and finish'|t }}
+            </button>
+          {% endif %}
         </div>
         <div class="sm:col-span-1 justify-self-end">
-          <button id="read_submit_button" type="submit" class="btn-default">
+          <button type="submit" class="btn-default" name="action" value="continue" disabled>
             <span class="mr-3">
-              {{ 'Continue'|t }}
+              {{ has_next ? 'Save and continue'|t : 'Save and finish'|t }}
             </span>
             <i class="fa-solid fa-circle-arrow-right"></i>
           </button>

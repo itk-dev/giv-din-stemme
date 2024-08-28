@@ -9,7 +9,6 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\State\State;
-use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
 use Drupal\giv_din_stemme\Exception\InvalidRequestException;
@@ -265,11 +264,8 @@ class GivDinStemmeController extends ControllerBase {
     return [
       '#theme' => 'read_page',
       '#textToRead' => $textToRead,
+      '#currentText' => $delta + 1,
       '#totalTexts' => $count,
-      '#nextUrl' => Url::fromRoute('giv_din_stemme.read', [
-        'collection_id' => $collection_id,
-        'delta' => $delta,
-      ])->toString(TRUE)->getGeneratedUrl(),
       '#attached' => [
         'library' => ['giv_din_stemme/giv_din_stemme'],
       ],
@@ -287,38 +283,48 @@ class GivDinStemmeController extends ControllerBase {
       // Load GivDinStemme.
       $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
 
-      $this->helper->updateTotalDonationDuration((int) $request->request->get('duration'));
-      $this->helper->updateTotalNumberOfDonations();
+      /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
+      $file = $request->files->get('file');
 
-      $files = $request->files->all();
-
-      if (empty($files)) {
+      if (!$file) {
         throw new InvalidRequestException('No file found');
       }
 
-      foreach ($files as /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */ $file) {
-        // Copy audio file to private files.
-        $destination = $directory . '/' . $file->getClientOriginalName();
-        $newFilename = $this->fileSystem->copy($file->getPathname(), $destination, FileExists::Rename);
-        $file = File::create([
-          'filename' => basename($newFilename),
-          'uri' => $directory . basename($newFilename),
-          // Make file permanent.
-          'status' => 1,
-        ]);
-        $file->save();
+      // Copy audio file to private files.
+      $destination = $directory . '/' . $file->getClientOriginalName();
+      $newFilename = $this->fileSystem->copy($file->getPathname(), $destination, FileExists::Rename);
 
-        // Attach file.
-        $givDinStemme->set('file', $file);
-      }
+      // Create new file.
+      $file = File::create([
+        'filename' => basename($newFilename),
+        'uri' => $directory . basename($newFilename),
+        // Make file permanent.
+        'status' => 1,
+      ]);
+      $file->save();
+
+      // Attach file.
+      $givDinStemme->set('file', $file);
+
+      // Add file metadata.
+      $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
+      $metadata['durationInSeconds'] = $request->request->get('duration');
+      $metadata['audioMimeType'] = $file->getMimeType();
+      $givDinStemme->set('metadata', json_encode($metadata));
+
+      // Update donation state counter and duration.
+      $this->helper->updateTotalDonationDuration((int) $request->request->get('duration'));
+      $this->helper->updateTotalNumberOfDonations();
 
       $givDinStemme->save();
+
+      $finish = 'finish' === $request->get('action');
 
       // Redirect based on whether another text part exists.
       $nextDelta = $delta + 1;
       $countOfParts = $this->helper->getCountOfGivDinStemmeByCollectionId($collection_id);
 
-      if ($nextDelta < $countOfParts) {
+      if (!$finish && $nextDelta < $countOfParts) {
         return $this->redirect('giv_din_stemme.read', [
           'collection_id' => $collection_id,
           'delta' => $nextDelta,

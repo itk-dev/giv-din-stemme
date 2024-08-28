@@ -11,9 +11,21 @@ await register(await connect());
   const volumeVisualizer = document.getElementById("btn-microphone-toggle");
   const toggleButton = document.getElementById("btn-microphone-toggle");
   const soundClips = document.querySelector(".sound-clips");
-  const submitButton = document.querySelector("#read_submit_button");
+  const submitButton = document.querySelector("button[value='continue']");
+  // If we don't have a finish button, we just use an object that we can set `disabled` on. It's a hack!
+  const finishButton = document.querySelector("button[value='finish']") ?? {};
   const fileElement = document.querySelector("#audio_input");
   const durationElement = document.querySelector("#recording_duration");
+
+  function hideElement(element) {
+    element.classList.add("hidden");
+    element.setAttribute("aria-hidden", true);
+  }
+
+  function showElement(element) {
+    element.classList.remove("hidden");
+    element.setAttribute("aria-hidden", false);
+  }
 
   // Initialize
   try {
@@ -48,7 +60,7 @@ await register(await connect());
   }
 
   // Disable next button while not recording
-  submitButton.disabled = true;
+  submitButton.disabled = finishButton.disabled = true;
 
   // Main block for doing the audio recording
   if (navigator.mediaDevices.getUserMedia) {
@@ -84,31 +96,10 @@ await register(await connect());
       });
 
       mediaRecorder.onstop = function () {
-        const clipContainer = document.createElement("article");
-        // TODO: Do we use this clipLabel?
-        const clipLabel = document.createElement("p");
-        const audio = document.createElement("audio");
-        const deleteButton = document.createElement("button");
+        const audio = soundClips.querySelector("audio");
+        const deleteButton = soundClips.querySelector("button");
 
-        soundClips.classList.remove("hidden");
-
-        clipContainer.classList.add(
-          "clip",
-          "flex",
-          "gap-2",
-          "border-t",
-          "my-1",
-          "py-2",
-        );
-        deleteButton.classList.add("btn-danger", "self-center");
-        audio.setAttribute("controls", "");
-        // TODO: This should be translateable
-        deleteButton.textContent = "Delete";
-
-        clipContainer.appendChild(audio);
-        clipContainer.appendChild(clipLabel);
-        clipContainer.appendChild(deleteButton);
-        soundClips.appendChild(clipContainer);
+        showElement(soundClips);
 
         const blob = new Blob(chunks, { type: "audio/wav" });
         chunks = [];
@@ -127,18 +118,16 @@ await register(await connect());
         // Set duration time
         durationElement.value = Math.round((endTime - startTime) / 1000);
 
-        deleteButton.onclick = (e) => {
-          let evtTgt = e.target;
-          evtTgt.parentNode.parentNode.removeChild(evtTgt.parentNode);
+        deleteButton.onclick = () => {
           fileElement.files = new DataTransfer().files;
           startTime = null;
           endTime = null;
-          submitButton.disabled = true;
+          submitButton.disabled = finishButton.disabled = true;
           toggleButton.disabled = false;
-          soundClips.classList.add("hidden");
+          hideElement(soundClips);
         };
 
-        submitButton.disabled = false;
+        submitButton.disabled = finishButton.disabled = false;
         toggleButton.disabled = true;
       };
 
