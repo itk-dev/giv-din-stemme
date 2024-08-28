@@ -1,9 +1,0 @@
-id: giv_din_stemme
-plugin_id: giv_din_stemme
-granularity: method
-configuration:
-  GET:
-    supported_formats:
-      - json
-    supported_auth:
-      - cookie

@@ -4,6 +4,7 @@ module:
   block: 0
   breakpoint: 0
   ckeditor5: 0
+  config: 0
   dblog: 0
   dynamic_page_cache: 0
   editor: 0
@@ -14,6 +15,9 @@ module:
   giv_din_stemme: 0
   itk_admin: 0
   itk_openid_connect_interpreter: 0
+  jsonapi: 0
+  jsonapi_extras: 0
+  key_auth: 0
   language: 0
   locale: 0
   mysql: 0
@@ -23,6 +27,8 @@ module:
   page_cache: 0
   path: 0
   path_alias: 0
+  rest: 0
+  serialization: 0
   system: 0
   text: 0
   token: 0

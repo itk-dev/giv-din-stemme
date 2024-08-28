@@ -175,29 +175,4 @@ class Helper {
     return count($result);
   }
 
-  /**
-   * Get all accessible gds elements and their references.
-   *
-   * @return array
-   *   A list of gds elements.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   */
-  public function getGds(): array {
-    $output = [];
-    $ids = $this->entityTypeManager->getStorage('gds')->getQuery()
-      ->accessCheck()
-      ->execute();
-
-    $gds = $this->entityTypeManager->getStorage('gds')->loadMultiple($ids);
-    foreach ($gds as $element) {
-      $output[$element->id()] = [
-        'gds' => $element,
-      ];
-    }
-
-    return $output;
-  }
-
 }
