@@ -68,17 +68,18 @@ await register(await connect());
     let chunks = [];
     let startTime;
     let endTime;
-    let durationChecker;
+    let autoStopRecording;
+    let timeoutNumber;
 
     let onSuccess = function (stream) {
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: "audio/wav",
       });
 
-      durationChecker = () => {
+      autoStopRecording = () => {
         // Check if recording is still going.
         if (isRecording()) {
-          toggleButton.click();
+          stopRecording();
         }
       };
 
@@ -90,6 +91,9 @@ await register(await connect());
         mediaRecorder.stop();
         endTime = Date.now();
         toggleButton.classList.remove("active");
+
+        clearTimeout(timeoutNumber);
+        timeoutNumber = null;
 
         if (volumeInterval !== null) {
           clearInterval(volumeInterval);
@@ -106,7 +110,7 @@ await register(await connect());
           volumeInterval = setInterval(volumeCallback, 100);
         }
 
-        setTimeout(durationChecker, 60 * 1000);
+        timeoutNumber = setTimeout(autoStopRecording, 60 * 1000);
       }
 
       toggleButton.addEventListener("click", () => {
