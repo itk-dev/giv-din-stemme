@@ -8,8 +8,6 @@ await register(await connect());
 (async () => {
   let volumeCallback = null;
   let volumeInterval = null;
-  // let durationCheckerCallback = null;
-  // let durationCheckerInterval = null;
   const volumeVisualizer = document.getElementById("btn-microphone-toggle");
   const toggleButton = document.getElementById("btn-microphone-toggle");
   const soundClips = document.querySelector(".sound-clips");
@@ -80,12 +78,7 @@ await register(await connect());
       durationChecker = () => {
         // Check if recording is still going.
         if (isRecording()) {
-          // Check whether a minute has gone by.
-          if (Math.round((Date.now() - startTime) / 1000) > 60) {
-            toggleButton.click();
-          } else {
-            setTimeout(durationChecker, 1000)
-          }
+          toggleButton.click();
         }
       };
 
@@ -113,7 +106,7 @@ await register(await connect());
           volumeInterval = setInterval(volumeCallback, 100);
         }
 
-        durationChecker()
+        setTimeout(durationChecker, 60 * 1000)
       }
 
       toggleButton.addEventListener("click", () => {
