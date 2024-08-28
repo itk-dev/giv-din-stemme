@@ -202,3 +202,6 @@ node_modules
 web/themes/custom/giv_din_stemme_theme/build/
 
 yarn-error.log
+
+# Private files
+private
