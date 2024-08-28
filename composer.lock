@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b86ae12e54276361f3ea99d22e73e5bd",
+    "content-hash": "aeb8e00d421204059d06b0cdd017aeb9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2887,6 +2887,29 @@
                 "source": "https://github.com/laravel/framework"
             },
             "time": "2024-06-28T20:10:30+00:00"
+        },
+        {
+            "name": "itk-dev/web_accessibility_statement",
+            "version": "dev-feature/drupal-11-support",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itk-dev/web_accessibility_statement.git",
+                "reference": "4e403a15206b42e60188c29326bd68c75671d3f7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itk-dev/web_accessibility_statement/zipball/4e403a15206b42e60188c29326bd68c75671d3f7",
+                "reference": "4e403a15206b42e60188c29326bd68c75671d3f7",
+                "shasum": ""
+            },
+            "type": "drupal-module",
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Provides path for accessibility statement",
+            "support": {
+                "issues": "https://github.com/itk-dev/web_accessibility_statement/issues",
+                "source": "https://github.com/itk-dev/web_accessibility_statement/tree/feature/drupal-11-support"
+            },
+            "time": "2024-08-23T14:55:24+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -12596,7 +12619,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "chx/drupal-issue-fork": 20,
-        "drupal/openid_connect": 20
+        "drupal/openid_connect": 20,
+        "itk-dev/web_accessibility_statement": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
