@@ -106,14 +106,14 @@ await register(await connect());
           volumeInterval = setInterval(volumeCallback, 100);
         }
 
-        setTimeout(durationChecker, 60 * 1000)
+        setTimeout(durationChecker, 60 * 1000);
       }
 
       toggleButton.addEventListener("click", () => {
-        if (isRecording()){
-          stopRecording()
+        if (isRecording()) {
+          stopRecording();
         } else {
-          startRecording()
+          startRecording();
         }
       });
 
