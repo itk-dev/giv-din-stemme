@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-43](https://github.com/itk-dev/giv-din-stemme/pull/43)
+  Fix typo in `docker-compose.server.override.yml`.
 * [PR-41](https://github.com/itk-dev/giv-din-stemme/pull/41)
   Toggle button icon change
 * [PR-21](https://github.com/itk-dev/giv-din-stemme/pull/21)
