@@ -90,12 +90,31 @@ by using this command:
 open "http://$(docker compose port nginx 8080)"
 ```
 
+### Microphone permissions
+
+We use a regular expression to detect [Safari on iOS](https://apps.apple.com/no/app/safari/id1146562112) based on the
+user agent string (cf. `Drupal\giv_din_stemme\Controller\GivDinStemmeController::test()`).
+
+During testing and development the regular expression can easily be changed in `settings.local.php`, e.g.:
+
+``` php
+# settings.local.php
+// The default value matching iPhone and Safari (in any order and ignoring case)
+$settings['giv_din_stemme']['is_safari_on_ios_pattern'] = '/^(?=.*\biPhone\b)(?=.*\bSafari\b).*$/i';
+
+// Match any user agent string
+$settings['giv_din_stemme']['is_safari_on_ios_pattern'] = '/./';
+```
+
+The actual help page for details on what actually must be done in Safari on iOS is set under "References" on
+`/admin/site-setup/general`.
+
 ### Drupal config
 
-This project uses Drupal's configuration import and export to handle configuration changes and uses the
-[config ignore](https://www.drupal.org/project/config_ignore) module to protect some of the site settings form being
-overridden. For local and production configuration settings that you do not want to export, please use
-`settings.local.php` to override default configuration values.
+This project uses Drupal's configuration import and export to handle configuration changes and uses the [config
+ignore](https://www.drupal.org/project/config_ignore) module to protect some of the site settings form being overridden.
+For local and production configuration settings that you do not want to export, please use `settings.local.php` to
+override default configuration values.
 
 Export config created from drupal:
 

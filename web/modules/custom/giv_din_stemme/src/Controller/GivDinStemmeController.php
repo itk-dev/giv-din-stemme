@@ -9,6 +9,7 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\State\State;
+use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
 use Drupal\giv_din_stemme\Exception\InvalidRequestException;
@@ -153,8 +154,21 @@ class GivDinStemmeController extends ControllerBase {
    * Test page.
    */
   public function test(Request $request): array {
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
+    $settings = Settings::get('giv_din_stemme');
+    // https://www.whatismybrowser.com/guides/the-latest-user-agent/safari
+    $pattern = $settings['is_safari_on_ios_pattern']
+      // Match iPhone and Safari in any order and ignoring case
+      // (cf. https://stackoverflow.com/a/4389683/2502647).
+      ?? '/^(?=.*\biPhone\b)(?=.*\bSafari\b).*$/i';
+    $helpPageId = $this->state->get('giv_din_stemme.safari_on_ios_help_page') ?? NULL;
+
     return [
       '#theme' => 'test_page',
+      '#is_safari_on_ios' => (bool) preg_match($pattern, $userAgent),
+      '#safari_on_ios_help_url' => $helpPageId
+        ? Url::fromRoute('entity.node.canonical', ['node' => $helpPageId])->toString(TRUE)->getGeneratedUrl()
+        : NULL,
     ];
   }
 

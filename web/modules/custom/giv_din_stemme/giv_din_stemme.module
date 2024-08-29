@@ -39,7 +39,10 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       'template' => 'permissions-page',
     ],
     'test_page' => [
-      'variables' => [],
+      'variables' => [
+        'is_safari_on_ios' => NULL,
+        'safari_on_ios_help_url' => NULL,
+      ],
       'template' => 'test-page',
     ],
     'donate_page' => [

@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-46](https://github.com/itk-dev/giv-din-stemme/pull/46)
+  2217: Added handling of Safari on iPhone
 * [PR-47](https://github.com/itk-dev/giv-din-stemme/pull/47)
   Better styling for form and footer buttons on mobile.
   Messages styling and twig component. Remove Prism.js.
