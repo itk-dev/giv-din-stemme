@@ -38,19 +38,19 @@
 
   /* Define common buttons */
   .btn-primary {
-    @apply border border-brand bg-brand text-white rounded-lg px-3 py-2 min-h-9 hover:bg-orange-700 hover:border-orange-700 transition-colors;
+    @apply border border-brand bg-brand text-white rounded-lg px-3 py-2 min-h-9 hover:bg-orange-700 hover:border-orange-700 transition-colors no-underline;
   }
   .btn-secondary {
-    @apply border border-gray-300 bg-gray-300 text-gray-900 rounded-lg px-3 py-2 min-h-9 hover:bg-gray-400 hover:text-gray-950 hover:border-gray-400 transition-colors w-full md:w-auto;
+    @apply border border-gray-300 bg-gray-300 text-gray-900 rounded-lg px-3 py-2 min-h-9 hover:bg-gray-400 hover:text-gray-950 hover:border-gray-400 transition-colors w-full md:w-auto  no-underline;
   }
   .btn-default {
-    @apply border border-black bg-black text-white rounded-lg px-3 py-2 min-h-9 hover:bg-stone-700 hover:border-stone-700 transition-colors w-full md:w-auto;
+    @apply border border-black bg-black text-white rounded-lg px-3 py-2 min-h-9 hover:bg-stone-700 hover:border-stone-700 transition-colors w-full md:w-auto no-underline;
   }
   .btn-danger {
-    @apply border border-secondary bg-red-600 text-white rounded-lg px-3 py-2 min-h-9 hover:bg-red-700 transition-colors;
+    @apply border border-secondary bg-red-600 text-white rounded-lg px-3 py-2 min-h-9 hover:bg-red-700 transition-colors no-underline;
   }
   .disabled, button:disabled {
-    @apply border border-secondary bg-gray-400 text-gray-200 cursor-not-allowed hover:bg-gray-400 hover:text-gray-200 hover:border-secondary;
+    @apply border border-secondary bg-gray-400 text-gray-200 cursor-not-allowed hover:bg-gray-400 hover:text-gray-200 hover:border-secondary no-underline;
   }
 
   .btn-icon {
@@ -123,8 +123,7 @@
     display: none;
   }
 
-    /* Static content */
-
+  /* Static content */
   .static-content ul {
      @apply list-disc list-inside;
   }
@@ -149,8 +148,8 @@
     @apply mb-1;
   }
 
-  .static-content a,
-  .content a {
+  .static-content p > a,
+  .content p > a {
     @apply underline;
   }
 
