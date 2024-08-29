@@ -24,11 +24,12 @@
 
 {%
     set classes = [
-        'alert mx-auto mb-5',
+        'alert mx-auto mb-5 md:mb-0',
         type == 'info' ? 'alert-info',
         type == 'success' ? 'alert-success',
         type == 'warning' ? 'alert-warning',
         type == 'danger' ? 'alert-danger',
+        hidden_class == true ? 'hidden'
     ]
 %}
 
@@ -41,7 +42,7 @@
     }[type]|default('')
 %}
 
-<div role="alert" aria-label="{{ type }}"{{ attributes.addClass(classes) }}>
+<div id="{{ id }}" role="alert" aria-label="{{ type }}" {{ attributes.addClass(classes) }} aria-hidden="{{ aria_hidden ? 'true' : 'false' }}">
     <div class="order-1 order-md-0">
         <i class="fa-solid {{ icon }}"></i>
         {{ message }}

@@ -16,6 +16,16 @@ await register(await connect());
   const finishButton = document.querySelector("button[value='finish']") ?? {};
   const fileElement = document.querySelector("#audio_input");
   const durationElement = document.querySelector("#recording_duration");
+  const messages = {
+    start_recording: document.querySelector("#start_recording_message"),
+    stop_recording: document.querySelector("#stop_recording_message"),
+    manually_stopped_recording_message: document.querySelector(
+      "#manually_stopped_recording_message",
+    ),
+    automatically_stopped_recording_message: document.querySelector(
+      "#automatically_stopped_recording_message",
+    ),
+  };
 
   function hideElement(element) {
     element.classList.add("hidden");
@@ -65,33 +75,72 @@ await register(await connect());
   // Main block for doing the audio recording
   if (navigator.mediaDevices.getUserMedia) {
     const constraints = { audio: true };
+    const recordingMimeType = "audio/wav";
+    const recordingBaseFilename = "audio_recording.wav";
+    const timeoutDelay = durationElement.dataset.timeoutDelay ?? 60;
     let chunks = [];
     let startTime;
     let endTime;
+    let timeoutNumber;
 
     let onSuccess = function (stream) {
       const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: "audio/wav",
+        mimeType: recordingMimeType,
       });
 
-      // visualize(stream);
+      function autoStopRecording() {
+        // Check if recording is still going.
+        if (isRecording()) {
+          showMessage(messages.automatically_stopped_recording_message);
+          stopRecording();
+        }
+      }
+
+      function isRecording() {
+        return toggleButton.classList.contains("active");
+      }
+
+      function stopRecording() {
+        mediaRecorder.stop();
+        endTime = Date.now();
+        toggleButton.classList.remove("active");
+
+        clearTimeout(timeoutNumber);
+        timeoutNumber = null;
+
+        if (volumeInterval !== null) {
+          clearInterval(volumeInterval);
+          volumeInterval = null;
+        }
+      }
+
+      function startRecording() {
+        toggleButton.classList.add("active");
+        startTime = Date.now();
+        mediaRecorder.start();
+
+        showMessage(messages.stop_recording);
+
+        if (volumeCallback !== null && volumeInterval === null) {
+          volumeInterval = setInterval(volumeCallback, 100);
+        }
+
+        timeoutNumber = setTimeout(autoStopRecording, timeoutDelay * 1000);
+      }
+
+      function showMessage(message) {
+        for (const key of Object.values(messages)) {
+          hideElement(key);
+        }
+        showElement(message);
+      }
 
       toggleButton.addEventListener("click", () => {
-        if (toggleButton.classList.contains("active")) {
-          if (volumeInterval !== null) {
-            clearInterval(volumeInterval);
-            volumeInterval = null;
-          }
-          mediaRecorder.stop();
-          endTime = Date.now();
-          toggleButton.classList.remove("active");
+        if (isRecording()) {
+          showMessage(messages.manually_stopped_recording_message);
+          stopRecording();
         } else {
-          toggleButton.classList.add("active");
-          startTime = Date.now();
-          mediaRecorder.start();
-          if (volumeCallback !== null && volumeInterval === null) {
-            volumeInterval = setInterval(volumeCallback, 100);
-          }
+          startRecording();
         }
       });
 
@@ -101,13 +150,13 @@ await register(await connect());
 
         showElement(soundClips);
 
-        const blob = new Blob(chunks, { type: "audio/wav" });
+        const blob = new Blob(chunks, { type: recordingMimeType });
         chunks = [];
 
         audio.src = window.URL.createObjectURL(blob);
 
         // Convert blob to file and attach to file element.
-        let file = new File([blob], "audio_recording.wav", {
+        let file = new File([blob], recordingBaseFilename, {
           type: blob.type,
           lastModified: new Date().getTime(),
         });
@@ -124,6 +173,7 @@ await register(await connect());
           endTime = null;
           submitButton.disabled = finishButton.disabled = true;
           toggleButton.disabled = false;
+          showMessage(messages.start_recording);
           hideElement(soundClips);
         };
 
