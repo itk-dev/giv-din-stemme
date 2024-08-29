@@ -11,8 +11,8 @@ id: user.user.field_dialects
 field_name: field_dialects
 entity_type: user
 bundle: user
-label: Dialekter
-description: ''
+label: Dialekt
+description: 'Hvis du er i tvivl om din dialekt, vælg den der passer bedst på dig/den du identificerer dig med.'
 required: true
 translatable: false
 default_value: {  }
