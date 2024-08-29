@@ -6,6 +6,22 @@
 
 {% block gds_content %}
   {{ attach_library('giv_din_stemme/test_microphone') }}
+
+  {% if require_additional_microphone_permissions|default(false) %}
+    <div class="text-lg">
+      {{ include(directory ~ '/templates/components/status-message.html.twig', {
+        type: 'warning',
+        message: 'Important information about microphone permissions'|t
+      }) }}
+
+      <p>
+        {{ 'Your browser requires additional microphone permissions. Read more about <a href=":help_url">settings the permissions</a>.'|t({
+          ':help_url': additional_microphone_permissions_help_url|default('')
+        }) }}
+      </p>
+    </div>
+  {% endif %}
+
   <div class="py-5">
     <div class="consent-intro text-lg">
       <p>
