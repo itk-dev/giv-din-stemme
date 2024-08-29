@@ -13,7 +13,7 @@ const {
   faMicrophoneSlash,
   faArrowRightFromBracket,
   faStop,
-  
+
   faCircleInfo,
   faTriangleExclamation,
 } = require("@fortawesome/free-solid-svg-icons");
