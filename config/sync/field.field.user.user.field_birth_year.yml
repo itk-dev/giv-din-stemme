@@ -11,7 +11,7 @@ id: user.user.field_birth_year
 field_name: field_birth_year
 entity_type: user
 bundle: user
-label: Fødselsår
+label: Fødselsårti
 description: ''
 required: true
 translatable: false
