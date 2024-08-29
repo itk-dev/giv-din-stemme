@@ -90,7 +90,10 @@ by using this command:
 open "http://$(docker compose port nginx 8080)"
 ```
 
-### Microphone permissions
+### Additional microphone permissions
+
+Some browsers on some platforms require additional microphone permissions to allow use of the microphone on all pages of
+a site.
 
 We use a regular expression to detect [Safari on iOS](https://apps.apple.com/no/app/safari/id1146562112) based on the
 user agent string (cf. `Drupal\giv_din_stemme\Controller\GivDinStemmeController::test()`).
@@ -100,21 +103,24 @@ During testing and development the regular expression can easily be changed in `
 ``` php
 # settings.local.php
 // The default value matching iPhone and Safari (in any order and ignoring case)
-$settings['giv_din_stemme']['is_safari_on_ios_pattern'] = '/^(?=.*\biPhone\b)(?=.*\bSafari\b).*$/i';
+$settings['giv_din_stemme']['requires_additional_microphone_permissions_pattern'] = '/^(?=.*\biPhone\b)(?=.*\bSafari\b).*$/i';
 
 // Match any user agent string
-$settings['giv_din_stemme']['is_safari_on_ios_pattern'] = '/./';
+$settings['giv_din_stemme']['requires_additional_microphone_permissions_pattern'] = '/./';
 ```
 
-The actual help page for details on what actually must be done in Safari on iOS is set under "References" on
-`/admin/site-setup/general`.
+The actual help page for details on what actually must be done to grant the additional microphone permissions is set
+under "References" on `/admin/site-setup/general`.
+
+#### Browsers requiring additional microphone permissions
 
 |         | Safari | Chrome | Firefox |
-|--------:|:-------|--------|---------|
-|     iOS |        |        |         |
+|--------:|:------:|--------|---------|
+|     iOS | ✓      |        |         |
 | Android |        |        |         |
 |   macOS |        |        |         |
 
+(The table reflects the checks currently implemented)
 
 ### Drupal config
 

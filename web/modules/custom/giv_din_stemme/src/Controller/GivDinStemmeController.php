@@ -157,16 +157,16 @@ class GivDinStemmeController extends ControllerBase {
     $userAgent = $_SERVER['HTTP_USER_AGENT'];
     $settings = Settings::get('giv_din_stemme');
     // https://www.whatismybrowser.com/guides/the-latest-user-agent/safari
-    $pattern = $settings['is_safari_on_ios_pattern']
+    $pattern = $settings['require_additional_microphone_permissions_pattern']
       // Match iPhone and Safari in any order and ignoring case
       // (cf. https://stackoverflow.com/a/4389683/2502647).
       ?? '/^(?=.*\biPhone\b)(?=.*\bSafari\b).*$/i';
-    $helpPageId = $this->state->get('giv_din_stemme.safari_on_ios_help_page') ?? NULL;
+    $helpPageId = $this->state->get('giv_din_stemme.additional_microphone_permissions_help_page') ?? NULL;
 
     return [
       '#theme' => 'test_page',
-      '#is_safari_on_ios' => (bool) preg_match($pattern, $userAgent),
-      '#safari_on_ios_help_url' => $helpPageId
+      '#require_additional_microphone_permissions' => (bool) preg_match($pattern, $userAgent),
+      '#additional_microphone_permissions_help_url' => $helpPageId
         ? Url::fromRoute('entity.node.canonical', ['node' => $helpPageId])->toString(TRUE)->getGeneratedUrl()
         : NULL,
     ];

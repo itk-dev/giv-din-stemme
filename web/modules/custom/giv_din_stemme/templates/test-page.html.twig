@@ -7,16 +7,16 @@
 {% block gds_content %}
   {{ attach_library('giv_din_stemme/test_microphone') }}
 
-  {% if is_safari_on_ios|default(false) %}
+  {% if require_additional_microphone_permissions|default(false) %}
     <div class="text-lg">
       {{ include(directory ~ '/templates/components/status-message.html.twig', {
         type: 'warning',
-        message: 'Important information below'|t
+        message: 'Important information about microphone permissions'|t
       }) }}
 
       <p>
-        {{ 'Some browsers need further microphone permissions. Read more about <a href=":help_url">settings the permissions</a>.'|t({
-          ':help_url': safari_on_ios_help_url
+        {{ 'Your browser requires additional microphone permissions. Read more about <a href=":help_url">settings the permissions</a>.'|t({
+          ':help_url': additional_microphone_permissions_help_url
         }) }}
       </p>
     </div>

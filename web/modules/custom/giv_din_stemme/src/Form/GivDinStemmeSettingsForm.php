@@ -55,7 +55,7 @@ class GivDinStemmeSettingsForm extends FormBase {
     $storage = $this->entityTypeManager->getStorage('node');
     foreach ([
       'permissions_help_page',
-      'safari_on_ios_help_page',
+      'additional_microphone_permissions_help_page',
     ] as $key) {
       try {
         if ($id = $this->state->get('giv_din_stemme.' . $key)) {
@@ -137,11 +137,11 @@ class GivDinStemmeSettingsForm extends FormBase {
       '#weight' => '0',
     ];
 
-    $form['references']['safari_on_ios_help_page'] = [
+    $form['references']['additional_microphone_permissions_help_page'] = [
       '#type' => 'entity_autocomplete',
       '#target_type' => 'node',
       '#title' => $this->t('Safari on iOS help page'),
-      '#default_value' => $references['safari_on_ios_help_page'] ?? NULL,
+      '#default_value' => $references['additional_microphone_permissions_help_page'] ?? NULL,
       '#weight' => '0',
     ];
 
@@ -166,7 +166,7 @@ class GivDinStemmeSettingsForm extends FormBase {
       'giv_din_stemme.donate_page_text' => $form_state->getValue('donate_page_text')['value'],
       'giv_din_stemme.thank_you_text' => $form_state->getValue('thank_you_text')['value'],
       'giv_din_stemme.permissions_help_page' => $form_state->getValue('permissions_help_page'),
-      'giv_din_stemme.safari_on_ios_help_page' => $form_state->getValue('safari_on_ios_help_page'),
+      'giv_din_stemme.additional_microphone_permissions_help_page' => $form_state->getValue('additional_microphone_permissions_help_page'),
     ]);
 
     drupal_flush_all_caches();

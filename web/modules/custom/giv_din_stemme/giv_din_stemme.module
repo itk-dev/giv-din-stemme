@@ -40,8 +40,8 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
     ],
     'test_page' => [
       'variables' => [
-        'is_safari_on_ios' => NULL,
-        'safari_on_ios_help_url' => NULL,
+        'require_additional_microphone_permissions' => NULL,
+        'additional_microphone_permissions_help_url' => NULL,
       ],
       'template' => 'test-page',
     ],
