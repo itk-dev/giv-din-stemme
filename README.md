@@ -109,6 +109,13 @@ $settings['giv_din_stemme']['is_safari_on_ios_pattern'] = '/./';
 The actual help page for details on what actually must be done in Safari on iOS is set under "References" on
 `/admin/site-setup/general`.
 
+|         | Safari | Chrome | Firefox |
+|--------:|:-------|--------|---------|
+|     iOS |        |        |         |
+| Android |        |        |         |
+|   macOS |        |        |         |
+
+
 ### Drupal config
 
 This project uses Drupal's configuration import and export to handle configuration changes and uses the [config
