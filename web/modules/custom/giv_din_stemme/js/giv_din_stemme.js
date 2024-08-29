@@ -16,18 +16,16 @@ await register(await connect());
   const finishButton = document.querySelector("button[value='finish']") ?? {};
   const fileElement = document.querySelector("#audio_input");
   const durationElement = document.querySelector("#recording_duration");
-  const startRecordingMessageElement = document.querySelector(
-    "#start_recording_message",
-  );
-  const stopRecordingMessageElement = document.querySelector(
-    "#stop_recording_message",
-  );
-  const manuallyStoppedRecordingMessageElement = document.querySelector(
-    "#manually_stopped_recording_message",
-  );
-  const automaticallyStoppedRecordingMessageElement = document.querySelector(
-    "#automatically_stopped_recording_message",
-  );
+  const messages = {
+    start_recording: document.querySelector("#start_recording_message"),
+    stop_recording: document.querySelector("#stop_recording_message"),
+    manually_stopped_recording_message: document.querySelector(
+      "#manually_stopped_recording_message",
+    ),
+    automatically_stopped_recording_message: document.querySelector(
+      "#automatically_stopped_recording_message",
+    ),
+  };
 
   function hideElement(element) {
     element.classList.add("hidden");
@@ -83,7 +81,6 @@ await register(await connect());
     let chunks = [];
     let startTime;
     let endTime;
-    let autoStopRecording;
     let timeoutNumber;
 
     let onSuccess = function (stream) {
@@ -91,15 +88,13 @@ await register(await connect());
         mimeType: recordingMimeType,
       });
 
-      autoStopRecording = () => {
+      function autoStopRecording() {
         // Check if recording is still going.
         if (isRecording()) {
-          hideElement(stopRecordingMessageElement);
-          showElement(automaticallyStoppedRecordingMessageElement);
-
+          showMessage(messages.automatically_stopped_recording_message);
           stopRecording();
         }
-      };
+      }
 
       function isRecording() {
         return toggleButton.classList.contains("active");
@@ -124,8 +119,7 @@ await register(await connect());
         startTime = Date.now();
         mediaRecorder.start();
 
-        hideElement(startRecordingMessageElement);
-        showElement(stopRecordingMessageElement);
+        showMessage(messages.stop_recording);
 
         if (volumeCallback !== null && volumeInterval === null) {
           volumeInterval = setInterval(volumeCallback, 100);
@@ -134,10 +128,16 @@ await register(await connect());
         timeoutNumber = setTimeout(autoStopRecording, timeoutDelay * 1000);
       }
 
+      function showMessage(message) {
+        for (const key of Object.values(messages)) {
+          hideElement(key);
+        }
+        showElement(message);
+      }
+
       toggleButton.addEventListener("click", () => {
         if (isRecording()) {
-          hideElement(stopRecordingMessageElement);
-          showElement(manuallyStoppedRecordingMessageElement);
+          showMessage(messages.manually_stopped_recording_message);
           stopRecording();
         } else {
           startRecording();
@@ -173,9 +173,7 @@ await register(await connect());
           endTime = null;
           submitButton.disabled = finishButton.disabled = true;
           toggleButton.disabled = false;
-          hideElement(manuallyStoppedRecordingMessageElement);
-          hideElement(automaticallyStoppedRecordingMessageElement);
-          showElement(startRecordingMessageElement);
+          showMessage(messages.start_recording);
           hideElement(soundClips);
         };
 
