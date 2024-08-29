@@ -237,7 +237,7 @@ docker compose run --rm node yarn coding-standards-check
 
 ## API
 
-Before using the api the site owner must create a user and add an API key to 
+Before using the api the site owner must create a user and add an API key to
 the user. Api endpoints are accessible through browser with the right user
 permissions, but private file access requires an API key.
 
@@ -259,7 +259,7 @@ Get file info:
 curl --url https://donerdinstemme.dk/jsonapi/gds/gds/<FILE_ID>/file --header "api-key: <API KEY>"
 ```
 
-### File download path:
+### File download path
 
 Use the file info endpoint data to construct a file path i.e.
 
