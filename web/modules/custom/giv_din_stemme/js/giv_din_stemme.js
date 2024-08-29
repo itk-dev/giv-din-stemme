@@ -16,6 +16,10 @@ await register(await connect());
   const finishButton = document.querySelector("button[value='finish']") ?? {};
   const fileElement = document.querySelector("#audio_input");
   const durationElement = document.querySelector("#recording_duration");
+  const startRecordingMessageElement = document.querySelector("#start_recording_message");
+  const stopRecordingMessageElement = document.querySelector("#stop_recording_message");
+  const manuallyStoppedRecordingMessageElement = document.querySelector("#manually_stopped_recording_message");
+  const automaticallyStoppedRecordingMessageElement = document.querySelector("#automatically_stopped_recording_message");
 
   function hideElement(element) {
     element.classList.add("hidden");
@@ -82,6 +86,10 @@ await register(await connect());
       autoStopRecording = () => {
         // Check if recording is still going.
         if (isRecording()) {
+
+          hideElement(stopRecordingMessageElement);
+          showElement(automaticallyStoppedRecordingMessageElement);
+
           stopRecording();
         }
       };
@@ -109,6 +117,9 @@ await register(await connect());
         startTime = Date.now();
         mediaRecorder.start();
 
+        hideElement(startRecordingMessageElement);
+        showElement(stopRecordingMessageElement);
+
         if (volumeCallback !== null && volumeInterval === null) {
           volumeInterval = setInterval(volumeCallback, 100);
         }
@@ -118,6 +129,8 @@ await register(await connect());
 
       toggleButton.addEventListener("click", () => {
         if (isRecording()) {
+          hideElement(stopRecordingMessageElement);
+          showElement(manuallyStoppedRecordingMessageElement);
           stopRecording();
         } else {
           startRecording();
@@ -153,6 +166,9 @@ await register(await connect());
           endTime = null;
           submitButton.disabled = finishButton.disabled = true;
           toggleButton.disabled = false;
+          hideElement(manuallyStoppedRecordingMessageElement);
+          hideElement(automaticallyStoppedRecordingMessageElement);
+          showElement(startRecordingMessageElement);
           hideElement(soundClips);
         };
 
