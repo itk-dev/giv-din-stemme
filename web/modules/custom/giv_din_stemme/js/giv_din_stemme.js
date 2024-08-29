@@ -16,10 +16,18 @@ await register(await connect());
   const finishButton = document.querySelector("button[value='finish']") ?? {};
   const fileElement = document.querySelector("#audio_input");
   const durationElement = document.querySelector("#recording_duration");
-  const startRecordingMessageElement = document.querySelector("#start_recording_message");
-  const stopRecordingMessageElement = document.querySelector("#stop_recording_message");
-  const manuallyStoppedRecordingMessageElement = document.querySelector("#manually_stopped_recording_message");
-  const automaticallyStoppedRecordingMessageElement = document.querySelector("#automatically_stopped_recording_message");
+  const startRecordingMessageElement = document.querySelector(
+    "#start_recording_message",
+  );
+  const stopRecordingMessageElement = document.querySelector(
+    "#stop_recording_message",
+  );
+  const manuallyStoppedRecordingMessageElement = document.querySelector(
+    "#manually_stopped_recording_message",
+  );
+  const automaticallyStoppedRecordingMessageElement = document.querySelector(
+    "#automatically_stopped_recording_message",
+  );
 
   function hideElement(element) {
     element.classList.add("hidden");
@@ -86,7 +94,6 @@ await register(await connect());
       autoStopRecording = () => {
         // Check if recording is still going.
         if (isRecording()) {
-
           hideElement(stopRecordingMessageElement);
           showElement(automaticallyStoppedRecordingMessageElement);
 
