@@ -1,0 +1,50 @@
+{#
+/**
+ * @file
+ * Theme override for status messages.
+ *
+ * Displays status, error, and warning messages, grouped by type.
+ *
+ * An invisible heading identifies the messages for assistive technology.
+ * Sighted users see a colored box. See http://www.w3.org/TR/WCAG-TECHS/H69.html
+ * for info.
+ *
+ * Add an ARIA label to the contentinfo area so that assistive technology
+ * user agents will better describe this landmark.
+ *
+ * Available variables:
+ * - message_list: List of messages to be displayed, grouped by type.
+ * - status_headings: List of all status types.
+ * - display: (optional) May have a value of 'status' or 'error' when only
+ *   displaying messages of that specific type.
+ * - attributes: HTML attributes for the element, including:
+ *   - class: HTML classes.
+ */
+#}
+
+{%
+    set classes = [
+        'alert mx-auto mb-5 md:mb-0',
+        type == 'info' ? 'alert-info',
+        type == 'success' ? 'alert-success',
+        type == 'warning' ? 'alert-warning',
+        type == 'danger' ? 'alert-danger',
+        hidden_class == true ? 'hidden'
+    ]
+%}
+
+{%
+    set icon = {
+        info: 'fa-circle-info',
+        success: 'fa-circle-check',
+        warning: 'fa-triangle-exclamation',
+        danger: 'fa-triangle-exclamation',
+    }[type]|default('')
+%}
+
+<div id="{{ id }}" role="alert" aria-label="{{ type }}" {{ attributes.addClass(classes) }} aria-hidden="{{ aria_hidden ? 'true' : 'false' }}">
+    <div class="order-1 order-md-0">
+        <i class="fa-solid {{ icon }}"></i>
+        {{ message }}
+    </div>
+</div>

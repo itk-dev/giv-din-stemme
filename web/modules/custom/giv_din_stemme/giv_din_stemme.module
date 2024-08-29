@@ -40,7 +40,10 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       'template' => 'permissions-page',
     ],
     'test_page' => [
-      'variables' => [],
+      'variables' => [
+        'require_additional_microphone_permissions' => NULL,
+        'additional_microphone_permissions_help_url' => NULL,
+      ],
       'template' => 'test-page',
     ],
     'donate_page' => [

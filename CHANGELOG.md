@@ -8,6 +8,15 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-44](https://github.com/itk-dev/giv-din-stemme/pull/44)
+  Stop recording after a minute.
+* [PR-46](https://github.com/itk-dev/giv-din-stemme/pull/46)
+  2217: Added handling of Safari on iPhone
+* [PR-47](https://github.com/itk-dev/giv-din-stemme/pull/47)
+  Better styling for form and footer buttons on mobile.
+  Messages styling and twig component. Remove Prism.js.
+* [PR-45](https://github.com/itk-dev/giv-din-stemme/pull/45)
+  Update site name.
 * [PR-40](https://github.com/itk-dev/giv-din-stemme/pull/40)
   Cleaned up unnecessary code.
 * [PR-43](https://github.com/itk-dev/giv-din-stemme/pull/43)

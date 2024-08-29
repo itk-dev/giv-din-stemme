@@ -2,7 +2,8 @@
 module.exports = {
   content: [
     "./web/themes/custom/giv_din_stemme_theme/**/*.{twig,html,js}",
-    "./web/modules/custom/**/*.{twig,html,js}",
+    "./web/modules/custom/giv_din_stemme/templates/**/*.{twig,html}",
+    "./web/modules/custom/giv_din_stemme/js/*.js",
   ],
   safelist: [
     "col-span-1",

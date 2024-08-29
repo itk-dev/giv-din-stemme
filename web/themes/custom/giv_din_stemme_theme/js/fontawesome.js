@@ -13,6 +13,9 @@ const {
   faMicrophoneSlash,
   faArrowRightFromBracket,
   faStop,
+
+  faCircleInfo,
+  faTriangleExclamation,
 } = require("@fortawesome/free-solid-svg-icons");
 
 // Import icons from the free regular package
@@ -22,6 +25,9 @@ const {
   faClock,
   faUser,
 } = require("@fortawesome/free-regular-svg-icons");
+
+// Also import CircleCheck from the free solid package
+import { faCircleCheck as fasCircleCheck } from "@fortawesome/free-regular-svg-icons";
 
 // Add the icons to the library for replacing <i class="fa-solid fa-sort"></i> with the intended svg.
 library.add(
@@ -36,6 +42,9 @@ library.add(
   faUser,
   faArrowRightFromBracket,
   faStop,
+  faCircleInfo,
+  fasCircleCheck,
+  faTriangleExclamation,
 );
 
 // Run <i> to <svg> replace
