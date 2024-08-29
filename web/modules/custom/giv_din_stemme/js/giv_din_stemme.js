@@ -65,6 +65,9 @@ await register(await connect());
   // Main block for doing the audio recording
   if (navigator.mediaDevices.getUserMedia) {
     const constraints = { audio: true };
+    const recordingMimeType = "audio/wav";
+    const recordingBaseFilename = "audio_recording.wav";
+    const timeoutDelay = durationElement.dataset.timeoutDelay ?? 60;
     let chunks = [];
     let startTime;
     let endTime;
@@ -73,7 +76,7 @@ await register(await connect());
 
     let onSuccess = function (stream) {
       const mediaRecorder = new MediaRecorder(stream, {
-        mimeType: "audio/wav",
+        mimeType: recordingMimeType,
       });
 
       autoStopRecording = () => {
@@ -110,7 +113,7 @@ await register(await connect());
           volumeInterval = setInterval(volumeCallback, 100);
         }
 
-        timeoutNumber = setTimeout(autoStopRecording, 60 * 1000);
+        timeoutNumber = setTimeout(autoStopRecording, timeoutDelay * 1000);
       }
 
       toggleButton.addEventListener("click", () => {
@@ -127,13 +130,13 @@ await register(await connect());
 
         showElement(soundClips);
 
-        const blob = new Blob(chunks, { type: "audio/wav" });
+        const blob = new Blob(chunks, { type: recordingMimeType });
         chunks = [];
 
         audio.src = window.URL.createObjectURL(blob);
 
         // Convert blob to file and attach to file element.
-        let file = new File([blob], "audio_recording.wav", {
+        let file = new File([blob], recordingBaseFilename, {
           type: blob.type,
           lastModified: new Date().getTime(),
         });
