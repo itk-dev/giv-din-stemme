@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-47](https://github.com/itk-dev/giv-din-stemme/pull/47)
+  Better styling for form and footer buttons on mobile.
+  Messages styling and twig component. Remove Prism.js.
 * [PR-45](https://github.com/itk-dev/giv-din-stemme/pull/45)
   Update site name.
 * [PR-40](https://github.com/itk-dev/giv-din-stemme/pull/40)
