@@ -1,6 +1,7 @@
 _core:
   default_config_hash: 4GIX5Esnc_umpXUBj4IIocRX7Mt5fPhm4AgXfE3E56E
 module:
+  basic_auth: 0
   block: 0
   breakpoint: 0
   ckeditor5: 0
@@ -28,6 +29,7 @@ module:
   path: 0
   path_alias: 0
   rest: 0
+  restui: 0
   serialization: 0
   system: 0
   text: 0

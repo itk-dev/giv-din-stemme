@@ -5,7 +5,6 @@ dependencies:
   module:
     - giv_din_stemme
     - key_auth
-    - rest
     - system
 _core:
   default_config_hash: dJ0L2DNSj5q6XVZAGsuVDpJTh5UeYkIPwKrUOOpr8YI
@@ -17,5 +16,4 @@ permissions:
   - 'access content'
   - 'access giv din stemme'
   - 'cancel account'
-  - 'restful get giv_din_stemme'
   - 'use key authentication'

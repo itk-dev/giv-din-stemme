@@ -141,3 +141,31 @@ function giv_din_stemme_ckeditor5_plugin_info_alter(array &$plugin_definitions) 
 
   $plugin_definitions['ckeditor5_link'] = new CKEditor5PluginDefinition($link_plugin_definition);
 }
+
+function giv_din_stemme_file_download($uri) {
+  $a = 1;
+  // Get the file record based on the URI. If not in the database just return.
+  /*
+  $files = file_load_multiple(array(), array('uri' => $uri));
+  if (count($files)) {
+    foreach ($files as $item) {
+      // Since some database servers sometimes use a case-insensitive comparison
+      // by default, double check that the filename is an exact match.
+      if ($item->uri === $uri) {
+        $file = $item;
+        break;
+      }
+    }
+  }
+
+  if (!isset($file)) {
+    return;
+  }
+
+  $headers = file_get_content_headers($file);
+  //Set the header to initiate a download
+  $headers['Content-Disposition'] = 'attachment; filename=' . drupal_get_filename('module', $uri);
+
+  file_transfer($uri, $headers);
+  */
+}

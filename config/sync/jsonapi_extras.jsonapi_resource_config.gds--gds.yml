@@ -32,7 +32,7 @@ resourceFields:
     fieldName: file
     publicName: file
     enhancer:
-      id: url_link
+      id: file_reference_field
       settings:
         absolute_url: '1'
   user_hash:

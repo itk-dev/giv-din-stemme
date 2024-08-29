@@ -20,6 +20,7 @@
         "drupal/openid_connect": "dev-3452009-drupal-11-compatibility",
         "drupal/paragraphs": "^1.18",
         "drupal/pathauto": "^1.13",
+        "drupal/restui": "^1.22",
         "drupal/twig_tweak": "^3.4",
         "drush/drush": "^13.0",
         "itk-dev/web_accessibility_statement": "dev-feature/drupal-11-support"
