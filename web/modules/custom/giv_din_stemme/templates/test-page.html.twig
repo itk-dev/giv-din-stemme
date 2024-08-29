@@ -16,7 +16,7 @@
 
       <p>
         {{ 'Your browser requires additional microphone permissions. Read more about <a href=":help_url">settings the permissions</a>.'|t({
-          ':help_url': additional_microphone_permissions_help_url
+          ':help_url': additional_microphone_permissions_help_url|default('')
         }) }}
       </p>
     </div>
