@@ -4,6 +4,10 @@ status: true
 dependencies:
   module:
     - file
+    - jsonapi_defaults
+third_party_settings:
+  jsonapi_defaults:
+    page_limit: 50
 id: file--file
 disabled: false
 path: file/file
@@ -44,7 +48,7 @@ resourceFields:
     fieldName: uri
     publicName: uri
     enhancer:
-      id: url_link
+      id: file_reference_field
       settings:
         absolute_url: '1'
   filemime:

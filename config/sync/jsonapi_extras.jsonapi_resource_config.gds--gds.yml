@@ -27,14 +27,6 @@ resourceFields:
     publicName: metadata
     enhancer:
       id: json
-  file:
-    disabled: false
-    fieldName: file
-    publicName: file
-    enhancer:
-      id: file_reference_field
-      settings:
-        absolute_url: '1'
   user_hash:
     disabled: false
     fieldName: user_hash
@@ -63,5 +55,11 @@ resourceFields:
     disabled: false
     fieldName: changed
     publicName: changed
+    enhancer:
+      id: ''
+  file:
+    disabled: false
+    fieldName: file
+    publicName: file
     enhancer:
       id: ''
