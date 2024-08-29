@@ -69,6 +69,9 @@ giv_din_stemme.test:
     _title: 'Test'
   requirements:
     _permission: 'access giv din stemme'
+  options:
+    # The content depends on the browser user agent, so we disable caching.
+    no_cache: TRUE
 
 giv_din_stemme.donate:
   path: '/donate'
