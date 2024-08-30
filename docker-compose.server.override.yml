@@ -5,3 +5,9 @@ services:
       - PHP_PM_TYPE=static
       - PHP_PM_MAX_CHILDREN=24
       - PHP_PM_MAX_REQUESTS=10000
+      - PHP_POST_MAX_SIZE=18M
+      - PHP_UPLOAD_MAX_FILESIZE=15M
+
+  nginx:
+    environment:
+      - NGINX_MAX_BODY_SIZE=20M
