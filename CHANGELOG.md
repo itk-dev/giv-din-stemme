@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-48](https://github.com/itk-dev/giv-din-stemme/pull/48)
+  Add API.
 * [PR-49](https://github.com/itk-dev/giv-din-stemme/pull/49)
   Fix underlining
 * [PR-44](https://github.com/itk-dev/giv-din-stemme/pull/44)

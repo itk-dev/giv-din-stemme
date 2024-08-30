@@ -16,6 +16,9 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   id = "gds",
  *   label = @Translation("Giv din stemme"),
  *   base_table = "gds",
+ *   handlers = {
+ *     "access" = "Drupal\giv_din_stemme\GdsAccessControlHandler",
+ *   },
  *   entity_keys = {
  *     "id" = "id",
  *     "uuid" = "uuid",

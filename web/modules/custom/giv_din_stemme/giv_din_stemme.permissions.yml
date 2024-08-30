@@ -1,3 +1,9 @@
 access giv din stemme:
   title: 'Access giv din stemme'
   description: 'Access to giv din stemme routes'
+access giv din stemme view:
+  title: 'Access giv din stemme view'
+  description: 'View giv din stemme content'
+access giv din stemme api:
+  title: 'Access giv din stemme API'
+  description: 'Use giv din stemme API'
