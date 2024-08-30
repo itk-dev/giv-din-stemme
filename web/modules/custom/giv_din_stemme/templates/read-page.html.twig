@@ -1,7 +1,11 @@
 {% extends "@giv_din_stemme/gds-page-wrapper.html.twig" %}
 
 {% block gds_content %}
-    <div class="py-5">
+  {% for index, message in messages|default([]) %}
+    {{ include(directory ~ '/templates/components/status-message.html.twig', {id: 'message-'~index, type: message.type|default('info'), message: message.message}) }}
+  {% endfor %}
+
+  <div class="py-5">
       <div class="consent-intro text-lg">
         <p>
           {{ "Activate the microphone and read the displayed text. Press 'Next Section' to continue"|t }}

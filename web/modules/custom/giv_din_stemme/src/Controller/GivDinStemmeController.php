@@ -6,9 +6,11 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\State\State;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\giv_din_stemme\Entity\GivDinStemme;
@@ -48,6 +50,8 @@ class GivDinStemmeController extends ControllerBase {
    *   The request stack.
    * @param \Drupal\Core\State\State $state
    *   The object state.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The logger.
    */
   public function __construct(
     protected Helper $helper,
@@ -59,6 +63,7 @@ class GivDinStemmeController extends ControllerBase {
     protected $currentUser,
     protected RequestStack $requestStack,
     protected State $state,
+    protected LoggerChannelInterface $logger,
   ) {
   }
 
@@ -76,6 +81,7 @@ class GivDinStemmeController extends ControllerBase {
       $container->get('current_user'),
       $container->get('request_stack'),
       $container->get('state'),
+      $container->get('logger.channel.giv_din_stemme'),
     );
   }
 
@@ -268,18 +274,27 @@ class GivDinStemmeController extends ControllerBase {
   /**
    * Handles read 'GET' method.
    */
-  private function handleReadGet(Request $request, string $collection_id, int $delta): array {
+  private function handleReadGet(Request $request, string $collection_id, int $delta, ?TranslatableMarkup $message = NULL, string $messageType = 'succes'): array {
     $givDinStemme = $this->helper->getGivDinStemmeByCollectionIdAndDelta($collection_id, $delta);
 
     $metadata = json_decode($givDinStemme->get('metadata')->getValue()[0]['value'], TRUE);
     $textToRead = $metadata['text'];
     $count = $metadata['number_of_parts'];
 
+    $messages = [];
+    if (NULL !== $message) {
+      $messages[] = [
+        'message' => $message,
+        'type' => $messageType,
+      ];
+    }
+
     return [
       '#theme' => 'read_page',
       '#textToRead' => $textToRead,
       '#currentText' => $delta + 1,
       '#totalTexts' => $count,
+      '#messages' => $messages,
       '#attached' => [
         'library' => ['giv_din_stemme/giv_din_stemme'],
       ],
@@ -289,7 +304,7 @@ class GivDinStemmeController extends ControllerBase {
   /**
    * Handles read 'POST' method.
    */
-  private function handleReadPost(Request $request, string $collection_id, int $delta): RedirectResponse {
+  private function handleReadPost(Request $request, string $collection_id, int $delta): RedirectResponse|array {
     try {
       $directory = 'private://audio/';
       $this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
@@ -349,11 +364,17 @@ class GivDinStemmeController extends ControllerBase {
       }
     }
     catch (\Exception $exception) {
-      $this->messenger()->addError($this->t('Something went wrong submitting your recording. Please attempt again.'));
-      return $this->redirect('giv_din_stemme.read', [
-        'collection_id' => $collection_id,
-        'delta' => $delta,
+      $this->logger->error('handleReadPost: @message; file: @file; @file_error', [
+        '@message' => $exception->getMessage(),
+        '@exception' => $exception,
+        '@file' => var_export($file ?? NULL, TRUE),
+        '@file_error' => isset($file) && UPLOAD_ERR_OK !== $file?->getError() ? $file->getErrorMessage() : NULL,
       ]);
+
+      return $this->handleReadGet($request, $collection_id, $delta,
+        message: $this->t('Something went wrong submitting your recording. Please try again.'),
+        messageType: 'danger'
+      );
     }
   }
 
