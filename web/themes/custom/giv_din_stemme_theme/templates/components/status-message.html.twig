@@ -24,7 +24,8 @@
 
 {%
     set classes = [
-        'alert mx-auto mb-5 md:mb-0',
+        'alert',
+        size == 'large' ? 'alert-lg' : 'alert-sm',
         type == 'info' ? 'alert-info',
         type == 'success' ? 'alert-success',
         type == 'warning' ? 'alert-warning',

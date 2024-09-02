@@ -2,8 +2,9 @@
 
 {% block gds_content %}
   {% for index, message in messages|default([]) %}
-    {{ include(directory ~ '/templates/components/status-message.html.twig', {id: 'message-'~index, type: message.type|default('info'), message: message.message}) }}
+    {{ include(directory ~ '/templates/components/status-message.html.twig', {id: 'message-'~index, type: message.type|default('info'), message: message.message, size: 'large'}) }}
   {% endfor %}
+      {{ include(directory ~ '/templates/components/status-message.html.twig', {id: 'start_recording_message', type: 'info', message: 'test'|t, aria_hidden: false, size: 'large' }) }}
 
   <div class="py-5">
       <div class="consent-intro text-lg">
