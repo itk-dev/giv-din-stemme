@@ -24,7 +24,8 @@
 
 {%
     set classes = [
-        'alert mx-auto mb-5 md:mb-0',
+        'alert',
+        size == 'large' ? 'alert-lg' : 'alert-sm',
         type == 'info' ? 'alert-info',
         type == 'success' ? 'alert-success',
         type == 'warning' ? 'alert-warning',
@@ -42,7 +43,11 @@
     }[type]|default('')
 %}
 
-<div id="{{ id }}" role="alert" aria-label="{{ type }}" {{ attributes.addClass(classes) }} aria-hidden="{{ aria_hidden ? 'true' : 'false' }}">
+{#
+This template may be included more than once, se we cannot use attributes.addClass(classes) (and the like) because
+we'll then collect classes from every include and end up with conflicting classes.
+#}
+<div id="{{ id }}" role="alert" aria-label="{{ type }}" class="{{ attributes.class }} {{ classes|join(' ') }} {{ attributes|without('class') }} aria-hidden="{{ aria_hidden ? 'true' : 'false' }}">
     <div class="order-1 order-md-0">
         <i class="fa-solid {{ icon }}"></i>
         {{ message }}

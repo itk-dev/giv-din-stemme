@@ -1,4 +1,8 @@
 services:
+  logger.channel.giv_din_stemme:
+    parent: logger.channel_base
+    arguments: [ 'giv_din_stemme' ]
+
   giv_din_stemme.audio_helper:
     class: 'Drupal\giv_din_stemme\Helper\AudioHelper'
 
