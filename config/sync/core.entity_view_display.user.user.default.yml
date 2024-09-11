@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.user.user.field_birth_year
     - field.field.user.user.field_dialects
-    - field.field.user.user.field_e_mail
     - field.field.user.user.field_gender
     - field.field.user.user.field_postal_code
   module:
@@ -29,13 +28,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 8
-    region: content
-  field_e_mail:
-    type: basic_string
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
     region: content
   field_gender:
     type: list_default
