@@ -117,3 +117,60 @@ giv_din_stemme.thank_you:
     _title: 'Din donation'
   requirements:
     _permission: 'access giv din stemme'
+
+# Entity admin routes
+entity.gds.canonical:
+  path: '/admin/gds/{gds}'
+  defaults:
+    # Calls the view controller, defined in the annotation of the giv din stemme
+    # entity. This marks this route as belonging to this entity type.
+    _entity_view: 'gds'
+    _title: 'Giv din stemme content'
+  requirements:
+    # Calls the access controller of the entity, passing in the suffix ('view')
+    # as the $operation parameter to checkAccess().
+    _entity_access: 'gds.view'
+
+entity.gds.collection:
+  path: '/admin/gds/list'
+  defaults:
+    # Calls the list controller, defined in the annotation of the giv din stemme entity.
+    _entity_list: 'gds'
+    _title: 'Giv din stemme list'
+  requirements:
+    # Checks for permission directly.
+    _permission: 'view giv din stemme entity'
+
+content_entity_example.giv din stemme_add:
+  path: '/admin/gds/add'
+  defaults:
+    # Calls the form.add controller, defined in the giv din stemme entity.
+    _entity_form: gds.default
+    _title: 'Add giv din stemme'
+  requirements:
+    # Use the entity's access controller. _entity_create_access tells the router
+    # to use the access controller's checkCreateAccess() method instead of
+    # checkAccess().
+    _entity_create_access: 'gds'
+
+entity.gds.edit_form:
+  path: '/admin/gds/{gds}/edit'
+  defaults:
+    # Calls the form.edit controller, defined in the giv din stemme entity.
+    _entity_form: gds.default
+    _title: 'Edit giv din stemme'
+  requirements:
+    # Calls the access controller of the entity, passing in the suffix
+    # ('update') as the $operation parameter to checkAccess().
+    _entity_access: 'gds.update'
+
+entity.gds.delete_form:
+  path: '/giv din stemme/{gds}/delete'
+  defaults:
+    # Calls the form.delete controller, defined in the giv din stemme entity.
+    _entity_form: gds.delete
+    _title: 'Delete giv din stemme'
+  requirements:
+    # Calls the access controller of the entity, passing in the suffix
+    # ('delete') as the $operation parameter to checkAccess().
+    _entity_access: 'gds.delete'
