@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
+
 * [PR-51](https://github.com/itk-dev/giv-din-stemme/pull/51)
   Removed email field.
 * [PR-50](https://github.com/itk-dev/giv-din-stemme/pull/50)
