@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.field.user.user.field_birth_year
     - field.field.user.user.field_dialects
-    - field.field.user.user.field_e_mail
     - field.field.user.user.field_gender
     - field.field.user.user.field_postal_code
   module:
@@ -32,14 +31,6 @@ content:
     weight: 33
     region: content
     settings: {  }
-    third_party_settings: {  }
-  field_e_mail:
-    type: email_default
-    weight: 35
-    region: content
-    settings:
-      placeholder: 'Indtast e-mail'
-      size: 60
     third_party_settings: {  }
   field_gender:
     type: options_select
