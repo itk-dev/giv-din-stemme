@@ -8,6 +8,9 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-52](https://github.com/itk-dev/giv-din-stemme/pull/52)
+  * Added admin UI for `GivDinStemme` entities
+  * Added `validated` property to `GivDinStemme` entity
 * [PR-50](https://github.com/itk-dev/giv-din-stemme/pull/50)
   Added logging and user feedback
 * [PR-49](https://github.com/itk-dev/giv-din-stemme/pull/49)
