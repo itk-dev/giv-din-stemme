@@ -115,6 +115,8 @@
 
 # Ignore .env files as they are personal
 #/.env
+/.env.local
+/.env.*.local
 
 # ------------------------------------------------------------------------------
 

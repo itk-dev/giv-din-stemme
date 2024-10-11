@@ -68,6 +68,7 @@ class GivDinStemmeListBuilder extends EntityListBuilder {
         'sort' => 'desc',
       ],
       'file' => $this->t('File'),
+      'validated' => $this->t('Validated'),
     ] + parent::buildHeader();
   }
 
@@ -87,6 +88,8 @@ class GivDinStemmeListBuilder extends EntityListBuilder {
     if (is_array($row['file'])) {
       $row['file'] = \Drupal::service('renderer')->render($row['file']);
     }
+
+    $row['validated'] = $entity->getValidatedTime() ? $this->t('Yes') : $this->t('No');
 
     return $row + parent::buildRow($entity);
   }

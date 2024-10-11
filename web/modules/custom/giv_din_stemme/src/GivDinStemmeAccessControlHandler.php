@@ -38,20 +38,20 @@ class GivDinStemmeAccessControlHandler extends EntityAccessControlHandler {
     return AccessResult::neutral();
   }
 
-  /**
-   * {@inheritdoc}
-   *
-   * Separate from the checkAccess because the entity does not yet exist. It
-   * will be created during the 'add' process.
-   */
-  protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
-    // Check the admin_permission as defined in your @ContentEntityType
-    // annotation.
-    $admin_permission = $this->entityType->getAdminPermission();
-    if ($account->hasPermission($admin_permission)) {
-      return AccessResult::allowed();
-    }
-    return AccessResult::allowedIfHasPermission($account, 'add giv din stemme entity');
-  }
+//  /**
+//   * {@inheritdoc}
+//   *
+//   * Separate from the checkAccess because the entity does not yet exist. It
+//   * will be created during the 'add' process.
+//   */
+//  protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
+//    // Check the admin_permission as defined in your @ContentEntityType
+//    // annotation.
+//    $admin_permission = $this->entityType->getAdminPermission();
+//    if ($account->hasPermission($admin_permission)) {
+//      return AccessResult::allowed();
+//    }
+//    return AccessResult::allowedIfHasPermission($account, 'add giv din stemme entity');
+//  }
 
 }

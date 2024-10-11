@@ -96,9 +96,9 @@ class GivDinStemme extends ContentEntityBase implements ContentEntityInterface {
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the entity was last edited.'));
 
-    $fields['validated'] = BaseFieldDefinition::create('datetime')
+    $fields['validated'] = BaseFieldDefinition::create('timestamp')
       ->setLabel(t('Validated'))
-      ->setDescription(t('The time that the entity was validated.'));
+      ->setDescription(t('The timestamp at which the gds was validated.'));
 
     return $fields;
   }
@@ -131,6 +131,20 @@ class GivDinStemme extends ContentEntityBase implements ContentEntityInterface {
    */
   public function getCreatedTime() {
     return $this->get('created')->value;
+  }
+
+  /**
+   * Get validated.
+   */
+  public function getValidatedTime() {
+    return $this->get('validated')->value;
+  }
+
+  /**
+   * Set validated.
+   */
+  public function setValidatedTime(?int $timestamp): void {
+    $this->set('validated', $timestamp);
   }
 
 }

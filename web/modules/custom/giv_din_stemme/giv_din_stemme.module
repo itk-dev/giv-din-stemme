@@ -8,6 +8,7 @@
  */
 
 use Drupal\ckeditor5\Plugin\CKEditor5PluginDefinition;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
@@ -150,4 +151,13 @@ function giv_din_stemme_ckeditor5_plugin_info_alter(array &$plugin_definitions) 
   ];
 
   $plugin_definitions['ckeditor5_link'] = new CKEditor5PluginDefinition($link_plugin_definition);
+}
+
+function giv_din_stemme_update_11001(){
+  $validatedFieldDefinition = BaseFieldDefinition::create('timestamp')
+    ->setLabel(t('Validated'))
+    ->setDescription(t('The timestamp at which the gds was validated.'));
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('validated', 'gds', 'gds', $validatedFieldDefinition);
 }

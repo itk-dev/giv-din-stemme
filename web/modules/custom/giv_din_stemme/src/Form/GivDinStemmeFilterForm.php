@@ -39,7 +39,7 @@ class GivDinStemmeFilterForm extends FormBase {
         '1' => $this->t('Yes'),
         '0' => $this->t('No'),
       ],
-      '#empty_option' => $this->t('(all)'),
+      '#empty_option' => $this->t('All'),
       '#default_value' => $request->query->get(self::IS_VALIDATED),
     ];
 
