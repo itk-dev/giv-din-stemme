@@ -205,7 +205,58 @@ $config['openid_connect.client.generic']['settings']['token_endpoint'] = '…';
 $config['openid_connect.client.generic']['settings']['end_session_endpoint'] = '…';
 ```
 
-### Coding standards
+## Whisper
+
+The custom Giv din stemme module adds commands using
+[Whisper](https://github.com/itk-dev/whipser-docker) for qualifying donations.
+
+Qualifying is done by asking Whisper to transcribe the donation and then
+comparing it to the original text using PHPs
+[similar_text](https://www.php.net/manual/en/function.similar-text.php).
+
+### Configuration
+
+Before using the qualifying command you must configure
+
+* Whisper API endpoint
+* Whisper API key
+* Threshold for when donations should be automatically validated (int)
+
+``` php
+// settings.local.php
+// …
+
+$settings['itkdev_whisper_api_endpoint'] = '…';
+$settings['itkdev_whisper_api_key'] = '…';
+$settings['itkdev_automatic_validation_threshold'] = 90;
+```
+
+See 1Password for both api endpoint and key.
+
+### Commands
+
+Qualify all unqualified donations with
+
+```shell name="gds-qualify-all-donations"
+itkdev-docker-compose drush giv_din_stemme:qualify:all
+```
+
+or re-qualify donations by adding the `--re-qualify` flag.
+
+Qualify a specific donation with
+
+```shell name="gds-qualify-specific-donations"
+itkdev-docker-compose drush giv_din_stemme:qualify:donation DONATION_ID
+```
+
+__Note__ that both qualifying commands will validate donations if they result
+in a `similar_text` score that exceeds the configured threshold level.
+The commands will never invalidate donations.
+
+To continuously qualify donations consider running the qualify all donations
+command via a cronjob.
+
+## Coding standards
 
 ``` shell name=coding-standards-composer
 docker compose run --rm phpfpm composer install

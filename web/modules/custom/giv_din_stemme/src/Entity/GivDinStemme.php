@@ -147,4 +147,14 @@ class GivDinStemme extends ContentEntityBase implements ContentEntityInterface {
     $this->set('validated', $timestamp);
   }
 
+  /**
+   * Set metadata.
+   *
+   * @param array $metadata
+   *   The metadata as an array.
+   */
+  public function setMetadata(array $metadata): void {
+    $this->set('metadata', json_encode($metadata));
+  }
+
 }
