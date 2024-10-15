@@ -249,7 +249,7 @@ Qualify a specific donation with
 itkdev-docker-compose drush giv_din_stemme:qualify:donation DONATION_ID
 ```
 
-__Note__ that both qualifying commands will validate donations if they result
+**Note** that both qualifying commands will validate donations if they result
 in a `similar_text` score that exceeds the configured threshold level.
 The commands will never invalidate donations.
 

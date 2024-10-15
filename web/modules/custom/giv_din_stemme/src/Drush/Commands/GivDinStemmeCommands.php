@@ -67,7 +67,7 @@ final class GivDinStemmeCommands extends DrushCommands {
 
     // Construct query for fetching gds/donations that should be qualified.
     $query =
-<<<SQL
+    <<<SQL
     SELECT
         id
     FROM
