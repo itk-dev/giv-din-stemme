@@ -93,7 +93,13 @@ final class GivDinStemmeCommands extends DrushCommands {
     foreach ($gdsEntities as $gds) {
       $this->io()->writeln('Handling donation ' . $counter . ' of ' . $numberOfGds);
 
-      $this->qualifyGivDinStemme($gds);
+      try {
+        $this->qualifyGivDinStemme($gds);
+      }
+      catch (\Exception $exception) {
+        $this->logger()->log('error', $exception->getMessage());
+        $this->io->writeln('Failed qualifying donation with id: ' . $gds->id() . '. Continuing...');
+      }
 
       $counter++;
     }
@@ -120,15 +126,23 @@ final class GivDinStemmeCommands extends DrushCommands {
 
     foreach ($donations as $donation) {
 
+      // Although this would get caught by the subsequent try-catch,
+      // we explicitly handle this to help the user.
       if (!$donation->getFile()) {
         $this->io()->error(sprintf('Donation with id %d does not have an attached donation file.', $id));
         return;
       }
 
-      $this->qualifyGivDinStemme($donation);
-    }
+      try {
+        $this->qualifyGivDinStemme($donation);
+        $this->io->success('Finished qualifying');
+      }
+      catch (\Exception $exception) {
+        $this->logger()->log('error', $exception->getMessage());
+        $this->io->error('Failed qualifying donation with id: ' . $donation->id());
+      }
 
-    $this->io->success('Finished qualifying donations');
+    }
   }
 
   /**
