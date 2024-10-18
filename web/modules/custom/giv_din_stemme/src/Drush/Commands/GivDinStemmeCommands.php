@@ -65,24 +65,16 @@ final class GivDinStemmeCommands extends DrushCommands {
   #[CLI\Usage(name: 'giv-din-stemme:qualify:all', description: 'Qualify all donations')]
   public function givDinStemmeQualify($options = ['re-qualify' => FALSE]): void {
 
-    // Construct query for fetching gds/donations that should be qualified.
-    $query =
-    <<<SQL
-    SELECT
-        id
-    FROM
-        gds
-    WHERE
-        file__target_id IS NOT NULL
-SQL;
+    $storage = $this->entityTypeManager->getStorage('gds');
+    $query = $storage->getQuery();
 
-    // If metadata contains whisper_guess it has already been qualified.
-    !$options['re-qualify'] ? $query .= ' AND metadata NOT LIKE \'%whisper_guess%\';' : $query .= ';';
+    $query->exists('file__target_id');
 
-    // Query donations for qualifying.
-    $donations = $this->connection->query($query);
+    if (!$options['re-qualify']) {
+      $query->condition('metadata', '%whisper_guess%', 'NOT LIKE');
+    }
 
-    $donationIds = array_map(static fn ($unqualifiedDonation) => $unqualifiedDonation->id, $donations->fetchAllAssoc('id'));
+    $donationIds = $query->accessCheck()->execute();
 
     if (empty($donationIds)) {
       $this->io()->success('No donations for qualification detected');
@@ -90,7 +82,7 @@ SQL;
     }
 
     /** @var \Drupal\giv_din_stemme\Entity\GivDinStemme[] $gdsEntities */
-    $gdsEntities = $this->entityTypeManager->getStorage('gds')->loadByProperties(['id' => array_values($donationIds)]);
+    $gdsEntities = $storage->loadMultiple($donationIds);
 
     $numberOfGds = count($gdsEntities);
 
