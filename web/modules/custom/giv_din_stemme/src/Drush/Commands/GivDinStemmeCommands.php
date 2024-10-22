@@ -81,17 +81,18 @@ final class GivDinStemmeCommands extends DrushCommands {
       return;
     }
 
-    /** @var \Drupal\giv_din_stemme\Entity\GivDinStemme[] $gdsEntities */
-    $gdsEntities = $storage->loadMultiple($donationIds);
-
-    $numberOfGds = count($gdsEntities);
+    $numberOfGds = count($donationIds);
 
     $this->io()->writeln('Number of donations being handled:' . $numberOfGds);
 
     $counter = 1;
 
-    foreach ($gdsEntities as $gds) {
+    foreach ($donationIds as $id) {
+
       $this->io()->writeln('Handling donation ' . $counter . ' of ' . $numberOfGds);
+
+      /** @var \Drupal\giv_din_stemme\Entity\GivDinStemme $gds */
+      $gds = $storage->load($id);
 
       try {
         $this->qualifyGivDinStemme($gds);
@@ -187,9 +188,9 @@ final class GivDinStemmeCommands extends DrushCommands {
 
     // If similar_text score is considered good enough
     // and donation is not validated, validate it.
-    if ((int) $percent >= $this->automaticValidationThreshold && !$gds->getValidatedTime()) {
-      $gds->setValidatedTime((new \DateTimeImmutable())->getTimestamp());
-    }
+    // if ((int) $percent >= $this->automaticValidationThreshold && !$gds->getValidatedTime()) {
+    //   $gds->setValidatedTime((new \DateTimeImmutable())->getTimestamp());
+    // }
 
     $gds->save();
   }
