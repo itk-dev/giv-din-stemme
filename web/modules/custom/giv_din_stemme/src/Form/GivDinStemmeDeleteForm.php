@@ -39,6 +39,13 @@ class GivDinStemmeDeleteForm extends ContentEntityConfirmFormBase {
 
   /**
    * {@inheritdoc}
+   */
+  public function getDescription() {
+    return $this->t('This will also delete the attached audio file and cannot be undone.');
+  }
+
+  /**
+   * {@inheritdoc}
    *
    * Delete the entity and log the event. logger() replaces the watchdog.
    */
