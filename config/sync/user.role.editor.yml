@@ -7,6 +7,7 @@ dependencies:
     - node.type.text
   module:
     - filter
+    - giv_din_stemme
     - itk_admin
     - locale
     - node
@@ -27,11 +28,14 @@ permissions:
   - 'bypass node access'
   - 'create text content'
   - 'delete any text content'
+  - 'delete giv din stemme entity'
   - 'delete own text content'
   - 'delete text revisions'
   - 'edit any text content'
+  - 'edit giv din stemme entity'
   - 'edit own text content'
   - 'translate interface'
   - 'use text format simpel_html'
+  - 'view giv din stemme entity'
   - 'view own unpublished content'
   - 'view the administration theme'

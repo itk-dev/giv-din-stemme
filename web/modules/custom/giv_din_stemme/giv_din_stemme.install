@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Install file for giv_din_stemme.
+ */
+
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Add validated field to gds table.
+ */
+function giv_din_stemme_update_11001() {
+  $validatedFieldDefinition = BaseFieldDefinition::create('timestamp')
+    ->setLabel(t('Validated'))
+    ->setDescription(t('The timestamp at which the gds was validated.'));
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('validated', 'gds', 'gds', $validatedFieldDefinition);
+}

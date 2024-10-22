@@ -1,3 +1,16 @@
 access giv din stemme:
   title: 'Access giv din stemme'
   description: 'Access to giv din stemme routes'
+
+
+view giv din stemme entity:
+  title: 'View giv din stemme entity'
+  description: 'View access to giv din stemme entity'
+
+edit giv din stemme entity:
+  title: 'Edit giv din stemme entity'
+  description: 'Edit access to giv din stemme entity'
+
+delete giv din stemme entity:
+  title: 'Delete giv din stemme entity'
+  description: 'Delete access to giv din stemme entity'

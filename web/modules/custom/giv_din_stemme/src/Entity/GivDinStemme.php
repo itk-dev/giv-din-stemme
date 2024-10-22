@@ -6,6 +6,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\file\Entity\File;
 
 /**
  * Defines the Giv Din Stemme data object.
@@ -20,6 +21,23 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "id" = "id",
  *     "uuid" = "uuid",
  *   },
+ *   admin_permission = "administer gds entity",
+ *   handlers = {
+ *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
+ *     "list_builder" = "Drupal\giv_din_stemme\Entity\Controller\GivDinStemmeListBuilder",
+ *     "form" = {
+ *       "default" = "Drupal\giv_din_stemme\Form\GivDinStemmeForm",
+ *       "delete" = "Drupal\giv_din_stemme\Form\GivDinStemmeDeleteForm",
+ *     },
+ *     "access" = "Drupal\giv_din_stemme\GivDinStemmeAccessControlHandler",
+ *   },
+ *   list_cache_contexts = { "user" },
+ *   links = {
+ *     "canonical" = "/giv_din_stemme/{gds}",
+ *     "edit-form" = "/giv_din_stemme/{gds}/edit",
+ *     "delete-form" = "/giv_din_stemme/{gds}/delete",
+ *     "collection" = "/giv_din_stemme/list"
+ *   }
  * )
  */
 class GivDinStemme extends ContentEntityBase implements ContentEntityInterface {
@@ -78,7 +96,65 @@ class GivDinStemme extends ContentEntityBase implements ContentEntityInterface {
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the entity was last edited.'));
 
+    $fields['validated'] = BaseFieldDefinition::create('timestamp')
+      ->setLabel(t('Validated'))
+      ->setDescription(t('The timestamp at which the gds was validated.'));
+
     return $fields;
+  }
+
+  /**
+   * Get file.
+   */
+  public function getFile(): ?File {
+    $files = $this->get('file')->referencedEntities();
+
+    return reset($files) ?: NULL;
+  }
+
+  /**
+   * Get metadata.
+   */
+  public function getMetadata(): array {
+    return json_decode($this->get('metadata')->getString(), TRUE) ?: [];
+  }
+
+  /**
+   * Get text.
+   */
+  public function getText(): ?string {
+    return $this->getMetadata()['text'] ?? NULL;
+  }
+
+  /**
+   * Get created.
+   */
+  public function getCreatedTime() {
+    return $this->get('created')->value;
+  }
+
+  /**
+   * Get validated.
+   */
+  public function getValidatedTime() {
+    return $this->get('validated')->value;
+  }
+
+  /**
+   * Set validated.
+   */
+  public function setValidatedTime(?int $timestamp): void {
+    $this->set('validated', $timestamp);
+  }
+
+  /**
+   * Set metadata.
+   *
+   * @param array $metadata
+   *   The metadata as an array.
+   */
+  public function setMetadata(array $metadata): void {
+    $this->set('metadata', json_encode($metadata));
   }
 
 }

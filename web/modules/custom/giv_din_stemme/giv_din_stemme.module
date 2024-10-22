@@ -66,6 +66,12 @@ function giv_din_stemme_theme(array $existing, string $type, string $theme, stri
       ],
       'template' => 'thank-you-page',
     ],
+    'giv_din_stemme_audio' => [
+      'variables' => [
+        'src' => NULL,
+        'text' => NULL,
+      ],
+    ],
   ];
 }
 
