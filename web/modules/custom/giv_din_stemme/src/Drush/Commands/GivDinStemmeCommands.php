@@ -36,9 +36,9 @@ final class GivDinStemmeCommands extends DrushCommands {
   /**
    * Automatic validation threshold.
    *
-   * @var int
+   * @var ?int
    */
-  private int $automaticValidationThreshold;
+  private ?int $automaticValidationThreshold;
 
   use AutowireTrait;
 
@@ -54,7 +54,7 @@ final class GivDinStemmeCommands extends DrushCommands {
     parent::__construct();
     $this->whisperApiEndpoint = Settings::get('itkdev_whisper_api_endpoint', 'https://whisper.itkdev.dk/');
     $this->whisperApiKey = Settings::get('itkdev_whisper_api_key', 'SOME_API_KEY');
-    $this->automaticValidationThreshold = (int) Settings::get('itkdev_automatic_validation_threshold', 90);
+    $this->automaticValidationThreshold = Settings::get('itkdev_automatic_validation_threshold');
   }
 
   /**
@@ -188,9 +188,9 @@ final class GivDinStemmeCommands extends DrushCommands {
 
     // If similar_text score is considered good enough
     // and donation is not validated, validate it.
-    // if ((int) $percent >= $this->automaticValidationThreshold && !$gds->getValidatedTime()) {
-    //   $gds->setValidatedTime((new \DateTimeImmutable())->getTimestamp());
-    // }
+    if (is_int($this->automaticValidationThreshold) && (int) $percent >= $this->automaticValidationThreshold && !$gds->getValidatedTime()) {
+      $gds->setValidatedTime((new \DateTimeImmutable())->getTimestamp());
+    }
 
     $gds->save();
   }

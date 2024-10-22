@@ -100,7 +100,7 @@ user agent string (cf. `Drupal\giv_din_stemme\Controller\GivDinStemmeController:
 
 During testing and development the regular expression can easily be changed in `settings.local.php`, e.g.:
 
-``` php
+```php
 # settings.local.php
 // The default value matching iPhone and Safari (in any order and ignoring case)
 $settings['giv_din_stemme']['requires_additional_microphone_permissions_pattern'] = '/^(?=.*\biPhone\b)(?=.*\bSafari\b).*$/i';
@@ -166,7 +166,7 @@ The OIDC mock uses a selfsigned `pfx` certificate for
 [HTTPS](https://github.com/Soluto/oidc-server-mock?tab=readme-ov-file#https), and to make everything work during
 development a little patch must be applied to [Guzzle](https://docs.guzzlephp.org/):
 
-``` shell name=guzzle-development-patch
+```shell name=guzzle-development-patch
 docker compose exec phpfpm bash -c 'patch --strip=1 < patches/guzzle-with-self-signed-certificate.patch'
 ```
 
@@ -191,7 +191,7 @@ openssl pkcs12 -in .docker/oidc-server-mock/cert/docker.pfx -passin pass:mock -p
 
 For production, we override (some) OpenID Connect configuration (rather than ignoring config) in `settings.local.php`:
 
-``` php
+```php
 // settings.local.php
 // …
 
@@ -220,9 +220,9 @@ Before using the qualifying command you must configure
 
 * Whisper API endpoint
 * Whisper API key
-* Threshold for when donations should be automatically validated (int)
+* Threshold for when donations should be automatically validated (int or null/unset to disable)
 
-``` php
+```php
 // settings.local.php
 // …
 
@@ -258,24 +258,24 @@ command via a cronjob.
 
 ## Coding standards
 
-``` shell name=coding-standards-composer
+```shell name=coding-standards-composer
 docker compose run --rm phpfpm composer install
 docker compose run --rm phpfpm composer normalize
 ```
 
-``` shell name=coding-standards-php
+```shell name=coding-standards-php
 docker compose run --rm phpfpm composer install
 docker compose run --rm phpfpm composer coding-standards-apply/phpcs
 docker compose run --rm phpfpm composer coding-standards-check/phpcs
 ```
 
-``` shell name=coding-standards-twig
+```shell name=coding-standards-twig
 docker compose run --rm phpfpm composer install
 docker compose run --rm phpfpm composer coding-standards-apply/twig-cs-fixer
 docker compose run --rm phpfpm composer coding-standards-check/twig-cs-fixer
 ```
 
-``` shell name=coding-standards-markdown
+```shell name=coding-standards-markdown
 docker run --platform linux/amd64 --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md) --fix
 docker run --platform linux/amd64 --rm --volume "$PWD:/md" peterdavehello/markdownlint markdownlint $(git ls-files *.md)
 ```
