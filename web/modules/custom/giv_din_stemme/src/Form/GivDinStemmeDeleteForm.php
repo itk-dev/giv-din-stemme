@@ -3,6 +3,7 @@
 namespace Drupal\giv_din_stemme\Form;
 
 use Drupal\Core\Entity\ContentEntityConfirmFormBase;
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 
@@ -42,15 +43,36 @@ class GivDinStemmeDeleteForm extends ContentEntityConfirmFormBase {
    * Delete the entity and log the event. logger() replaces the watchdog.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    /** @var \Drupal\giv_din_stemme\Entity\GivDinStemme $entity */
     $entity = $this->getEntity();
-    $entity->delete();
+    $file = $entity->getFile();
+
+    $form_state->setRedirect('entity.gds.collection');
+
+    // Attempt deleting entity before file,
+    // to avoid deleting file if entity cannot be deleted.
+    try {
+      $entity->delete();
+    }
+    catch (EntityStorageException $e) {
+      $this->logger('content_entity_example')->error($e->getMessage());
+      $this->messenger()->addError('Failed deleting entity. Contact administrator.');
+    }
+
+    try {
+      $file->delete();
+    }
+    catch (EntityStorageException $e) {
+      $this->logger('content_entity_example')->error($e->getMessage());
+      $this->messenger()->addError(sprintf('Failed to file (%d) entity. Contact administrator.', $file->id() ?? 0));
+      return;
+    }
 
     $this->logger('content_entity_example')->notice('@type: deleted %title.',
       [
         '@type' => $this->entity->bundle(),
         '%title' => $this->entity->label(),
       ]);
-    $form_state->setRedirect('entity.gds.collection');
   }
 
 }
