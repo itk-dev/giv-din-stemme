@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-53](https://github.com/itk-dev/giv-din-stemme/pull/53)
+  Added commands for qualifying donations via whisper.
 * [PR-52](https://github.com/itk-dev/giv-din-stemme/pull/52)
   * Added admin UI for `GivDinStemme` entities
   * Added `validated` property to `GivDinStemme` entity

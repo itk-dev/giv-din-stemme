@@ -68,6 +68,8 @@ class GivDinStemmeListBuilder extends EntityListBuilder {
         'sort' => 'desc',
       ],
       'file' => $this->t('File'),
+      'whisper_guess' => $this->t('Whisper guess'),
+      'similar_text_score' => $this->t('Similar text score'),
       'validated' => $this->t('Validated'),
     ] + parent::buildHeader();
   }
@@ -89,6 +91,10 @@ class GivDinStemmeListBuilder extends EntityListBuilder {
       $row['file'] = \Drupal::service('renderer')->render($row['file']);
     }
 
+    $metadata = $entity->getMetadata();
+
+    $row['whisper_guess'] = $metadata['whisper_guess'] ?? '-';
+    $row['similar_text_score'] = isset($metadata['whisper_guess_similar_text_score']) ? round((float) $metadata['whisper_guess_similar_text_score'], 2) . '%' : '-';
     $row['validated'] = $entity->getValidatedTime() ? $this->t('Yes') : $this->t('No');
 
     return $row + parent::buildRow($entity);
@@ -114,7 +120,8 @@ class GivDinStemmeListBuilder extends EntityListBuilder {
 
     if ($request = $this->requestStack->getCurrentRequest()) {
       $isValidated = $request->query->get(GivDinStemmeFilterForm::IS_VALIDATED);
-      if (in_array($isValidated, [0, 1])) {
+
+      if (!is_null($isValidated) && in_array($isValidated, [0, 1])) {
         $query->condition('validated', NULL, $isValidated ? 'IS NOT NULL' : 'IS NULL');
       }
 
