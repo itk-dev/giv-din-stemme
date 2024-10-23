@@ -187,6 +187,7 @@
 
 # Ignore private files
 private-files/
+private/
 
 # Ignore VS-code
 .vscode
