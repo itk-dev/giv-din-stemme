@@ -18,3 +18,23 @@ function giv_din_stemme_update_11001() {
   \Drupal::entityDefinitionUpdateManager()
     ->installFieldStorageDefinition('validated', 'gds', 'gds', $validatedFieldDefinition);
 }
+
+
+/**
+ * Add whisper_guess and whisper_guess_similar_text_score fields to gds table.
+ */
+function giv_din_stemme_update_11002() {
+  $whisperGuessFieldDefinition = BaseFieldDefinition::create('string_long')
+    ->setLabel(t('Whisper Guess'))
+    ->setDescription(t('What whisper thinks is being said'));
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('whisper_guess', 'gds', 'gds', $whisperGuessFieldDefinition);
+
+  $similarTextScoreFieldDefinition = BaseFieldDefinition::create('float')
+    ->setLabel(t('Similar text score'))
+    ->setDescription(t('Similar text score between original text and whisper guess'));
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('whisper_guess_similar_text_score', 'gds', 'gds', $similarTextScoreFieldDefinition);
+}
