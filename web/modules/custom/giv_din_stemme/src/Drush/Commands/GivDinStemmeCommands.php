@@ -71,7 +71,7 @@ final class GivDinStemmeCommands extends DrushCommands {
     $query->exists('file__target_id');
 
     if (!$options['re-qualify']) {
-      $query->condition('metadata', '%whisper_guess%', 'NOT LIKE');
+      $query->notExists('whisper_guess');
     }
 
     $donationIds = $query->accessCheck()->execute();
@@ -176,15 +176,12 @@ final class GivDinStemmeCommands extends DrushCommands {
     $whisperGuess = trim(json_decode($response->getBody()->getContents(), TRUE)['text']);
 
     $metadata = $gds->getMetadata();
-
     $originalText = $metadata['text'];
 
     similar_text($originalText, $whisperGuess, $percent);
 
-    $metadata['whisper_guess'] = $whisperGuess;
-    $metadata['whisper_guess_similar_text_score'] = (string) $percent;
-
-    $gds->setMetadata($metadata);
+    $gds->setWhisperGuess($whisperGuess);
+    $gds->setWhisperGuessSimilarTextScore($percent);
 
     // If similar_text score is considered good enough
     // and donation is not validated, validate it.

@@ -100,6 +100,14 @@ class GivDinStemme extends ContentEntityBase implements ContentEntityInterface {
       ->setLabel(t('Validated'))
       ->setDescription(t('The timestamp at which the gds was validated.'));
 
+    $fields['whisper_guess'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('Whisper Guess'))
+      ->setDescription(t('What whisper thinks is being said'));
+
+    $fields['whisper_guess_similar_text_score'] = BaseFieldDefinition::create('float')
+      ->setLabel(t('Similar text score'))
+      ->setDescription(t('Similar text score between original text and whisper guess'));
+
     return $fields;
   }
 
@@ -155,6 +163,34 @@ class GivDinStemme extends ContentEntityBase implements ContentEntityInterface {
    */
   public function setMetadata(array $metadata): void {
     $this->set('metadata', json_encode($metadata));
+  }
+
+  /**
+   * Get whisper guess.
+   */
+  public function getWhisperGuess() {
+    return $this->get('whisper_guess')->value;
+  }
+
+  /**
+   * Set whisper guess.
+   */
+  public function setWhisperGuess(?string $whisperGuess): void {
+    $this->set('whisper_guess', $whisperGuess);
+  }
+
+  /**
+   * Get whisper guess similar text score.
+   */
+  public function getWhisperGuessSimilarTextScore() {
+    return $this->get('whisper_guess_similar_text_score')->value;
+  }
+
+  /**
+   * Set whisper guess similar text score.
+   */
+  public function setWhisperGuessSimilarTextScore(?float $score): void {
+    $this->set('whisper_guess_similar_text_score', $score);
   }
 
 }
