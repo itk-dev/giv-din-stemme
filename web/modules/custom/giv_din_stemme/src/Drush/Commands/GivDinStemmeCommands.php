@@ -71,7 +71,7 @@ final class GivDinStemmeCommands extends DrushCommands {
     $query->exists('file__target_id');
 
     if (!$options['re-qualify']) {
-      $query->condition('metadata', '%whisper_guess%', 'NOT LIKE');
+      $query->notExists('whisper_guess');
     }
 
     $donationIds = $query->accessCheck()->execute();
