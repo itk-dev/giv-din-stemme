@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+* [PR-54](https://github.com/itk-dev/giv-din-stemme/pull/54)
+  Make Whisper guess and score into individual fields on entity.
 * [PR-53](https://github.com/itk-dev/giv-din-stemme/pull/53)
   Added commands for qualifying donations via whisper.
 * [PR-52](https://github.com/itk-dev/giv-din-stemme/pull/52)

@@ -19,7 +19,6 @@ function giv_din_stemme_update_11001() {
     ->installFieldStorageDefinition('validated', 'gds', 'gds', $validatedFieldDefinition);
 }
 
-
 /**
  * Add whisper_guess and whisper_guess_similar_text_score fields to gds table.
  */
