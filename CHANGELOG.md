@@ -8,6 +8,8 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [1.2.6] - 2026-06-16
+
 * [PR-69](https://github.com/itk-dev/doner-din-stemme/pull/69)
   * Upgraded to Drupal `11.3.11`
 
