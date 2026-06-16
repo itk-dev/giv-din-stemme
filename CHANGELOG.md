@@ -8,6 +8,41 @@ See [keep a changelog] for information about writing changes to this log.
 
 ## [Unreleased]
 
+## [1.2.6] - 2026-06-16
+
+* [PR-69](https://github.com/itk-dev/doner-din-stemme/pull/69)
+  * Upgraded to Drupal `11.3.11`
+
+## [1.2.5] - 2026-05-20
+
+* [PR-68](https://github.com/itk-dev/doner-din-stemme/pull/68)
+  * Upgraded to Drupal `11.3.9`
+  * Removed stg woodpecker workflow.
+
+## [1.2.4] - 2026-04-16
+
+* [PR-67](https://github.com/itk-dev/doner-din-stemme/pull/67)
+  Upgraded to Drupal `11.3.7`
+
+## [1.2.3] -2025-08-27
+
+* [PR-66](https://github.com/itk-dev/doner-din-stemme/pull/66)
+
+## [1.2.2] -2025-08-12
+
+* [PR-65](https://github.com/itk-dev/doner-din-stemme/pull/65)
+  * Deny access to gs entities without files.
+
+## [1.2.1] - 2025-06-11
+
+* [PR-49](https://github.com/itk-dev/giv-din-stemme/pull/49)
+  * Add API filter for page.offset and page.limit
+
+## [1.2.0] - 2025-05-20
+
+* [PR-48](https://github.com/itk-dev/giv-din-stemme/pull/48)
+  * Add API.
+
 ## [1.1.0] - 2025-03-13
 
 * [PR-57](https://github.com/itk-dev/doner-din-stemme/pull/57)
@@ -111,7 +146,13 @@ See [keep a changelog] for information about writing changes to this log.
   Mobile optimization.
 * Initial project.
 
-[Unreleased]: https://github.com/itk-dev/doner-din-stemme/compare/1.1.0...HEAD
+[Unreleased]: https://github.com/itk-dev/doner-din-stemme/compare/1.2.5...HEAD
+[1.2.5]: https://github.com/itk-dev/doner-din-stemme/compare/1.2.4...1.2.5
+[1.2.4]: https://github.com/itk-dev/doner-din-stemme/compare/1.2.3...1.2.4
+[1.2.3]: https://github.com/itk-dev/doner-din-stemme/compare/1.2.2...1.2.3
+[1.2.2]: https://github.com/itk-dev/doner-din-stemme/compare/1.2.1...1.2.2
+[1.2.1]: https://github.com/itk-dev/doner-din-stemme/compare/1.2.0...1.2.1
+[1.2.0]: https://github.com/itk-dev/doner-din-stemme/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/itk-dev/doner-din-stemme/compare/1.0.4...1.1.0
 [1.0.4]: https://github.com/itk-dev/doner-din-stemme/compare/1.0.3...1.0.4
 [1.0.3]: https://github.com/itk-dev/doner-din-stemme/compare/1.0.2...1.0.3
